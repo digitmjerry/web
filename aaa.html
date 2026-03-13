@@ -240,8 +240,8 @@
             alert("❌ 請填寫完整的「登入帳號」與「保管人」！");
             return;
         }
-        if(!account.includes('@digitm.com.tw')) {
-            alert("❌ 登入帳號請使用合法的公司信箱格式 (@digitm.com.tw)！");
+        if(!account.includes('@')) {
+            alert("❌ 登入帳號請使用合法的公司信箱格式 (@)！");
             return;
         }
         if(services === "") {
@@ -297,3 +297,4 @@
 
 </body>
 </html>
+
