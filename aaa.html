@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 公司社群帳號季盤點系統</title>
+    <style>
+        body { font-family: "微軟正黑體", sans-serif; background-color: #f0f4f8; padding: 20px; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 20px; }
+        
+        .form-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 15px; }
+        .form-card h3 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        
+        label { font-weight: bold; margin-bottom: 5px; font-size: 14px; color: #555; }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        
+        button { background-color: #3498db; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; margin-top: 10px; }
+        button:hover { background-color: #2980b9; }
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🏢 公司社群帳號季盤點登錄</h1>
+        <p>⚠️ 規範：嚴禁使用私人信箱註冊。登入驗證請統一綁定公司公務手機 (OTP)。</p>
+    </div>
+
+    <div class="form-card">
+        <h3>➕ 填寫盤點資料</h3>
+        
+        <div>
+            <label>所屬部門</label>
+            <select id="in-dept">
+                <option value="行銷部">行銷部</option>
+                <option value="客服部">客服部</option>
+                <option value="公關部">公關部</option>
+                <option value="人資部">人資部</option>
+                <option value="資訊部">資訊部</option>
+            </select>
+        </div>
+
+        <div>
+            <label>平台名稱</label>
+            <select id="in-platform">
+                <option value="Facebook 粉絲專頁">Facebook 粉絲專頁</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Line 官方帳號">Line 官方帳號</option>
+                <option value="TikTok">TikTok</option>
+                <option value="Google 商家">Google 商家</option>
+                <option value="Threads">Threads</option>
+                <option value="YouTube 頻道">YouTube 頻道</option>
+            </select>
+        </div>
+
+        <div>
+            <label>登入帳號 (限公司信箱)</label>
+            <input type="email" id="in-account" placeholder="例如：marketing@company.com">
+        </div>
+
+        <div>
+            <label>密碼狀態 (不儲存明碼，僅確認)</label>
+            <select id="in-password-status">
+                <option value="已加密存入保險箱">🔒 已由 IT 加密存入密碼保險箱</option>
+                <option value="待更新密碼">⚠️ 密碼太舊或遺失，待更新</option>
+            </select>
+        </div>
+
+        <div>
+            <label>綁定之 OTP 公務手機號碼</label>
+            <input type="text" id="in-phone" placeholder="例如：0912-345-678">
+        </div>
+
+        <div>
+            <label>當前保管人 (管理者)</label>
+            <input type="text" id="in-manager" placeholder="例如：王大明">
+        </div>
+
+        <button id="submit-btn" onclick="submitToGoogle()">💾 傳送至資料庫</button>
+    </div>
+</div>
+
+<script>
+    function submitToGoogle() {
+        // 這裡已經換成你專屬的 Google Apps Script 網址囉！
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwPWRJg5QCxGAvm54kPfq-CnNknC8NxB4JJfvxewTo-eIODYtKrXYaBOsP9WFxulmxjMQ/exec';
+
+        const dept = document.getElementById('in-dept').value;
+        const platform = document.getElementById('in-platform').value;
+        const account = document.getElementById('in-account').value;
+        const passStatus = document.getElementById('in-password-status').value;
+        const phone = document.getElementById('in-phone').value;
+        const manager = document.getElementById('in-manager').value;
+
+        // 防呆檢查
+        if(account === "" || manager === "") {
+            alert("請填寫完整的登入帳號與保管人！");
+            return;
+        }
+        if(!account.includes('@')) {
+            alert("請使用合法的信箱格式！");
+            return;
+        }
+
+        // 改變按鈕狀態，防止重複點擊
+        const btn = document.getElementById('submit-btn');
+        btn.innerText = "⏳ 傳送中，請稍候...";
+        btn.disabled = true;
+
+        // 取得今天的日期
+        const today = new Date();
+        const dateString = today.getFullYear() + "/" + (today.getMonth()+1) + "/" + today.getDate();
+
+        // 將資料打包好準備發送
+        let formData = new URLSearchParams();
+        formData.append('dept', dept);
+        formData.append('platform', platform);
+        formData.append('account', account);
+        formData.append('passStatus', passStatus);
+        formData.append('phone', phone);
+        formData.append('manager', manager);
+        formData.append('lastCheck', dateString);
+
+        // 使用 fetch 將資料送到 Google 試算表 (加上 mode: 'no-cors' 防止瀏覽器阻擋)
+        fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+            .then(() => {
+                alert("✅ 資料已成功上傳到 Google 試算表！");
+                // 清空輸入框
+                document.getElementById('in-account').value = "";
+                document.getElementById('in-manager').value = "";
+                // 恢復按鈕狀態
+                btn.innerText = "💾 傳送至資料庫";
+                btn.disabled = false;
+            })
+            .catch(error => {
+                alert("❌ 傳送發生異常，請確認網路狀態。");
+                console.error('Error!', error.message);
+                btn.innerText = "💾 傳送至資料庫";
+                btn.disabled = false;
+            });
+    }
+</script>
+
+</body>
+</html>
