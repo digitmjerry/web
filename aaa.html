@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏢 公司社群帳號季盤點系統</title>
+    <title>🏢 公司外部平台帳號季盤點系統</title>
     <style>
         body { font-family: "微軟正黑體", sans-serif; background-color: #f0f4f8; padding: 20px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
@@ -24,7 +24,7 @@
 
 <div class="container">
     <div class="header">
-        <h1>🏢 公司社群帳號季盤點登錄</h1>
+        <h1>🏢  公司外部平台帳號季盤點登錄</h1>
         <p>⚠️ 規範：嚴禁使用私人信箱註冊。登入驗證請統一綁定公司公務手機 (OTP)。</p>
     </div>
 
@@ -34,11 +34,10 @@
         <div>
             <label>所屬部門</label>
             <select id="in-dept">
-                <option value="行銷部">行銷部</option>
-                <option value="客服部">客服部</option>
-                <option value="公關部">公關部</option>
-                <option value="人資部">人資部</option>
-                <option value="資訊部">資訊部</option>
+                <option value="行銷業務部">行銷業務部</option>
+                <option value="總經理室">總經理室</option>
+                <option value="管理部">管理部</option>
+                <option value="媒體企劃部">媒體企劃部</option>
             </select>
         </div>
 
@@ -52,12 +51,13 @@
                 <option value="Google 商家">Google 商家</option>
                 <option value="Threads">Threads</option>
                 <option value="YouTube 頻道">YouTube 頻道</option>
+                <option value="其他">其他</option>
             </select>
         </div>
 
         <div>
             <label>登入帳號 (限公司信箱)</label>
-            <input type="email" id="in-account" placeholder="例如：marketing@company.com">
+            <input type="email" id="in-account" placeholder="例如：abc@digitm.com.tw">
         </div>
 
         <div>
@@ -144,4 +144,5 @@
 </script>
 
 </body>
+
 </html>
