@@ -5,33 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏢 數字廣告外部帳號盤點系統</title>
     <style>
-        body { font-family: "微軟正黑體", sans-serif; background-color: #f0f4f8; padding: 20px; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; }
+        body { font-family: "微軟正黑體", sans-serif; background-color: #f0f4f8; padding: 20px; color: #333; line-height: 1.5; }
+        .container { max-width: 650px; margin: 0 auto; }
         .header { text-align: center; margin-bottom: 20px; }
         
-        .form-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 15px; }
+        .form-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 20px; }
         .form-card h3 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
         
-        label { font-weight: bold; margin-bottom: 5px; font-size: 14px; color: #555; }
-        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-weight: bold; font-size: 14px; color: #444; }
+        input[type="text"], input[type="email"], select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
         
-        button { background-color: #3498db; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; margin-top: 10px; }
+        /* 複選框樣式 */
+        .checkbox-group { display: flex; flex-direction: column; gap: 10px; background: #f9fbfd; padding: 15px; border-radius: 4px; border: 1px solid #e1e8ed; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+        .checkbox-item input { width: auto; cursor: pointer; }
+
+        /* 動態展開的子輸入框樣式 */
+        .sub-input-wrap { display: none; margin-top: 5px; padding-left: 15px; border-left: 3px solid #3498db; }
+        .sub-input-wrap.active { display: block; animation: fadeIn 0.3s; }
+        .sub-input-wrap input { background-color: #fcfcfc; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        button { background-color: #3498db; color: white; border: none; padding: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; margin-top: 15px; }
         button:hover { background-color: #2980b9; }
         button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+        
+        .hint { font-size: 12px; color: #7f8c8d; margin-top: -4px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>🏢  數字廣告外部帳號盤點登錄</h1>
+        <h1>🏢 數字廣告外部帳號盤點登錄</h1>
         <p>⚠️ 規範：嚴禁使用私人信箱註冊。登入驗證請統一綁定公司公務手機 (OTP)。</p>
     </div>
 
     <div class="form-card">
         <h3>➕ 填寫盤點資料</h3>
         
-        <div>
+        <!-- 1. 基本資料 -->
+        <div class="form-group">
             <label>所屬部門</label>
             <select id="in-dept">
                 <option value="行銷業務部">行銷業務部</option>
@@ -41,7 +57,7 @@
             </select>
         </div>
 
-        <div>
+        <div class="form-group">
             <label>平台名稱</label>
             <select id="in-platform">
                 <option value="Facebook 粉絲專頁">Facebook 粉絲專頁</option>
@@ -55,12 +71,12 @@
             </select>
         </div>
 
-        <div>
+        <div class="form-group">
             <label>登入帳號 (限公司信箱)</label>
             <input type="email" id="in-account" placeholder="例如：abc@digitm.com.tw">
         </div>
 
-        <div>
+        <div class="form-group">
             <label>密碼狀態 (不儲存明碼，僅確認)</label>
             <select id="in-password-status">
                 <option value="已加密存入保險箱">🔒 已由 IT 加密存入密碼保險箱</option>
@@ -68,14 +84,78 @@
             </select>
         </div>
 
-        <div>
+        <div class="form-group">
+            <label>當前保管人 (管理者)</label>
+            <input type="text" id="in-manager" placeholder="例如：王大明">
+        </div>
+
+        <!-- 2. 服務與歸屬 (新增欄位) -->
+        <div class="form-group">
+            <label>帳號綁定哪些服務 (可多選)</label>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="service" value="廣告帳號操作 (Ads)"> 廣告帳號操作 (Ads)</label>
+                <label class="checkbox-item"><input type="checkbox" name="service" value="網站分析與追蹤 (GA4, GTM)"> 網站分析與追蹤 (GA4, GTM)</label>
+                <label class="checkbox-item"><input type="checkbox" name="service" value="粉絲專頁/社群內容經營"> 粉絲專頁/社群內容經營</label>
+                <label class="checkbox-item"><input type="checkbox" name="service" value="企業管理平台 (BM/商家)"> 企業管理平台 (BM/商家)</label>
+                <label class="checkbox-item"><input type="checkbox" name="service" value="其他" id="chk-service-other"> 其他</label>
+                <div class="sub-input-wrap" id="wrap-service-other">
+                    <input type="text" id="in-service-other-text" placeholder="請說明綁定之其他服務">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>資產歸屬</label>
+            <select id="in-asset" onchange="toggleAssetWrap()">
+                <option value="此帳號為公司資產">🏢 此帳號為公司資產</option>
+                <option value="客戶代操專用">🤝 客戶代操專用</option>
+            </select>
+            <div class="sub-input-wrap" id="wrap-asset-client">
+                <input type="text" id="in-asset-client-text" placeholder="請填寫客戶名稱（例如：王品集團）">
+            </div>
+        </div>
+
+        <!-- 3. 安全與驗證 (新增與修改欄位) -->
+        <div class="form-group">
+            <label>兩階段驗證 (2FA) 方式</label>
+            <select id="in-two-factor">
+                <option value="SMS 簡訊驗證">📱 SMS 簡訊驗證</option>
+                <option value="驗證器 App (Authenticator)">🔐 驗證器 App (Authenticator)</option>
+                <option value="Email 驗證碼">✉️ Email 驗證碼</option>
+                <option value="尚未設定">⚠️ 尚未設定 (具資安風險)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label>綁定之 OTP 公務手機號碼</label>
+            <div class="hint">若 2FA 非綁定手機，可填「無」</div>
             <input type="text" id="in-phone" placeholder="例如：0912-345-678">
         </div>
 
-        <div>
-            <label>當前保管人 (管理者)</label>
-            <input type="text" id="in-manager" placeholder="例如：王大明">
+        <div class="form-group">
+            <label>帳號備援信箱設定</label>
+            <select id="in-recovery" onchange="toggleRecoveryWrap()">
+                <option value="lch@digitm.com.tw">lch@digitm.com.tw</option>
+                <option value="info@digitm.com.tw">info@digitm.com.tw</option>
+                <option value="其他">其他</option>
+            </select>
+            <div class="sub-input-wrap" id="wrap-recovery-other">
+                <input type="email" id="in-recovery-other-text" placeholder="請輸入備援信箱">
+            </div>
+        </div>
+
+        <!-- 4. 狀態 -->
+        <div class="form-group">
+            <label>帳號健康狀態</label>
+            <select id="in-health" onchange="toggleHealthWrap()">
+                <option value="正常使用">🟢 正常使用</option>
+                <option value="功能受限/警告中">🟡 功能受限/警告中</option>
+                <option value="停權/封鎖中">🔴 停權/封鎖中</option>
+                <option value="⚪ 其他">⚪ 其他</option>
+            </select>
+            <div class="sub-input-wrap" id="wrap-health-other">
+                <input type="text" id="in-health-other-text" placeholder="請填寫問題備註（例如：申訴中、等待審核...）">
+            </div>
         </div>
 
         <button id="submit-btn" onclick="submitToGoogle()">💾 傳送至資料庫</button>
@@ -83,56 +163,128 @@
 </div>
 
 <script>
+    // --- UI 動態連動邏輯 ---
+
+    // 1. 綁定服務：監聽「其他」Checkbox
+    document.getElementById('chk-service-other').addEventListener('change', function() {
+        const wrap = document.getElementById('wrap-service-other');
+        if(this.checked) { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-service-other-text').value = ''; }
+    });
+
+    // 2. 資產歸屬
+    function toggleAssetWrap() {
+        const val = document.getElementById('in-asset').value;
+        const wrap = document.getElementById('wrap-asset-client');
+        if(val === '客戶代操專用') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-asset-client-text').value = ''; }
+    }
+
+    // 3. 備援信箱
+    function toggleRecoveryWrap() {
+        const val = document.getElementById('in-recovery').value;
+        const wrap = document.getElementById('wrap-recovery-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-recovery-other-text').value = ''; }
+    }
+
+    // 4. 健康狀態
+    function toggleHealthWrap() {
+        const val = document.getElementById('in-health').value;
+        const wrap = document.getElementById('wrap-health-other');
+        if(val === '⚪ 其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-health-other-text').value = ''; }
+    }
+
+
+    // --- 提交至 Google Sheets 邏輯 ---
     function submitToGoogle() {
-        // 這裡已經換成你專屬的 Google Apps Script 網址囉！
+        // 您的 Google Apps Script 網址
         const scriptURL = 'https://script.google.com/macros/s/AKfycbx853C-M1tLagZtGBop3vrpKjecq9cmh7CwgpIZJZ9My5-WkeRxce0HW7fFHhi866-s/exec';
 
+        // 取得基本資料
         const dept = document.getElementById('in-dept').value;
         const platform = document.getElementById('in-platform').value;
-        const account = document.getElementById('in-account').value;
+        const account = document.getElementById('in-account').value.trim();
         const passStatus = document.getElementById('in-password-status').value;
-        const phone = document.getElementById('in-phone').value;
-        const manager = document.getElementById('in-manager').value;
+        const manager = document.getElementById('in-manager').value.trim();
+        const twoFactor = document.getElementById('in-two-factor').value;
+        const phone = document.getElementById('in-phone').value.trim();
 
-        // 防呆檢查
+        // 整理：綁定服務 (陣列轉字串)
+        let servicesArray = [];
+        document.querySelectorAll('input[name="service"]:checked').forEach(el => {
+            if(el.value === '其他') {
+                servicesArray.push('其他: ' + document.getElementById('in-service-other-text').value.trim());
+            } else {
+                servicesArray.push(el.value);
+            }
+        });
+        const services = servicesArray.join('、');
+
+        // 整理：資產歸屬
+        let asset = document.getElementById('in-asset').value;
+        if(asset === '客戶代操專用') { asset = '客戶代操: ' + document.getElementById('in-asset-client-text').value.trim(); }
+
+        // 整理：備援信箱
+        let recovery = document.getElementById('in-recovery').value;
+        if(recovery === '其他') { recovery = document.getElementById('in-recovery-other-text').value.trim(); }
+
+        // 整理：健康狀態
+        let health = document.getElementById('in-health').value;
+        if(health === '⚪ 其他') { health = '其他備註: ' + document.getElementById('in-health-other-text').value.trim(); }
+
+
+        // --- 防呆驗證 ---
         if(account === "" || manager === "") {
-            alert("請填寫完整的登入帳號與保管人！");
+            alert("❌ 請填寫完整的「登入帳號」與「保管人」！");
             return;
         }
         if(!account.includes('@digitm.com.tw')) {
-            alert("請使用合法的信箱格式！");
+            alert("❌ 登入帳號請使用合法的公司信箱格式 (@digitm.com.tw)！");
             return;
         }
+        if(services === "") {
+            alert("❌ 請至少勾選一項「帳號綁定服務」！");
+            return;
+        }
+
+        // 動態欄位空白防呆
+        if(document.getElementById('chk-service-other').checked && document.getElementById('in-service-other-text').value.trim() === "") { alert("❌ 請填寫其他綁定服務說明！"); return; }
+        if(document.getElementById('in-asset').value === '客戶代操專用' && document.getElementById('in-asset-client-text').value.trim() === "") { alert("❌ 請填寫代操之客戶名稱！"); return; }
+        if(document.getElementById('in-recovery').value === '其他' && document.getElementById('in-recovery-other-text').value.trim() === "") { alert("❌ 請填寫其他備援信箱！"); return; }
+        if(document.getElementById('in-health').value === '⚪ 其他' && document.getElementById('in-health-other-text').value.trim() === "") { alert("❌ 請填寫帳號狀態備註！"); return; }
+
 
         // 改變按鈕狀態，防止重複點擊
         const btn = document.getElementById('submit-btn');
         btn.innerText = "⏳ 傳送中，請稍候...";
         btn.disabled = true;
 
-        // 取得今天的日期
         const today = new Date();
         const dateString = today.getFullYear() + "/" + (today.getMonth()+1) + "/" + today.getDate();
 
-        // 將資料打包好準備發送
+        // 將所有資料打包好準備發送 (新增了欄位參數)
         let formData = new URLSearchParams();
         formData.append('dept', dept);
         formData.append('platform', platform);
         formData.append('account', account);
         formData.append('passStatus', passStatus);
-        formData.append('phone', phone);
         formData.append('manager', manager);
+        formData.append('services', services);        // 新增
+        formData.append('asset', asset);              // 新增
+        formData.append('twoFactor', twoFactor);      // 新增
+        formData.append('phone', phone);
+        formData.append('recovery', recovery);        // 新增
+        formData.append('health', health);            // 新增
         formData.append('lastCheck', dateString);
 
-        // 使用 fetch 將資料送到 Google 試算表 (加上 mode: 'no-cors' 防止瀏覽器阻擋)
+        // 發送 API
         fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
             .then(() => {
                 alert("✅ 資料已成功上傳到 Google 試算表！");
-                // 清空輸入框
-                document.getElementById('in-account').value = "";
-                document.getElementById('in-manager').value = "";
-                // 恢復按鈕狀態
-                btn.innerText = "💾 傳送至資料庫";
-                btn.disabled = false;
+                // 成功後重置表單頁面
+                location.reload(); 
             })
             .catch(error => {
                 alert("❌ 傳送發生異常，請確認網路狀態。");
@@ -144,9 +296,4 @@
 </script>
 
 </body>
-
 </html>
-
-
-
-
