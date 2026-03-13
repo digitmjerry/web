@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 公司社群帳號季盤點系統</title>
+    <style>
+        body { font-family: "微軟正黑體", sans-serif; background-color: #f0f4f8; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 20px; }
+        
+        /* 表單區塊設計 */
+        .form-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-card h3 { grid-column: span 2; margin-top: 0; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-weight: bold; margin-bottom: 5px; font-size: 14px; color: #555; }
+        input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .full-width { grid-column: span 2; }
+        
+        button { background-color: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background-color: #2980b9; }
+
+        /* 表格區塊設計 */
+        table { width: 100%; background: white; border-collapse: collapse; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #2c3e50; color: white; }
+        tr:hover { background-color: #f5f5f5; }
+        
+        /* 狀態標籤 */
+        .status-good { background-color: #2ecc71; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; }
+        .status-warning { background-color: #e74c3c; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; }
+        
+        /* 密碼遮蔽顯示 */
+        .password-mask { letter-spacing: 2px; font-family: monospace; }
+        .delete-btn { background-color: #e74c3c; padding: 5px 10px; font-size: 12px; }
+        .delete-btn:hover { background-color: #c0392b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🏢 公司社群帳號季盤點系統</h1>
+        <p>⚠️ 規範：嚴禁使用私人信箱註冊。登入驗證請統一綁定公司公務手機 (OTP)。</p>
+    </div>
+
+    <!-- 新增資料表單 -->
+    <div class="form-card">
+        <h3>➕ 新增 / 更新盤點紀錄</h3>
+        
+        <div class="form-group">
+            <label>所屬部門</label>
+            <select id="in-dept">
+                <option value="行銷部">行銷部</option>
+                <option value="客服部">客服部</option>
+                <option value="公關部">公關部</option>
+                <option value="人資部">人資部</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>平台名稱</label>
+            <select id="in-platform">
+                <option value="Facebook 粉絲專頁">Facebook 粉絲專頁</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Line 官方帳號">Line 官方帳號</option>
+                <option value="TikTok">TikTok</option>
+                <option value="Google 商家">Google 商家</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>登入帳號 (限公司信箱)</label>
+            <input type="email" id="in-account" placeholder="例如：marketing@company.com" required>
+        </div>
+
+        <div class="form-group">
+            <label>密碼狀態 (不儲存明碼，僅確認)</label>
+            <select id="in-password-status">
+                <option value="已加密存入保險箱">🔒 已由 IT 加密存入密碼保險箱</option>
+                <option value="待更新密碼">⚠️ 密碼太舊或遺失，待更新</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>綁定之 OTP 公務手機號碼</label>
+            <input type="text" id="in-phone" placeholder="例如：0912-345-678">
+        </div>
+
+        <div class="form-group">
+            <label>當前保管人 (管理者)</label>
+            <input type="text" id="in-manager" placeholder="例如：王大明">
+        </div>
+
+        <div class="form-group full-width">
+            <button onclick="saveRecord()">💾 儲存盤點紀錄</button>
+        </div>
+    </div>
+
+    <!-- 資料呈現表格 -->
+    <table>
+        <thead>
+            <tr>
+                <th>部門</th>
+                <th>平台</th>
+                <th>登入帳號</th>
+                <th>密碼狀態</th>
+                <th>OTP 手機</th>
+                <th>保管人</th>
+                <th>最後檢查日</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- 程式會把資料動態塞來這裡 -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // 陣列：用來裝所有的帳號資料
+    let accounts = [];
+
+    // 當網頁一打開，先從電腦本地(LocalStorage)讀取舊資料
+    window.onload = function() {
+        const savedData = localStorage.getItem('companyAccounts');
+        if(savedData) {
+            accounts = JSON.parse(savedData);
+            renderTable(); // 把讀取到的資料畫到表格上
+        }
+    }
+
+    // 功能 1：存檔
+    function saveRecord() {
+        const dept = document.getElementById('in-dept').value;
+        const platform = document.getElementById('in-platform').value;
+        const account = document.getElementById('in-account').value;
+        const passStatus = document.getElementById('in-password-status').value;
+        const phone = document.getElementById('in-phone').value;
+        const manager = document.getElementById('in-manager').value;
+
+        // 簡單的安全檢查：防呆，確定帳號有填
+        if(account === "" || manager === "") {
+            alert("請填寫完整的登入帳號與保管人！");
+            return;
+        }
+        
+        // 檢查是否包含公司信箱 (簡單防呆，要求必須有 @)
+        if(!account.includes('@')) {
+            alert("請使用合法的公司信箱格式！");
+            return;
+        }
+
+        // 取得今天的日期
+        const today = new Date();
+        const dateString = today.getFullYear() + "/" + (today.getMonth()+1) + "/" + today.getDate();
+
+        // 把資料包裝成一個物件
+        const newRecord = {
+            id: Date.now(), // 給它一個獨一無二的編號
+            dept: dept,
+            platform: platform,
+            account: account,
+            passStatus: passStatus,
+            phone: phone,
+            manager: manager,
+            lastCheck: dateString
+        };
+
+        // 把新資料推進陣列裡
+        accounts.push(newRecord);
+
+        // 存進電腦本地瀏覽器裡
+        localStorage.setItem('companyAccounts', JSON.stringify(accounts));
+
+        // 清空輸入框
+        document.getElementById('in-account').value = "";
+        document.getElementById('in-manager').value = "";
+
+        // 重新繪製表格
+        renderTable();
+        alert("資料已安全儲存於本機端！");
+    }
+
+    // 功能 2：把資料畫到表格上
+    function renderTable() {
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = ""; // 先清空舊畫面
+
+        accounts.forEach(function(item) {
+            // 判斷狀態給不同顏色的標籤
+            let statusBadge = item.passStatus.includes("待更新") ? 
+                `<span class="status-warning">${item.passStatus}</span>` : 
+                `<span class="status-good">${item.passStatus}</span>`;
+
+            // 產生一行表格
+            const row = `
+                <tr>
+                    <td>${item.dept}</td>
+                    <td><strong>${item.platform}</strong></td>
+                    <td>${item.account}</td>
+                    <td>${statusBadge}</td>
+                    <td>📱 ${item.phone}</td>
+                    <td>👤 ${item.manager}</td>
+                    <td>${item.lastCheck}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteRecord(${item.id})">刪除</button>
+                    </td>
+                </tr>
+            `;
+            // 把這行塞進表格裡
+            tbody.innerHTML += row;
+        });
+    }
+
+    // 功能 3：刪除資料
+    function deleteRecord(id) {
+        if(confirm("確定要刪除這筆盤點紀錄嗎？")) {
+            // 過濾掉被點擊的那個 id
+            accounts = accounts.filter(item => item.id !== id);
+            // 重新存檔
+            localStorage.setItem('companyAccounts', JSON.stringify(accounts));
+            // 重新繪製表格
+            renderTable();
+        }
+    }
+</script>
+
+</body>
+</html>
