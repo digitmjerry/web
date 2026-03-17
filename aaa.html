@@ -59,7 +59,7 @@
 
         <div class="form-group">
             <label>平台名稱</label>
-            <select id="in-platform">
+            <select id="in-platform" onchange="togglePlatformWrap()">
                 <option value="Facebook 粉絲專頁">Facebook 粉絲專頁</option>
                 <option value="Instagram">Instagram</option>
                 <option value="Line 官方帳號">Line 官方帳號</option>
@@ -69,6 +69,9 @@
                 <option value="YouTube 頻道">YouTube 頻道</option>
                 <option value="其他">其他</option>
             </select>
+            <div class="sub-input-wrap" id="wrap-platform-other">
+                <input type="text" id="in-platform-other-text" placeholder="請填寫其他平台名稱">
+            </div>
         </div>
 
         <div class="form-group">
@@ -89,7 +92,7 @@
             <input type="text" id="in-manager" placeholder="例如：王大明">
         </div>
 
-        <!-- 2. 服務與歸屬 (新增欄位) -->
+        <!-- 2. 服務與歸屬 (修改欄位) -->
         <div class="form-group">
             <label>帳號綁定哪些服務 (可多選)</label>
             <div class="checkbox-group">
@@ -105,17 +108,15 @@
         </div>
 
         <div class="form-group">
-            <label>資產歸屬</label>
-            <select id="in-asset" onchange="toggleAssetWrap()">
-                <option value="此帳號為公司資產">🏢 此帳號為公司資產</option>
-                <option value="客戶代操專用">🤝 客戶代操專用</option>
+            <label>權限等級</label>
+            <select id="in-permission">
+                <option value="管理者">管理者</option>
+                <option value="一般使用者">一般使用者</option>
+                <option value="唯讀使用者">唯讀使用者</option>
             </select>
-            <div class="sub-input-wrap" id="wrap-asset-client">
-                <input type="text" id="in-asset-client-text" placeholder="請填寫客戶名稱（例如：王品集團）">
-            </div>
         </div>
 
-        <!-- 3. 安全與驗證 (新增與修改欄位) -->
+        <!-- 3. 安全與驗證 -->
         <div class="form-group">
             <label>兩階段驗證 (2FA) 方式</label>
             <select id="in-two-factor">
@@ -144,18 +145,13 @@
             </div>
         </div>
 
-        <!-- 4. 狀態 -->
+        <!-- 4. 狀態 (簡化欄位) -->
         <div class="form-group">
             <label>帳號健康狀態</label>
-            <select id="in-health" onchange="toggleHealthWrap()">
+            <select id="in-health">
                 <option value="正常使用">🟢 正常使用</option>
-                <option value="功能受限/警告中">🟡 功能受限/警告中</option>
-                <option value="停權/封鎖中">🔴 停權/封鎖中</option>
-                <option value="⚪ 其他">⚪ 其他</option>
+                <option value="停用">🔴 停用</option>
             </select>
-            <div class="sub-input-wrap" id="wrap-health-other">
-                <input type="text" id="in-health-other-text" placeholder="請填寫問題備註（例如：申訴中、等待審核...）">
-            </div>
         </div>
 
         <button id="submit-btn" onclick="submitToGoogle()">💾 傳送至資料庫</button>
@@ -165,35 +161,27 @@
 <script>
     // --- UI 動態連動邏輯 ---
 
-    // 1. 綁定服務：監聽「其他」Checkbox
+    // 1. 平台名稱：選其他展開輸入框
+    function togglePlatformWrap() {
+        const val = document.getElementById('in-platform').value;
+        const wrap = document.getElementById('wrap-platform-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-platform-other-text').value = ''; }
+    }
+
+    // 2. 綁定服務：監聽「其他」Checkbox
     document.getElementById('chk-service-other').addEventListener('change', function() {
         const wrap = document.getElementById('wrap-service-other');
         if(this.checked) { wrap.classList.add('active'); } 
         else { wrap.classList.remove('active'); document.getElementById('in-service-other-text').value = ''; }
     });
 
-    // 2. 資產歸屬
-    function toggleAssetWrap() {
-        const val = document.getElementById('in-asset').value;
-        const wrap = document.getElementById('wrap-asset-client');
-        if(val === '客戶代操專用') { wrap.classList.add('active'); } 
-        else { wrap.classList.remove('active'); document.getElementById('in-asset-client-text').value = ''; }
-    }
-
-    // 3. 備援信箱
+    // 3. 備援信箱：選其他展開輸入框
     function toggleRecoveryWrap() {
         const val = document.getElementById('in-recovery').value;
         const wrap = document.getElementById('wrap-recovery-other');
         if(val === '其他') { wrap.classList.add('active'); } 
         else { wrap.classList.remove('active'); document.getElementById('in-recovery-other-text').value = ''; }
-    }
-
-    // 4. 健康狀態
-    function toggleHealthWrap() {
-        const val = document.getElementById('in-health').value;
-        const wrap = document.getElementById('wrap-health-other');
-        if(val === '⚪ 其他') { wrap.classList.add('active'); } 
-        else { wrap.classList.remove('active'); document.getElementById('in-health-other-text').value = ''; }
     }
 
 
@@ -204,15 +192,20 @@
 
         // 取得基本資料
         const dept = document.getElementById('in-dept').value;
-        const platform = document.getElementById('in-platform').value;
         const account = document.getElementById('in-account').value.trim();
         const passStatus = document.getElementById('in-password-status').value;
         const manager = document.getElementById('in-manager').value.trim();
         const twoFactor = document.getElementById('in-two-factor').value;
         const phone = document.getElementById('in-phone').value.trim();
+        const permission = document.getElementById('in-permission').value; // 新增：權限等級
+        const health = document.getElementById('in-health').value; // 修改：健康狀態
+
+        // 整理：平台名稱
+        let platform = document.getElementById('in-platform').value;
+        if(platform === '其他') { platform = '其他: ' + document.getElementById('in-platform-other-text').value.trim(); }
 
         // 整理：綁定服務 (陣列轉字串)
-        let servicesArray = [];
+        let servicesArray =[];
         document.querySelectorAll('input[name="service"]:checked').forEach(el => {
             if(el.value === '其他') {
                 servicesArray.push('其他: ' + document.getElementById('in-service-other-text').value.trim());
@@ -222,17 +215,9 @@
         });
         const services = servicesArray.join('、');
 
-        // 整理：資產歸屬
-        let asset = document.getElementById('in-asset').value;
-        if(asset === '客戶代操專用') { asset = '客戶代操: ' + document.getElementById('in-asset-client-text').value.trim(); }
-
         // 整理：備援信箱
         let recovery = document.getElementById('in-recovery').value;
         if(recovery === '其他') { recovery = document.getElementById('in-recovery-other-text').value.trim(); }
-
-        // 整理：健康狀態
-        let health = document.getElementById('in-health').value;
-        if(health === '⚪ 其他') { health = '其他備註: ' + document.getElementById('in-health-other-text').value.trim(); }
 
 
         // --- 防呆驗證 ---
@@ -250,10 +235,9 @@
         }
 
         // 動態欄位空白防呆
+        if(document.getElementById('in-platform').value === '其他' && document.getElementById('in-platform-other-text').value.trim() === "") { alert("❌ 請填寫其他平台名稱！"); return; }
         if(document.getElementById('chk-service-other').checked && document.getElementById('in-service-other-text').value.trim() === "") { alert("❌ 請填寫其他綁定服務說明！"); return; }
-        if(document.getElementById('in-asset').value === '客戶代操專用' && document.getElementById('in-asset-client-text').value.trim() === "") { alert("❌ 請填寫代操之客戶名稱！"); return; }
         if(document.getElementById('in-recovery').value === '其他' && document.getElementById('in-recovery-other-text').value.trim() === "") { alert("❌ 請填寫其他備援信箱！"); return; }
-        if(document.getElementById('in-health').value === '⚪ 其他' && document.getElementById('in-health-other-text').value.trim() === "") { alert("❌ 請填寫帳號狀態備註！"); return; }
 
 
         // 改變按鈕狀態，防止重複點擊
@@ -264,19 +248,19 @@
         const today = new Date();
         const dateString = today.getFullYear() + "/" + (today.getMonth()+1) + "/" + today.getDate();
 
-        // 將所有資料打包好準備發送 (新增了欄位參數)
+        // 將所有資料打包好準備發送 (傳遞參數已更新)
         let formData = new URLSearchParams();
         formData.append('dept', dept);
         formData.append('platform', platform);
         formData.append('account', account);
         formData.append('passStatus', passStatus);
         formData.append('manager', manager);
-        formData.append('services', services);        // 新增
-        formData.append('asset', asset);              // 新增
-        formData.append('twoFactor', twoFactor);      // 新增
+        formData.append('services', services);        
+        formData.append('permission', permission);    // 替換：原本的 asset 改為 permission
+        formData.append('twoFactor', twoFactor);      
         formData.append('phone', phone);
-        formData.append('recovery', recovery);        // 新增
-        formData.append('health', health);            // 新增
+        formData.append('recovery', recovery);        
+        formData.append('health', health);            
         formData.append('lastCheck', dateString);
 
         // 發送 API
@@ -297,4 +281,3 @@
 
 </body>
 </html>
-
