@@ -893,22 +893,22 @@
     <p>請完成以下所有項目，並點擊勾選確認。所有項目完成後即代表您已達到基本資訊安全要求。</p>
 
     <ul class="checklist" id="cl">
-      <li><span class="check-box" onclick="toggle(this)"></span>我的電腦帳號已設定<strong>強密碼</strong>（12 字元以上，含大小寫、數字、符號）</li>
-      <li><span class="check-box" onclick="toggle(this)"></span>密碼未使用姓名、生日或連續數字等可預測資訊</li>
-      <li><span class="check-box" onclick="toggle(this)"></span>Windows 已設定螢幕保護程式並勾選「繼續顯示登入畫面」<em>（Windows 用戶）</em></li>
-      <li><span class="check-box" onclick="toggle(this)"></span>macOS 已設定「需要密碼」為立即或 1 分鐘以內<em>（Mac 用戶）</em></li>
-      <li><span class="check-box" onclick="toggle(this)"></span>自動上鎖時間設定為 <strong>5 分鐘以內</strong></li>
-      <li><span class="check-box" onclick="toggle(this)"></span>我已記住手動鎖定快速鍵（<code>Win+L</code> / <code>Ctrl+Cmd+Q</code>）並養成離座前鎖定的習慣</li>
-      <li><span class="check-box" onclick="toggle(this)"></span>密碼<strong>未</strong>寫在便條紙或任何可被他人看見的地方</li>
-      <li><span class="check-box" onclick="toggle(this)"></span>密碼<strong>未</strong>以明文存在桌面文件或手機相簿中</li>
-      <li><span class="check-box" onclick="toggle(this)"></span>我已考慮使用密碼管理器來安全儲存所有密碼</li>
-      <li><span class="check-box" onclick="toggle(this)"></span>我了解若密碼外洩應立即向MIS回報並更換密碼</li>
+      <li><span class="check-box"></span>我的電腦帳號已設定<strong>強密碼</strong>（12 字元以上，含大小寫、數字、符號）</li>
+      <li><span class="check-box"></span>密碼未使用姓名、生日或連續數字等可預測資訊</li>
+      <li><span class="check-box"></span>Windows 已設定螢幕保護程式並勾選「繼續顯示登入畫面」<em>（Windows 用戶）</em></li>
+      <li><span class="check-box"></span>macOS 已設定「需要密碼」為立即或 1 分鐘以內<em>（Mac 用戶）</em></li>
+      <li><span class="check-box"></span>自動上鎖時間設定為 <strong>5 分鐘以內</strong></li>
+      <li><span class="check-box"></span>我已記住手動鎖定快速鍵（<code>Win+L</code> / <code>Ctrl+Cmd+Q</code>）並養成離座前鎖定的習慣</li>
+      <li><span class="check-box"></span>密碼<strong>未</strong>寫在便條紙或任何可被他人看見的地方</li>
+      <li><span class="check-box"></span>密碼<strong>未</strong>以明文存在桌面文件或手機相簿中</li>
+      <li><span class="check-box"></span>我已考慮使用密碼管理器來安全儲存所有密碼</li>
+      <li><span class="check-box"></span>我了解若密碼外洩應立即向 IT 部門回報並更換密碼</li>
     </ul>
 
     <div id="progress-msg" style="display:none; margin-top:20px;">
       <div class="callout tip">
         <div class="callout-title">🎉 恭喜！所有項目已完成</div>
-        您已完成基本資訊安全設定，請定期（每 90 天）更換密碼，並持續關注資訊技術中心發布的最新資安公告。
+        您已完成基本資訊安全設定，請定期（每 90 天）更換密碼，並持續關注MIS發布的最新資安公告。
       </div>
     </div>
   </section>
@@ -920,11 +920,20 @@
   <div style="margin-top:6px;">如有疑問請聯絡MIS支援 · 發現資安事件請立即回報</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-function toggle(el) {
-  el.classList.toggle('checked');
-  el.textContent = el.classList.contains('checked') ? '✓' : '';
-  checkAll();
-}
-function checkAll() {
-  const bo
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('cl').addEventListener('click', function (e) {
+    var box = e.target.closest('.check-box');
+    if (!box) return;
+    box.classList.toggle('checked');
+    box.textContent = box.classList.contains('checked') ? '\u2713' : '';
+    var all = document.querySelectorAll('.check-box');
+    var done = Array.prototype.every.call(all, function (b) {
+      return b.classList.contains('checked');
+    });
+    document.getElementById('progress-msg').style.display = done ? 'block' : 'none';
+  });
+});
+</script>
+</body>
+</html>
