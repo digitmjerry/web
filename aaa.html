@@ -40,33 +40,41 @@
 <div class="container">
     <div class="header">
         <h1>🏢 數字廣告外部帳號盤點登錄</h1>
-        <p>⚠️ 規範：嚴禁使用私人信箱註冊。登入驗證請統一綁定公司公務專用手機 (OTP)。</p>
+        <p>⚠️ 落實規範：公務共用不使用個人專用信箱註冊。驗證須綁定公務手機 (OTP)。</p>
     </div>
 
     <div class="form-card">
         <h3>➕ 填寫盤點資料</h3>
         
         <!-- 1. 基本資料 -->
+        <!-- 所屬部門：新增其他與連動 -->
         <div class="form-group">
             <label>所屬部門</label>
-            <select id="in-dept">
+            <select id="in-dept" onchange="toggleDeptWrap()">
                 <option value="行銷業務部">行銷業務部</option>
                 <option value="總經理室">總經理室</option>
                 <option value="管理部">管理部</option>
                 <option value="媒體企劃部">媒體企劃部</option>
+                <option value="其他">其他</option>
             </select>
+            <div class="sub-input-wrap" id="wrap-dept-other">
+                <input type="text" id="in-dept-other-text" placeholder="請填寫其他部門名稱">
+            </div>
         </div>
 
         <div class="form-group">
             <label>平台名稱</label>
             <select id="in-platform" onchange="togglePlatformWrap()">
-                <option value="Facebook 粉絲專頁">Facebook 粉絲專頁</option>
+                <option value="Facebook">Facebook</option>
                 <option value="Instagram">Instagram</option>
-                <option value="Line 官方帳號">Line 官方帳號</option>
+                <option value="Line">Line</option>
                 <option value="TikTok">TikTok</option>
-                <option value="Google 商家">Google 商家</option>
+                <option value="Google">Google</option>
                 <option value="Threads">Threads</option>
-                <option value="YouTube 頻道">YouTube 頻道</option>
+                <option value="YouTube">YouTube</option>
+				<option value="Microsoft">Microsoft</option>
+				<option value="Notion">Notion</option>	
+				<option value="Shopee">Shopee</option>					
                 <option value="其他">其他</option>
             </select>
             <div class="sub-input-wrap" id="wrap-platform-other">
@@ -74,33 +82,48 @@
             </div>
         </div>
 
+        <!-- 登入帳號：選單並加入其他與連動 -->
         <div class="form-group">
-            <label>登入帳號 (限公司信箱)</label>
-            <input type="email" id="in-account" placeholder="例如：abc@digitm.com.tw">
+            <label>登入帳號</label>
+            <select id="in-account" onchange="toggleAccountWrap()">
+                <option value="" disabled selected>請選擇常用帳號或選「其他」自行填寫</option>
+				<option value="engineering@digitm.com.tw">engineering@digitm.com.tw</option>
+                <option value="hr@digitm.com.tw">hr@digitm.com.tw</option>
+                <option value="info@digitm.com.tw">info@digitm.com.tw</option>
+                <option value="其他">其他</option>
+            </select>
+            <div class="sub-input-wrap" id="wrap-account-other">
+                <!-- 取消了 type="email" 檢查，改為 type="text" 讓填寫更自由 -->
+                <input type="text" id="in-account-other-text" placeholder="請自行填寫登入帳號">
+            </div>
         </div>
 
+        <!-- 密碼狀態：新增其他與連動 -->
         <div class="form-group">
             <label>密碼狀態 (不儲存明碼，僅確認)</label>
-            <select id="in-password-status">
+            <select id="in-password-status" onchange="togglePasswordStatusWrap()">
                 <option value="新增帳號">🔓密碼未提供給資訊技術中心</option>
                 <option value="已加密存入保險箱">🔒 已由資訊技術中心加密存入密碼保險箱</option>
                 <option value="待更新密碼">⚠️ 密碼太舊或遺失，待更新</option>
+                <option value="其他">其他</option>
             </select>
+            <div class="sub-input-wrap" id="wrap-password-status-other">
+                <input type="text" id="in-password-status-other-text" placeholder="請填寫其他密碼狀態">
+            </div>
         </div>
 
         <div class="form-group">
             <label>當前保管人 (填真實姓名)</label>
-            <input type="text" id="in-manager" placeholder="例如：王大明">
+            <input type="text" id="in-manager" placeholder="例如：王建民">
         </div>
 
-        <!-- 2. 服務與歸屬 (修改欄位) -->
+        <!-- 2. 服務與歸屬 -->
         <div class="form-group">
-            <label>帳號綁定哪些服務 (可多選)</label>
+            <label>帳號同時綁定哪些服務 (可多選)</label>
             <div class="checkbox-group">
                 <label class="checkbox-item"><input type="checkbox" name="service" value="廣告帳號操作 (Ads)"> 廣告帳號操作 (Ads)</label>
                 <label class="checkbox-item"><input type="checkbox" name="service" value="網站分析與追蹤 (GA4, GTM)"> 網站分析與追蹤 (GA4, GTM)</label>
                 <label class="checkbox-item"><input type="checkbox" name="service" value="粉絲專頁/社群內容經營"> 粉絲專頁/社群內容經營</label>
-                <label class="checkbox-item"><input type="checkbox" name="service" value="企業管理平台 (BM/商家)"> 企業管理平台 (BM/商家)</label>
                 <label class="checkbox-item"><input type="checkbox" name="service" value="其他" id="chk-service-other"> 其他</label>
                 <div class="sub-input-wrap" id="wrap-service-other">
                     <input type="text" id="in-service-other-text" placeholder="請說明綁定之其他服務">
@@ -108,28 +131,38 @@
             </div>
         </div>
 
+        <!-- 權限等級 -->
         <div class="form-group">
             <label>權限等級</label>
-            <select id="in-permission">
+            <select id="in-permission" onchange="togglePermissionWrap()">
                 <option value="管理者">管理者</option>
                 <option value="一般使用者">一般使用者</option>
                 <option value="唯讀使用者">唯讀使用者</option>
+                <option value="其他">其他</option>
             </select>
+            <div class="sub-input-wrap" id="wrap-permission-other">
+                <input type="text" id="in-permission-other-text" placeholder="請填寫其他權限等級">
+            </div>
         </div>
 
         <!-- 3. 安全與驗證 -->
+        <!-- 2FA -->
         <div class="form-group">
             <label>兩階段驗證 (2FA) 方式</label>
-            <select id="in-two-factor">
+            <select id="in-two-factor" onchange="toggleTwoFactorWrap()">
                 <option value="SMS 簡訊驗證">📱 SMS 簡訊驗證</option>
                 <option value="驗證器 App (Authenticator)">🔐 驗證器 App (Authenticator)</option>
                 <option value="Email 驗證碼">✉️ Email 驗證碼</option>
                 <option value="尚未設定">⚠️ 尚未設定 (具資安風險)</option>
+                <option value="其他">其他</option>
             </select>
+            <div class="sub-input-wrap" id="wrap-two-factor-other">
+                <input type="text" id="in-two-factor-other-text" placeholder="請填寫其他驗證方式">
+            </div>
         </div>
 
         <div class="form-group">
-            <label>綁定之 OTP 公務手機號碼</label>
+            <label>綁定之手機號碼</label>
             <div class="hint">若 2FA 非綁定手機，可填「無」</div>
             <input type="text" id="in-phone" placeholder="例如：0912-345-678">
         </div>
@@ -137,7 +170,7 @@
         <div class="form-group">
             <label>帳號備援信箱設定</label>
             <select id="in-recovery" onchange="toggleRecoveryWrap()">
-                <option value="lch@digitm.com.tw">lch@digitm.com.tw</option>
+                <option value="engineering@digitm.com.tw">engineering@digitm.com.tw</option>
                 <option value="info@digitm.com.tw">info@digitm.com.tw</option>
                 <option value="其他">其他</option>
             </select>
@@ -146,13 +179,18 @@
             </div>
         </div>
 
-        <!-- 4. 狀態 (簡化欄位) -->
+        <!-- 4. 狀態 -->
+        <!-- 帳號狀態 -->
         <div class="form-group">
             <label>帳號健康狀態</label>
-            <select id="in-health">
+            <select id="in-health" onchange="toggleHealthWrap()">
                 <option value="正常使用">🟢 正常使用</option>
                 <option value="停用">🔴 停用</option>
+                <option value="其他">其他</option>
             </select>
+            <div class="sub-input-wrap" id="wrap-health-other">
+                <input type="text" id="in-health-other-text" placeholder="請填寫其他狀態">
+            </div>
         </div>
 
         <button id="submit-btn" onclick="submitToGoogle()">💾 傳送至資料庫</button>
@@ -162,7 +200,15 @@
 <script>
     // --- UI 動態連動邏輯 ---
 
-    // 1. 平台名稱：選其他展開輸入框
+    // 0. 所屬部門
+    function toggleDeptWrap() {
+        const val = document.getElementById('in-dept').value;
+        const wrap = document.getElementById('wrap-dept-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-dept-other-text').value = ''; }
+    }
+
+    // 1. 平台名稱
     function togglePlatformWrap() {
         const val = document.getElementById('in-platform').value;
         const wrap = document.getElementById('wrap-platform-other');
@@ -170,19 +216,59 @@
         else { wrap.classList.remove('active'); document.getElementById('in-platform-other-text').value = ''; }
     }
 
-    // 2. 綁定服務：監聽「其他」Checkbox
+    // 2. 登入帳號
+    function toggleAccountWrap() {
+        const val = document.getElementById('in-account').value;
+        const wrap = document.getElementById('wrap-account-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-account-other-text').value = ''; }
+    }
+
+    // 3. 密碼狀態
+    function togglePasswordStatusWrap() {
+        const val = document.getElementById('in-password-status').value;
+        const wrap = document.getElementById('wrap-password-status-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-password-status-other-text').value = ''; }
+    }
+
+    // 4. 綁定服務 (Checkbox)
     document.getElementById('chk-service-other').addEventListener('change', function() {
         const wrap = document.getElementById('wrap-service-other');
         if(this.checked) { wrap.classList.add('active'); } 
         else { wrap.classList.remove('active'); document.getElementById('in-service-other-text').value = ''; }
     });
 
-    // 3. 備援信箱：選其他展開輸入框
+    // 5. 權限等級
+    function togglePermissionWrap() {
+        const val = document.getElementById('in-permission').value;
+        const wrap = document.getElementById('wrap-permission-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-permission-other-text').value = ''; }
+    }
+
+    // 6. 兩階段驗證 (2FA)
+    function toggleTwoFactorWrap() {
+        const val = document.getElementById('in-two-factor').value;
+        const wrap = document.getElementById('wrap-two-factor-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-two-factor-other-text').value = ''; }
+    }
+
+    // 7. 備援信箱
     function toggleRecoveryWrap() {
         const val = document.getElementById('in-recovery').value;
         const wrap = document.getElementById('wrap-recovery-other');
         if(val === '其他') { wrap.classList.add('active'); } 
         else { wrap.classList.remove('active'); document.getElementById('in-recovery-other-text').value = ''; }
+    }
+
+    // 8. 帳號健康狀態
+    function toggleHealthWrap() {
+        const val = document.getElementById('in-health').value;
+        const wrap = document.getElementById('wrap-health-other');
+        if(val === '其他') { wrap.classList.add('active'); } 
+        else { wrap.classList.remove('active'); document.getElementById('in-health-other-text').value = ''; }
     }
 
 
@@ -192,33 +278,51 @@
         const scriptURL = 'https://script.google.com/macros/s/AKfycbx853C-M1tLagZtGBop3vrpKjecq9cmh7CwgpIZJZ9My5-WkeRxce0HW7fFHhi866-s/exec';
 
         // 取得基本資料
-        const dept = document.getElementById('in-dept').value;
-        const account = document.getElementById('in-account').value.trim();
-        const passStatus = document.getElementById('in-password-status').value;
         const manager = document.getElementById('in-manager').value.trim();
-        const twoFactor = document.getElementById('in-two-factor').value;
         const phone = document.getElementById('in-phone').value.trim();
-        const permission = document.getElementById('in-permission').value; // 新增：權限等級
-        const health = document.getElementById('in-health').value; // 修改：健康狀態
+
+        // 整理：所屬部門
+        let dept = document.getElementById('in-dept').value;
+        if(dept === '其他') { dept = document.getElementById('in-dept-other-text').value.trim(); }
+
+        // 整理：登入帳號
+        let account = document.getElementById('in-account').value || ""; 
+        if(account === '其他') { account = document.getElementById('in-account-other-text').value.trim(); }
+
+        // 整理：密碼狀態
+        let passStatus = document.getElementById('in-password-status').value;
+        if(passStatus === '其他') { passStatus = document.getElementById('in-password-status-other-text').value.trim(); }
 
         // 整理：平台名稱
         let platform = document.getElementById('in-platform').value;
-        if(platform === '其他') { platform = '其他: ' + document.getElementById('in-platform-other-text').value.trim(); }
+        if(platform === '其他') { platform = document.getElementById('in-platform-other-text').value.trim(); }
 
         // 整理：綁定服務 (陣列轉字串)
         let servicesArray =[];
         document.querySelectorAll('input[name="service"]:checked').forEach(el => {
             if(el.value === '其他') {
-                servicesArray.push('其他: ' + document.getElementById('in-service-other-text').value.trim());
+                servicesArray.push(document.getElementById('in-service-other-text').value.trim());
             } else {
                 servicesArray.push(el.value);
             }
         });
         const services = servicesArray.join('、');
 
+        // 整理：權限等級
+        let permission = document.getElementById('in-permission').value;
+        if(permission === '其他') { permission = document.getElementById('in-permission-other-text').value.trim(); }
+
+        // 整理：兩階段驗證
+        let twoFactor = document.getElementById('in-two-factor').value;
+        if(twoFactor === '其他') { twoFactor = document.getElementById('in-two-factor-other-text').value.trim(); }
+
         // 整理：備援信箱
         let recovery = document.getElementById('in-recovery').value;
         if(recovery === '其他') { recovery = document.getElementById('in-recovery-other-text').value.trim(); }
+
+        // 整理：帳號健康狀態
+        let health = document.getElementById('in-health').value;
+        if(health === '其他') { health = document.getElementById('in-health-other-text').value.trim(); }
 
 
         // --- 防呆驗證 ---
@@ -226,19 +330,24 @@
             alert("❌ 請填寫完整的「登入帳號」與「保管人」！");
             return;
         }
-        if(!account.includes('@')) {
-            alert("❌ 登入帳號請使用合法的公司信箱格式 (@)！");
-            return;
-        }
+        
+        // 【已移除】要求帳號必須包含 @ 的判斷
+
         if(services === "") {
             alert("❌ 請至少勾選一項「帳號綁定服務」！");
             return;
         }
 
         // 動態欄位空白防呆
+        if(document.getElementById('in-dept').value === '其他' && document.getElementById('in-dept-other-text').value.trim() === "") { alert("❌ 請填寫其他所屬部門！"); return; } 
+        if(document.getElementById('in-account').value === '其他' && document.getElementById('in-account-other-text').value.trim() === "") { alert("❌ 請填寫其他登入帳號！"); return; }
+        if(document.getElementById('in-password-status').value === '其他' && document.getElementById('in-password-status-other-text').value.trim() === "") { alert("❌ 請填寫其他密碼狀態！"); return; } 
         if(document.getElementById('in-platform').value === '其他' && document.getElementById('in-platform-other-text').value.trim() === "") { alert("❌ 請填寫其他平台名稱！"); return; }
         if(document.getElementById('chk-service-other').checked && document.getElementById('in-service-other-text').value.trim() === "") { alert("❌ 請填寫其他綁定服務說明！"); return; }
+        if(document.getElementById('in-permission').value === '其他' && document.getElementById('in-permission-other-text').value.trim() === "") { alert("❌ 請填寫其他權限等級！"); return; }
+        if(document.getElementById('in-two-factor').value === '其他' && document.getElementById('in-two-factor-other-text').value.trim() === "") { alert("❌ 請填寫其他兩階段驗證方式！"); return; }
         if(document.getElementById('in-recovery').value === '其他' && document.getElementById('in-recovery-other-text').value.trim() === "") { alert("❌ 請填寫其他備援信箱！"); return; }
+        if(document.getElementById('in-health').value === '其他' && document.getElementById('in-health-other-text').value.trim() === "") { alert("❌ 請填寫其他帳號健康狀態！"); return; }
 
 
         // 改變按鈕狀態，防止重複點擊
@@ -249,7 +358,7 @@
         const today = new Date();
         const dateString = today.getFullYear() + "/" + (today.getMonth()+1) + "/" + today.getDate();
 
-        // 將所有資料打包好準備發送 (傳遞參數已更新)
+        // 將所有資料打包好準備發送
         let formData = new URLSearchParams();
         formData.append('dept', dept);
         formData.append('platform', platform);
@@ -257,7 +366,7 @@
         formData.append('passStatus', passStatus);
         formData.append('manager', manager);
         formData.append('services', services);        
-        formData.append('permission', permission);    // 替換：原本的 asset 改為 permission
+        formData.append('permission', permission);    
         formData.append('twoFactor', twoFactor);      
         formData.append('phone', phone);
         formData.append('recovery', recovery);        
