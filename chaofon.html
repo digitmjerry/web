@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蘆洲、三重到府電腦維修｜夜間專屬救援 (預約制)</title>
+    <meta name="description" content="蘆洲、三重區專屬到府電腦維修。專營夜間時段 18:00~23:00，下班後為您解決電腦問題，免搬運、採全預約制。">
+    <!-- 引入 Google 字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- 引入 FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #1e3a8a; /* 科技專業藍 */
+            --accent-orange: #f97316; /* 強調橘色，用於按鈕 */
+            --line-green: #00B900; /* LINE 專屬綠 */
+            --bg-light: #f8fafc;
+            --text-main: #334155;
+            --text-light: #ffffff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; scroll-behavior: smooth; }
+        body { color: var(--text-main); line-height: 1.7; background-color: var(--bg-light); }
+
+        /* 導覽列 */
+        nav {
+            position: fixed; top: 0; width: 100%; background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; z-index: 1000;
+        }
+        .logo { font-size: 22px; font-weight: 900; color: var(--primary-blue); text-decoration: none; }
+        .logo i { color: var(--accent-orange); margin-right: 8px; }
+        .nav-cta {
+            background: var(--accent-orange); color: white; padding: 8px 20px;
+            border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 15px;
+        }
+
+        /* 頂部主視覺 (Hero) */
+        .hero {
+            padding: 140px 5% 80px;
+            background: linear-gradient(rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.95)), url('https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: white; text-align: center;
+        }
+        .hero h1 { font-size: 42px; font-weight: 900; margin-bottom: 20px; line-height: 1.3; }
+        .hero h1 span { color: var(--accent-orange); }
+        .hero p { font-size: 20px; margin-bottom: 30px; opacity: 0.9; max-width: 700px; margin-left: auto; margin-right: auto; }
+        
+        .tag-group { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .tag { background: rgba(255,255,255,0.15); padding: 8px 15px; border-radius: 20px; font-size: 16px; border: 1px solid rgba(255,255,255,0.3); }
+        
+        .hero-btn {
+            display: inline-block; background: var(--line-green); color: white;
+            padding: 15px 40px; border-radius: 50px; text-decoration: none;
+            font-size: 22px; font-weight: bold; box-shadow: 0 4px 15px rgba(0, 185, 0, 0.4);
+            transition: transform 0.2s;
+        }
+        .hero-btn:hover { transform: translateY(-3px); }
+
+        /* 特色區塊 */
+        .features { padding: 80px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 32px; color: var(--primary-blue); margin-bottom: 50px; font-weight: 900; }
+        
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .feature-card {
+            background: white; padding: 40px 30px; border-radius: 15px; text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-top: 5px solid var(--primary-blue);
+        }
+        .feature-card i { font-size: 45px; color: var(--accent-orange); margin-bottom: 20px; }
+        .feature-card h3 { font-size: 22px; margin-bottom: 15px; color: var(--primary-blue); }
+
+        /* 聯絡資訊區 (最重要) */
+        .contact-section { background: var(--primary-blue); color: white; padding: 80px 5%; text-align: center; }
+        .contact-box {
+            background: white; color: var(--text-main); max-width: 800px; margin: 0 auto;
+            padding: 50px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .contact-box h2 { font-size: 28px; color: var(--primary-blue); margin-bottom: 10px; }
+        .contact-box > p { color: #64748b; margin-bottom: 30px; font-size: 18px; }
+
+        .contact-links { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 0 auto 30px; }
+        
+        .contact-item {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            padding: 15px 20px; border-radius: 10px; text-decoration: none;
+            font-size: 20px; font-weight: bold; transition: 0.3s;
+        }
+        .btn-line { background: var(--line-green); color: white; }
+        .btn-line:hover { background: #009900; }
+        .btn-phone { background: var(--accent-orange); color: white; }
+        .btn-phone:hover { background: #ea580c; }
+        .btn-email { background: #f1f5f9; color: var(--text-main); border: 1px solid #cbd5e1; }
+        .btn-email:hover { background: #e2e8f0; }
+
+        .info-list { text-align: left; background: #f8fafc; padding: 25px; border-radius: 10px; margin-top: 20px; font-size: 18px; }
+        .info-list p { margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; }
+        .info-list i { color: var(--primary-blue); margin-top: 5px; }
+
+        /* 頁尾 */
+        footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 25px; font-size: 14px; }
+
+        /* 手機版調整 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 18px; }
+            .contact-box { padding: 30px 20px; }
+            .info-list { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 導覽列 -->
+    <nav>
+        <a href="#" class="logo"><i class="fa-solid fa-wrench"></i> 超峰電腦宅修</a>
+        <a href="#contact" class="nav-cta">立即預約</a>
+    </nav>
+
+    <!-- 主視覺區 -->
+    <header class="hero">
+        <h1>電腦壞了不想搬？<br><span>到府維修</span>為您解決難題！</h1>
+        <p>專營夜間時段，專為上班族打造。下班後回到家，我們為您修好電腦，採全預約制服務。</p>
+        
+        <div class="tag-group">
+            <span class="tag"><i class="fa-solid fa-map-location-dot"></i> 蘆洲區、三重區</span>
+            <span class="tag"><i class="fa-solid fa-moon"></i> 夜間服務 18:00~23:00</span>
+            <span class="tag"><i class="fa-solid fa-calendar-check"></i> 專屬預約制</span>
+        </div>
+
+        <a href="#contact" class="hero-btn"><i class="fa-brands fa-line"></i> 立即加 LINE 預約</a>
+    </header>
+
+    <!-- 服務特色 -->
+    <section class="features">
+        <h2 class="section-title">為什麼選擇我們的服務？</h2>
+        <div class="grid-3">
+            <div class="feature-card">
+                <i class="fa-solid fa-house-chimney-crack"></i>
+                <h3>免出門，到府檢修</h3>
+                <p>桌上型電腦主機笨重難搬？不必再流汗扛去電腦行，我們直接到您府上為您排除故障。</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-clock"></i>
+                <h3>上班族福音：夜間服務</h3>
+                <p>一般電腦行早早就關門。我們專屬提供 18:00~23:00 黃金時段，完全配合您下班後的時間。</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-clipboard-user"></i>
+                <h3>全預約制，時間專屬</h3>
+                <p>不需現場苦苦排隊等候。事先透過 LINE 或電話溝通狀況並預約時間，服務最精準有效率。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 聯絡預約區 -->
+    <section id="contact" class="contact-section">
+        <div class="contact-box">
+            <h2>立即預約到府維修</h2>
+            <p>請先告知您的「電腦狀況」與「所在地區」，以加速預約流程！</p>
+
+            <div class="contact-links">
+                <!-- 點擊直接開啟 LINE 加好友 -->
+                <a href="https://line.me/ti/p/~chaofon" class="contact-item btn-line" target="_blank">
+                    <i class="fa-brands fa-line"></i> LINE ID：chaofon
+                </a>
+                <!-- 手機點擊直接撥打電話 -->
+                <a href="tel:0955003954" class="contact-item btn-phone">
+                    <i class="fa-solid fa-phone"></i> 0955-003-954
+                </a>
+                <!-- 點擊開啟信箱軟體 -->
+                <a href="mailto:pizai1985@gmail.com" class="contact-item btn-email">
+                    <i class="fa-solid fa-envelope"></i> pizai1985@gmail.com
+                </a>
+            </div>
+
+            <div class="info-list">
+                <p><i class="fa-solid fa-location-dot"></i> <strong>服務範圍：</strong> 新北市蘆洲區、三重區</p>
+                <p><i class="fa-solid fa-clock"></i> <strong>服務時間：</strong> 18:00 ~ 23:00 (請先預約)</p>
+                <p><i class="fa-solid fa-shop"></i> <strong>實體聯絡點：</strong> 新北市蘆洲區民族路331號</p>
+                <p style="font-size: 14px; color: #dc2626; margin-top: 10px;">
+                    <i class="fa-solid fa-circle-exclamation"></i> 貼心提醒：由於採「到府維修預約制」，如需親臨上述地址，請務必提前聯繫確認，以免白跑一趟喔！
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p>&copy; 2024 蘆洲到府電腦維修. All rights reserved. | 預約制服務</p>
+    </footer>
+
+</body>
+</html>
