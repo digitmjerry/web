@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>蘆洲、三重到府電腦維修｜夜間專屬救援 (預約制)</title>
-    <meta name="description" content="蘆洲、三重區專屬到府電腦維修。專營夜間時段 18:00~23:00，下班後為您解決電腦問題，免搬運、採全預約制。">
+    <!-- SEO 優化：精確的網頁標題 -->
+    <title>蘆洲、三重電腦維修推薦｜超峰電腦宅修｜夜間到府檢修免搬運</title>
+    <!-- SEO 優化：包含地區、服務與使用者痛點的描述 -->
+    <meta name="description" content="新北蘆洲、三重在地電腦維修推薦【超峰電腦宅修】。專營夜間到府維修(18:00-23:00)，解決無法開機、中毒重灌、硬碟升級等問題。下班免搬主機，全預約制為您省時省力！">
+    <meta name="keywords" content="蘆洲電腦維修, 三重電腦維修, 到府維修電腦, 電腦重灌, 無法開機, 超峰電腦宅修, 夜間電腦維修">
+    
+    <!-- Open Graph 標籤 (優化 LINE/FB 分享時的預覽畫面) -->
+    <meta property="og:title" content="蘆洲、三重電腦維修｜超峰電腦宅修 (夜間到府)">
+    <meta property="og:description" content="下班後電腦壞了？專營蘆洲、三重夜間到府維修，免搬運、全預約制，立即加 LINE 預約！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="你的網址請填這裡">
+    
     <!-- 引入 Google 字體 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <!-- 引入 FontAwesome 圖示 -->
@@ -12,9 +22,9 @@
     
     <style>
         :root {
-            --primary-blue: #1e3a8a; /* 科技專業藍 */
-            --accent-orange: #f97316; /* 強調橘色，用於按鈕 */
-            --line-green: #00B900; /* LINE 專屬綠 */
+            --primary-blue: #1e3a8a; 
+            --accent-orange: #f97316; 
+            --line-green: #00B900; 
             --bg-light: #f8fafc;
             --text-main: #334155;
             --text-light: #ffffff;
@@ -43,7 +53,8 @@
             background: linear-gradient(rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.95)), url('https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
             color: white; text-align: center;
         }
-        .hero h1 { font-size: 42px; font-weight: 900; margin-bottom: 20px; line-height: 1.3; }
+        /* SEO優化：調整H1樣式 */
+        .hero h1 { font-size: 38px; font-weight: 900; margin-bottom: 20px; line-height: 1.4; }
         .hero h1 span { color: var(--accent-orange); }
         .hero p { font-size: 20px; margin-bottom: 30px; opacity: 0.9; max-width: 700px; margin-left: auto; margin-right: auto; }
         
@@ -70,7 +81,13 @@
         .feature-card i { font-size: 45px; color: var(--accent-orange); margin-bottom: 20px; }
         .feature-card h3 { font-size: 22px; margin-bottom: 15px; color: var(--primary-blue); }
 
-        /* 聯絡資訊區 (最重要) */
+        /* SEO優化：新增服務項目區塊樣式 */
+        .services { background: #e2e8f0; padding: 80px 5%; }
+        .services-container { max-width: 1000px; margin: 0 auto; }
+        .service-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 30px; }
+        .service-tag { background: white; color: var(--primary-blue); padding: 10px 20px; border-radius: 8px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 4px solid var(--accent-orange); }
+
+        /* 聯絡資訊區 */
         .contact-section { background: var(--primary-blue); color: white; padding: 80px 5%; text-align: center; }
         .contact-box {
             background: white; color: var(--text-main); max-width: 800px; margin: 0 auto;
@@ -88,8 +105,6 @@
         }
         .btn-line { background: var(--line-green); color: white; }
         .btn-line:hover { background: #009900; }
-        .btn-phone { background: var(--accent-orange); color: white; }
-        .btn-phone:hover { background: #ea580c; }
         .btn-email { background: #f1f5f9; color: var(--text-main); border: 1px solid #cbd5e1; }
         .btn-email:hover { background: #e2e8f0; }
 
@@ -102,12 +117,42 @@
 
         /* 手機版調整 */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .hero p { font-size: 18px; }
+            .hero h1 { font-size: 28px; }
+            .hero p { font-size: 16px; }
             .contact-box { padding: 30px 20px; }
             .info-list { font-size: 16px; }
+            .section-title { font-size: 26px; }
         }
     </style>
+
+    <!-- SEO 優化：LocalBusiness 結構化資料 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "超峰電腦宅修",
+      "image": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+      "description": "蘆洲、三重區專屬到府電腦維修。專營夜間時段，解決電腦無法開機、系統重灌、硬碟升級等問題。",
+      "email": "pizai1985@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "民族路331號",
+        "addressLocality": "蘆洲區",
+        "addressRegion": "新北市",
+        "postalCode": "247",
+        "addressCountry": "TW"
+      },
+      "areaServed": ["蘆洲區", "三重區"],
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "18:00",
+        "closes": "23:00"
+      }
+    }
+    </script>
 </head>
 <body>
 
@@ -119,26 +164,43 @@
 
     <!-- 主視覺區 -->
     <header class="hero">
-        <h1>電腦壞了不想搬？<br><span>到府維修</span>為您解決難題！</h1>
-        <p>專營夜間時段，專為上班族打造。下班後回到家，我們為您修好電腦，採全預約制服務。</p>
+        <!-- SEO優化：H1 標籤包含核心關鍵字 -->
+        <h1>蘆洲、三重專屬【到府電腦維修】<br><span>夜間修電腦免搬運，下班馬上搞定！</span></h1>
+        <p>專營夜間時段，專為上班族打造。下班後回到家，我們為您解決電腦無法開機、變慢等問題，採全預約制服務。</p>
         
         <div class="tag-group">
-            <span class="tag"><i class="fa-solid fa-map-location-dot"></i> 蘆洲區、三重區</span>
+            <span class="tag"><i class="fa-solid fa-map-location-dot"></i> 蘆洲、三重電腦維修</span>
             <span class="tag"><i class="fa-solid fa-moon"></i> 夜間服務 18:00~23:00</span>
-            <span class="tag"><i class="fa-solid fa-calendar-check"></i> 專屬預約制</span>
+            <span class="tag"><i class="fa-solid fa-calendar-check"></i> 專屬到府預約制</span>
         </div>
 
         <a href="#contact" class="hero-btn"><i class="fa-brands fa-line"></i> 立即加 LINE 預約</a>
     </header>
 
+    <!-- SEO優化：常見服務區塊 -->
+    <section class="services">
+        <div class="services-container">
+            <h2 class="section-title">各式電腦疑難雜症，到府為您排除</h2>
+            <div class="service-tags">
+                <div class="service-tag"><i class="fa-solid fa-desktop"></i> 電腦無法開機 / 螢幕無畫面</div>
+                <div class="service-tag"><i class="fa-brands fa-windows"></i> Windows 系統重灌 / 升級</div>
+                <div class="service-tag"><i class="fa-solid fa-hard-drive"></i> 硬碟壞軌救援 / 升級 SSD</div>
+                <div class="service-tag"><i class="fa-solid fa-bug"></i> 電腦中毒解毒 / 廣告彈窗清除</div>
+                <div class="service-tag"><i class="fa-solid fa-memory"></i> 記憶體升級 / 藍白當機處理</div>
+                <div class="service-tag"><i class="fa-solid fa-wifi"></i> 網路無法連線 / 分享器設定</div>
+                <div class="service-tag"><i class="fa-solid fa-fan"></i> 主機清潔保養 / 散熱膏重塗</div>
+            </div>
+        </div>
+    </section>
+
     <!-- 服務特色 -->
     <section class="features">
-        <h2 class="section-title">為什麼選擇我們的服務？</h2>
+        <h2 class="section-title">蘆洲、三重在地鄉親的首選維修服務</h2>
         <div class="grid-3">
             <div class="feature-card">
                 <i class="fa-solid fa-house-chimney-crack"></i>
                 <h3>免出門，到府檢修</h3>
-                <p>桌上型電腦主機笨重難搬？不必再流汗扛去電腦行，我們直接到您府上為您排除故障。</p>
+                <p>桌上型電腦主機笨重難搬？不必再流汗扛去電腦行，我們直接到蘆洲或三重您府上為您排除硬體故障。</p>
             </div>
             <div class="feature-card">
                 <i class="fa-solid fa-clock"></i>
@@ -148,7 +210,7 @@
             <div class="feature-card">
                 <i class="fa-solid fa-clipboard-user"></i>
                 <h3>全預約制，時間專屬</h3>
-                <p>不需現場苦苦排隊等候。事先透過 LINE 或電話溝通狀況並預約時間，服務最精準有效率。</p>
+                <p>不需現場苦苦排隊等候。事先透過 LINE 或 Email 溝通電腦損壞狀況並預約時間，服務最精準有效率。</p>
             </div>
         </div>
     </section>
@@ -156,19 +218,13 @@
     <!-- 聯絡預約區 -->
     <section id="contact" class="contact-section">
         <div class="contact-box">
-            <h2>立即預約到府維修</h2>
-            <p>請先告知您的「電腦狀況」與「所在地區」，以加速預約流程！</p>
+            <h2>立即預約蘆洲/三重到府維修</h2>
+            <p>請先告知您的「電腦狀況 (如:無法開機、要重灌)」與「所在地區」，以加速預約流程！</p>
 
             <div class="contact-links">
-                <!-- 點擊直接開啟 LINE 加好友 -->
                 <a href="https://line.me/ti/p/~chaofon" class="contact-item btn-line" target="_blank">
                     <i class="fa-brands fa-line"></i> LINE ID：chaofon
                 </a>
-                <!-- 手機點擊直接撥打電話 -->
-                <a href="tel:0955003954" class="contact-item btn-phone">
-                    <i class="fa-solid fa-phone"></i> 0955-003-954
-                </a>
-                <!-- 點擊開啟信箱軟體 -->
                 <a href="mailto:pizai1985@gmail.com" class="contact-item btn-email">
                     <i class="fa-solid fa-envelope"></i> pizai1985@gmail.com
                 </a>
@@ -176,10 +232,10 @@
 
             <div class="info-list">
                 <p><i class="fa-solid fa-location-dot"></i> <strong>服務範圍：</strong> 新北市蘆洲區、三重區</p>
-                <p><i class="fa-solid fa-clock"></i> <strong>服務時間：</strong> 18:00 ~ 23:00 (請先預約)</p>
+                <p><i class="fa-solid fa-clock"></i> <strong>服務時間：</strong> 夜間 18:00 ~ 23:00 (採預約制)</p>
                 <p><i class="fa-solid fa-shop"></i> <strong>實體聯絡點：</strong> 新北市蘆洲區民族路331號</p>
                 <p style="font-size: 14px; color: #dc2626; margin-top: 10px;">
-                    <i class="fa-solid fa-circle-exclamation"></i> 貼心提醒：由於採「到府維修預約制」，如需親臨上述地址，請務必提前聯繫確認，以免白跑一趟喔！
+                    <i class="fa-solid fa-circle-exclamation"></i> 貼心提醒：由於採「到府維修預約制」，如需親臨實體點，請務必提前透過 LINE 聯繫確認，以免白跑一趟喔！
                 </p>
             </div>
         </div>
@@ -187,7 +243,7 @@
 
     <!-- 頁尾 -->
     <footer>
-        <p>&copy; 2024 蘆洲到府電腦維修. All rights reserved. | 預約制服務</p>
+        <p>&copy; 2024 超峰電腦宅修 - 蘆洲、三重到府電腦維修推薦. All rights reserved. | 預約制服務</p>
     </footer>
 
 </body>
