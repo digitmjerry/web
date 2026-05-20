@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伴侶心靈地圖：婚姻深度溝通與期望問卷</title>
+    <!-- 引入 Tailwind CSS 與 Google 字型 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #faf8f5;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
+        }
+        /* 自訂莫蘭迪暖色調 */
+        .color-primary { color: #b87d70; }
+        .bg-primary { background-color: #b87d70; }
+        .bg-primary-light { background-color: #f7ede2; }
+        .border-primary { border-color: #e6ccb2; }
+    </style>
+</head>
+<body class="text-stone-700 min-h-screen flex flex-col justify-between">
+
+    <!-- 頁首與引言 -->
+    <header class="max-w-4xl mx-auto pt-12 px-6 text-center">
+        <div class="inline-block px-4 py-1.5 bg-primary-light text-[#b87d70] rounded-full text-sm font-medium tracking-wider mb-4">
+            A Safe Space for Us
+        </div>
+        <h1 class="serif-title text-3xl md:text-4xl font-semibold tracking-wide text-stone-800 mb-4">
+            伴侶心靈地圖
+        </h1>
+        <p class="text-stone-500 max-w-xl mx-auto text-sm leading-relaxed mb-6">
+            這不是一份考試，而是一張通往彼此內心深處的地圖。<br>
+            請在放鬆、不被打擾的時間裡，誠實傾聽自己，並溫柔理解對方。
+        </p>
+
+        <!-- 溫馨小建議 -->
+        <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm text-left max-w-2xl mx-auto mb-8 text-xs leading-relaxed text-stone-600">
+            <h3 class="font-semibold text-stone-800 mb-2 flex items-center text-sm">
+                <span class="mr-1.5">💡</span> 填寫與討論小建議：
+            </h3>
+            <ul class="list-disc pl-4 space-y-1">
+                <li><strong class="text-stone-700">誠實為上：</strong> 寫下最真實的想法，而非符合社會或對方期待的標準答案。</li>
+                <li><strong class="text-stone-700">不批判原則：</strong> 討論時請用「原來你是這樣想的，能多聊聊嗎？」代替否定句。</li>
+                <li><strong class="text-stone-700">分次消化：</strong> 內容豐富，建議分天討論（例如今晚談財務，明晚談家務）。</li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 分頁選單 -->
+    <nav class="max-w-4xl mx-auto px-6 mb-8 w-full overflow-x-auto">
+        <div class="flex space-x-2 border-b border-stone-200 pb-px min-w-[700px] md:min-w-0 justify-between">
+            <button onclick="switchTab(1)" id="btn-tab-1" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-all">情感與親密</button>
+            <button onclick="switchTab(2)" id="btn-tab-2" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-all">金錢與財務</button>
+            <button onclick="switchTab(3)" id="btn-tab-3" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-all">家務與日常</button>
+            <button onclick="switchTab(4)" id="btn-tab-4" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-all">家庭與社交</button>
+            <button onclick="switchTab(5)" id="btn-tab-5" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-all">育兒觀念</button>
+            <button onclick="switchTab(6)" id="btn-tab-6" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-all">衝突與溝通</button>
+            <button onclick="switchTab(7)" id="btn-tab-7" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-all">未來與成長</button>
+        </div>
+    </nav>
+
+    <!-- 表單主體 -->
+    <main class="max-w-3xl mx-auto px-6 mb-16 flex-grow w-full">
+        <form id="questionnaire-form" class="space-y-8 bg-white p-8 rounded-3xl shadow-sm border border-stone-100">
+
+            <!-- 第一部分：情感連結與親密關係 -->
+            <section id="section-1" class="tab-content space-y-6 hidden">
+                <div class="border-b border-stone-100 pb-4">
+                    <h2 class="text-xl font-medium text-stone-800">第一部分：情感連結與親密關係</h2>
+                    <p class="text-xs text-stone-400 mt-1">此部分旨在了解雙方在情感支持、愛意表達及親密生活上的真實感受。</p>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-stone-700">1. 愛的語言：當對方做出什麼行為時，你會最深刻地感覺到自己「被愛」？（可複選）</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="checkbox" name="love_languages" value="words" class="rounded text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>肯定的言語（讚美、鼓勵、感謝）</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="checkbox" name="love_languages" value="time" class="rounded text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>精心時刻（推開手機、專注深度陪伴）</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="checkbox" name="love_languages" value="gifts" class="rounded text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>接受禮物（精心準備的小驚喜）</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="checkbox" name="love_languages" value="service" class="rounded text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>服務的行動（分擔家務、跑腿等）</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm md:col-span-2">
+                            <input type="checkbox" name="love_languages" value="touch" class="rounded text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>身體的接觸（擁抱、牽手、親吻）</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">2. 親密頻率：你對目前夫妻間的「性生活與肢體親密」頻率滿意嗎？你理想中的頻率是？</label>
+                    <textarea name="intimacy_freq" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="寫下你的真實想法..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">3. 安全感來源：在這段婚姻中，什麼事情會讓你感到最安心？反之，什麼情況會讓你產生不安全感？</label>
+                    <textarea name="security_source" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：對方報備行程、共同規劃未來..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">4. 情感支持：當你心情低落、壓力大時，你希望我扮演什麼角色？</label>
+                    <textarea name="emotional_support" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：抱抱我聽我抱怨就好、幫我分析解決、給我空間安靜..."></textarea>
+                </div>
+            </section>
+
+            <!-- 第二部分：金錢觀與財務規劃 -->
+            <section id="section-2" class="tab-content space-y-6 hidden">
+                <div class="border-b border-stone-100 pb-4">
+                    <h2 class="text-xl font-medium text-stone-800">第二部分：金錢觀與財務規劃</h2>
+                    <p class="text-xs text-stone-400 mt-1">財務是日常穩定的基石，建立透明且有共識的財務藍圖至關重要。</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">1. 財務分配：你認為目前的家庭開銷分擔方式是否公平？需要調整嗎？</label>
+                    <textarea name="financial_split" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：共同帳戶、按比例分攤、一人包辦一類..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">2. 消費價值觀：超過多少金額的個人花費，你認為「必須」事先與對方商量？</label>
+                    <input type="text" name="spending_limit" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：5,000 元以上">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">3. 當看到對方購買你認為「沒必要」的非生活必需品時，你的真實感受是什麼？</label>
+                    <textarea name="unnecessary_spending" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="寫下你的感受..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">4. 儲蓄與投資：我們目前的家庭儲蓄速度符合你的預期嗎？對於投資與保守理財的比例想法是？</label>
+                    <textarea name="investment_ratio" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：股票/加密貨幣 40%、定存/保險 60%..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">5. 長遠目標：請列出你未來 5～10 年內最大的財務目標</label>
+                    <textarea name="long_term_financial_goal" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：買房、換車、生小孩、提早退休、孝親費用..."></textarea>
+                </div>
+            </section>
+
+            <!-- 第三部分：家務分工與日常生活 -->
+            <section id="section-3" class="tab-content space-y-6 hidden">
+                <div class="border-b border-stone-100 pb-4">
+                    <h2 class="text-xl font-medium text-stone-800">第三部分：家務分工與日常生活</h2>
+                    <p class="text-xs text-stone-400 mt-1">日常細節決定了長久相處的舒適度。</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">1. 現狀評估：請誠實評估目前日常家務的分工比例（你與伴侶）。你覺得這個狀態舒適嗎？</label>
+                    <textarea name="chore_split" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：我 60%，對方 40%。我覺得有些累，希望洗碗改為輪流..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">2. 潔癖與秩序標準：你對家裡「乾淨與整潔」的底線在哪裡？有什麼家務細節是你的地雷？</label>
+                    <textarea name="cleanliness_standard" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：衣服最久只能堆兩天，地板一週一定要擦一次。吃完飯不立刻洗碗是我的地雷。"></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">3. 個人空間：你覺得我們彼此的「Me Time」足夠嗎？你希望一週有多少完全獨立的時間？</label>
+                    <textarea name="me_time" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="希望每週能有幾小時，或是特定時段不被打擾。"></textarea>
+                </div>
+            </section>
+
+            <!-- 第四部分：原生家庭與社交生活 -->
+            <section id="section-4" class="tab-content space-y-6 hidden">
+                <div class="border-b border-stone-100 pb-4">
+                    <h2 class="text-xl font-medium text-stone-800">第四部分：原生家庭與社交生活</h2>
+                    <p class="text-xs text-stone-400 mt-1">婚姻不只是兩個人的事，更是兩個家族與社交圈的碰撞。</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">1. 與姻親的界線：你認為與彼此父母最舒適的相處頻率與距離是什麼？當我的家人與你意見分歧時，你希望我如何處理？</label>
+                    <textarea name="in_laws_boundary" rows="4" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：希望節日才見面、不干涉小家庭決定。有爭吵時，希望你先站在我這邊，關起門來再討論。"></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">2. 孝親費與奉養：對於雙方父母的經濟支持（孝親費、醫療費），你的預期與底線是什麼？</label>
+                    <textarea name="parental_support" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="寫下你的預算或想法..."></textarea>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-stone-700">3. 朋友與社交：你希望婚後我們保持怎樣的社交模式？</label>
+                    <div class="space-y-2 pt-1">
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="radio" name="social_style" value="together" class="text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>盡量共同出席所有朋友聚會。</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="radio" name="social_style" value="independent" class="text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>各自有獨立的朋友圈，互不干涉，只需報備。</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="radio" name="social_style" value="middle" class="text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>介於中間，可引薦認識，但保有各自聚會空間。</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第五部分：育兒觀念 -->
+            <section id="section-5" class="tab-content space-y-6 hidden">
+                <div class="border-b border-stone-100 pb-4">
+                    <h2 class="text-xl font-medium text-stone-800">第五部分：育兒觀念 <span class="text-sm text-stone-400 font-normal">（若不適用可跳過）</span></h2>
+                    <p class="text-xs text-stone-400 mt-1">此處釐清未來共識，或檢視現有的教養與分工。</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">1. 生育計畫：是否打算生小孩（或再生一個）？預計什麼時候？</label>
+                    <textarea name="parenting_plan" rows="2" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="填寫你的計畫..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">2. 教養風格：你希望自己扮演「黑臉」還是「白臉」？當教養衝突時，該聽誰的？</label>
+                    <textarea name="parenting_style" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="當意見不合時，兩人的協調機制是什麼？"></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">3. 教育與金錢：願意投入多少資源在孩子的才藝、私立學校或物質生活上？</label>
+                    <textarea name="child_resource" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="寫下你的教育預算與想法..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">4. 後援角色：是否接受請雙方父母幫忙帶小孩？還是傾向送托嬰/請保母？</label>
+                    <textarea name="childcare_support" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="關於托育與家庭後援的看法..."></textarea>
+                </div>
+            </section>
+
+            <!-- 第六部分：衝突解決與溝通模式 -->
+            <section id="section-6" class="tab-content space-y-6 hidden">
+                <div class="border-b border-stone-100 pb-4">
+                    <h2 class="text-xl font-medium text-stone-800">第六部分：衝突解決與溝通模式</h2>
+                    <p class="text-xs text-stone-400 mt-1">面對衝突的態度，決定了婚姻能走多遠。</p>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-stone-700">1. 衝突時的反應：當我們發生嚴重爭吵時，你通常的本能反應是？</label>
+                    <div class="space-y-2 pt-1">
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="radio" name="conflict_reaction" value="argue" class="text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>想要立刻辯論、把話講清楚，不能帶著情緒睡覺。</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="radio" name="conflict_reaction" value="cool" class="text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>需要冷靜、暫時離開現場、冷戰，等氣消了再說。</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 cursor-pointer text-sm">
+                            <input type="radio" name="conflict_reaction" value="comply" class="text-[#b87d70] focus:ring-[#b87d70]">
+                            <span>委曲求全，選擇冷處理或迎合對方以求息事寧人。</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">2. 踩雷清單：在爭吵中，最讓你無法忍受、甚至會瞬間斷線的言行或字眼是什麼？</label>
+                    <textarea name="forbidden_words" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：翻舊帳、人身攻擊、提離婚、摔東西..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">3. 修復關係：爭吵過後，你最希望對方用什麼方式來進行「破冰」與和解？</label>
+                    <textarea name="reconciliation" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：一句幽默的話、一個擁抱、或是主動為我泡杯茶..."></textarea>
+                </div>
+            </section>
+
+            <!-- 第七部分：未來藍圖與個人成長 -->
+            <section id="section-7" class="tab-content space-y-6 hidden">
+                <div class="border-b border-stone-100 pb-4">
+                    <h2 class="text-xl font-medium text-stone-800">第七部分：未來藍圖與個人成長</h2>
+                    <p class="text-xs text-stone-400 mt-1">好的婚姻是兩個人朝著同一個方向前進，同時又能成就彼此。</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">1. 自我實現：在未來的 3～5 年內，你有什麼個人的夢想或職涯目標，需要我的支持與配合？</label>
+                    <textarea name="personal_growth" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="例如：重返校園進修、轉職、創業..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">2. 婚姻願景：想像一下 10 年後、甚至退休後的我們，你腦海中浮現的畫面與生活是什麼？</label>
+                    <textarea name="future_vision" rows="3" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="寫下你腦海中最溫馨的一幕..."></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-stone-700">3. 感激與承諾：請寫下現階段你最感謝對方為這段婚姻／家庭付出的三件事。</label>
+                    <textarea name="gratitude" rows="4" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:ring-1 focus:ring-[#b87d70] focus:outline-none" placeholder="1. &#10;2. &#10;3. "></textarea>
+                </div>
+            </section>
+
+            <!-- 底端導航與操作 -->
+            <div class="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-stone-100 gap-4">
+                <div class="flex space-x-2 w-full sm:w-auto">
+                    <button type="button" id="prev-btn" onclick="navigateTab(-1)" class="w-1/2 sm:w-auto px-5 py-2.5 text-sm font-medium border border-stone-200 rounded-xl hover:bg-stone-50 transition-all text-stone-500">上一頁</button>
+                    <button type="button" id="next-btn" onclick="navigateTab(1)" class="w-1/2 sm:w-auto px-5 py-2.5 text-sm font-medium bg-primary text-white rounded-xl hover:opacity-95 transition-all">下一頁</button>
+                </div>
+                
+                <div class="flex space-x-2 w-full sm:w-auto">
+                    <!-- 列印/存PDF -->
+                    <button type="button" onclick="window.print()" class="w-1/2 sm:w-auto px-5 py-2.5 text-sm font-medium border border-[#b87d70] text-[#b87d70] rounded-xl hover:bg-stone-50 transition-all">
+                        列印/儲存PDF
+                    </button>
+                    <!-- 導出資料 -->
+                    <button type="button" onclick="exportData()" class="w-1/2 sm:w-auto px-5 py-2.5 text-sm font-medium bg-stone-800 text-white rounded-xl hover:bg-stone-900 transition-all">
+                        導出文字檔
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="text-center py-8 text-xs text-stone-400 border-t border-stone-100 bg-white">
+        願這份坦誠，成為我們關係中恆久溫暖的光芒。
+    </footer>
+
+    <!-- 邏輯控制與資料導出 JS -->
+    <script>
+        let currentTab = 1;
+        const totalTabs = 7;
+
+        function showTab(tabIndex) {
+            // 隱藏所有分頁內容
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(el => el.classList.add('hidden'));
+
+            // 移除所有選單標籤的高亮狀態
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => {
+                btn.classList.remove('border-[#b87d70]', 'text-[#b87d70]');
+                btn.classList.add('border-transparent', 'text-stone-400');
+            });
+
+            // 顯示指定分頁
+            const activeContent = document.getElementById(`section-${tabIndex}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+
+            // 高亮指定標籤
+            const activeBtn = document.getElementById(`btn-tab-${tabIndex}`);
+            if (activeBtn) {
+                activeBtn.classList.add('border-[#b87d70]', 'text-[#b87d70]');
+                activeBtn.classList.remove('border-transparent', 'text-stone-400');
+            }
+
+            // 更新按鈕狀態
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (tabIndex === 1) {
+                prevBtn.classList.add('invisible');
+            } else {
+                prevBtn.classList.remove('invisible');
+            }
+
+            if (tabIndex === totalTabs) {
+                nextBtn.innerText = '已是最後一頁';
+                nextBtn.disabled = true;
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                nextBtn.innerText = '下一頁';
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+
+            currentTab = tabIndex;
+            // 滾動回表單頂端
+            window.scrollTo({ top: document.querySelector('nav').offsetTop - 20, behavior: 'smooth' });
+        }
+
+        function switchTab(tabIndex) {
+            showTab(tabIndex);
+        }
+
+        function navigateTab(direction) {
+            const targetTab = currentTab + direction;
+            if (targetTab >= 1 && targetTab <= totalTabs) {
+                showTab(targetTab);
+            }
+        }
+
+        // 導出填寫的問卷資料
+        function exportData() {
+            const form = document.getElementById('questionnaire-form');
+            const formData = new FormData(form);
+            let textOutput = "=== 伴侶心靈地圖：婚姻深度溝通與期望問卷 ===\n\n";
+
+            // 手動抓取主要答案並排版
+            // 情感連結與親密關係
+            textOutput += "【第一部分：情感連結與親密關係】\n";
+            const loveLangs = [];
+            document.querySelectorAll('input[name="love_languages"]:checked').forEach(el => {
+                loveLangs.push(el.parentNode.innerText.trim());
+            });
+            textOutput += `1. 最能感受到愛的行為: ${loveLangs.join(', ') || '未填寫'}\n`;
+            textOutput += `2. 親密與肢體頻率看法: ${form.elements['intimacy_freq'].value || '未填寫'}\n`;
+            textOutput += `3. 安全感來源與不安全感: ${form.elements['security_source'].value || '未填寫'}\n`;
+            textOutput += `4. 期望的情感支持角色: ${form.elements['emotional_support'].value || '未填寫'}\n\n`;
+
+            // 金錢與財務
+            textOutput += "【第二部分：金錢觀與財務規劃】\n";
+            textOutput += `1. 財務分配公平度: ${form.elements['financial_split'].value || '未填寫'}\n`;
+            textOutput += `2. 需商量的個人消費上限: ${form.elements['spending_limit'].value || '未填寫'}\n`;
+            textOutput += `3. 對非必需品消費的感受: ${form.elements['unnecessary_spending'].value || '未填寫'}\n`;
+            textOutput += `4. 儲蓄與投資配置想法: ${form.elements['investment_ratio'].value || '未填寫'}\n`;
+            textOutput += `5. 5-10年財務目標: ${form.elements['long_term_financial_goal'].value || '未填寫'}\n\n`;
+
+            // 家務與日常
+            textOutput += "【第三部分：家務分工與日常生活】\n";
+            textOutput += `1. 家務分工現狀與舒適度: ${form.elements['chore_split'].value || '未填寫'}\n`;
+            textOutput += `2. 乾淨整潔標準與地雷: ${form.elements['cleanliness_standard'].value || '未填寫'}\n`;
+            textOutput += `3. Me Time 的足夠度與期望時間: ${form.elements['me_time'].value || '未填寫'}\n\n`;
+
+            // 原生家庭
+            textOutput += "【第四部分：原生家庭與社交生活】\n";
+            textOutput += `1. 姻親相處頻率、距離與衝突處理: ${form.elements['in_laws_boundary'].value || '未填寫'}\n`;
+            textOutput += `2. 父母經濟支持與底線: ${form.elements['parental_support'].value || '未填寫'}\n`;
+            const socialStyle = document.querySelector('input[name="social_style"]:checked');
+            textOutput += `3. 期望的婚後社交模式: ${socialStyle ? socialStyle.parentNode.innerText.trim() : '未填寫'}\n\n`;
+
+            // 育兒
+            textOutput += "【第五部分：育兒觀念】\n";
+            textOutput += `1. 生育計畫: ${form.elements['parenting_plan'].value || '未填寫'}\n`;
+            textOutput += `2. 黑白臉與衝突教養衝突協調: ${form.elements['parenting_style'].value || '未填寫'}\n`;
+            textOutput += `3. 孩子教育與資源投入: ${form.elements['child_resource'].value || '未填寫'}\n`;
+            textOutput += `4. 祖父母後援與托育想法: ${form.elements['childcare_support'].value || '未填寫'}\n\n`;
+
+            // 衝突溝通
+            textOutput += "【第六部分：衝突解決與溝通模式】\n";
+            const conflictReaction = document.querySelector('input[name="conflict_reaction"]:checked');
+            textOutput += `1. 衝突時的本能反應: ${conflictReaction ? conflictReaction.parentNode.innerText.trim() : '未填寫'}\n`;
+            textOutput += `2. 無法忍受的衝突踩雷詞彙: ${form.elements['forbidden_words'].value || '未填寫'}\n`;
+            textOutput += `3. 期望的和解/破冰方式: ${form.elements['reconciliation'].value || '未填寫'}\n\n`;
+
+            // 未來藍圖
+            textOutput += "【第七部分：未來藍圖與個人成長】\n";
+            textOutput += `1. 個人夢想與職涯需求配合: ${form.elements['personal_growth'].value || '未填寫'}\n`;
+            textOutput += `2. 10年後/退休後的婚姻願景: ${form.elements['future_vision'].value || '未填寫'}\n`;
+            textOutput += `3. 感激對方為婚姻付出的三件事:\n${form.elements['gratitude'].value || '未填寫'}\n`;
+
+            // 下載文字檔
+            const blob = new Blob([textOutput], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `伴侶心靈地圖_${new Date().toISOString().slice(0,10)}.txt`;
+            link.click();
+        }
+
+        // 初始化
+        showTab(1);
+    </script>
+</body>
+</html>
