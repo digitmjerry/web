@@ -29,6 +29,7 @@
             --text-main: #334155;
             --text-light: #ffffff;
             --border-color: #cbd5e1;
+            --form-blue: #2563eb;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; scroll-behavior: smooth; }
@@ -65,9 +66,9 @@
         .tag { background: rgba(255,255,255,0.15); padding: 8px 15px; border-radius: 20px; font-size: 16px; border: 1px solid rgba(255,255,255,0.3); }
         
         .hero-btn {
-            display: inline-block; background: var(--line-green); color: white;
+            display: inline-block; background: var(--accent-orange); color: white;
             padding: 15px 40px; border-radius: 50px; text-decoration: none;
-            font-size: 22px; font-weight: bold; box-shadow: 0 4px 15px rgba(0, 185, 0, 0.4);
+            font-size: 22px; font-weight: bold; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
             transition: transform 0.2s;
         }
         .hero-btn:hover { transform: translateY(-3px); }
@@ -156,6 +157,8 @@
         }
         .btn-line { background: var(--line-green); color: white; }
         .btn-line:hover { background: #009900; }
+        .btn-form { background: var(--form-blue); color: white; }
+        .btn-form:hover { background: #1d4ed8; }
         .btn-email { background: #f1f5f9; color: var(--text-main); border: 1px solid #cbd5e1; }
         .btn-email:hover { background: #e2e8f0; }
 
@@ -235,7 +238,7 @@
             <span class="tag"><i class="fa-solid fa-calendar-check"></i> 專屬到府預約制</span>
         </div>
 
-        <a href="#contact" class="hero-btn"><i class="fa-brands fa-line"></i> 立即加 LINE 預約</a>
+        <a href="#contact" class="hero-btn"><i class="fa-solid fa-calendar-check"></i> 立即預約 / 線上報修</a>
     </header>
 
     <!-- SEO優化：常見服務區塊 -->
@@ -416,6 +419,10 @@
             <div class="contact-links">
                 <a href="https://line.me/ti/p/~chaofon" class="contact-item btn-line" target="_blank">
                     <i class="fa-brands fa-line"></i> LINE ID：chaofon
+                </a>
+                <!-- 新增：線上申請維修表單連結 -->
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfPAuD1i1ftEivkK7TiQaCYVutU5EAT10q6exRDk3f1ymKpQQ/viewform" class="contact-item btn-form" target="_blank">
+                    <i class="fa-solid fa-file-signature"></i> 填寫線上預約報修單
                 </a>
                 <a href="mailto:pizai1985@gmail.com" class="contact-item btn-email">
                     <i class="fa-solid fa-envelope"></i> pizai1985@gmail.com
