@@ -144,7 +144,6 @@
       min-height: 44px;
     }
 
-    .preview-button,
     .plain-button {
       width: 100%;
       border: 0;
@@ -153,16 +152,6 @@
       font: inherit;
       font-weight: 700;
       cursor: pointer;
-    }
-
-    .preview-button {
-      margin-top: 12px;
-      color: #fff;
-      background: var(--primary);
-    }
-
-    .preview-button:hover {
-      background: var(--primary-dark);
     }
 
     .plain-button {
@@ -246,14 +235,12 @@
         <p>登入後即可填寫盤點資料。系統會自動記錄填表者姓名與 email。</p>
 
         <div id="google-button"></div>
-        <button class="preview-button" id="preview-login" type="button">原型預覽登入</button>
         <button class="plain-button" id="clear-session" type="button">清除本機登入狀態</button>
 
         <div class="status" id="status" role="status"></div>
 
         <div class="note">
-          正式上線前，請將程式中的 <code>GOOGLE_CLIENT_ID</code> 換成 Google Cloud Console 的 OAuth Client ID。
-          原型預覽登入只用於畫面測試。
+          登入限使用 <code>@digitm.com.tw</code> 的 Google 帳號。若無法登入，請確認帳號網域與瀏覽器權限設定。
         </div>
       </div>
     </section>
@@ -265,7 +252,6 @@
     const FORM_PAGE = "form.html";
 
     const statusEl = document.getElementById("status");
-    const previewLoginButton = document.getElementById("preview-login");
     const clearSessionButton = document.getElementById("clear-session");
 
     function setStatus(type, message) {
@@ -318,7 +304,7 @@
 
     window.onload = function () {
       if (GOOGLE_CLIENT_ID.includes("YOUR_GOOGLE_CLIENT_ID")) {
-        setStatus("error", "尚未設定 Google OAuth Client ID，目前可使用原型預覽登入。");
+        setStatus("error", "尚未設定 Google OAuth Client ID，請先完成登入設定。");
         return;
       }
 
@@ -332,14 +318,6 @@
         { theme: "outline", size: "large", width: 320, text: "signin_with" }
       );
     };
-
-    previewLoginButton.addEventListener("click", () => {
-      saveUserAndContinue({
-        name: "原型預覽使用者",
-        email: `preview@${ALLOWED_DOMAIN}`,
-        picture: ""
-      });
-    });
 
     clearSessionButton.addEventListener("click", () => {
       localStorage.removeItem("inventoryUser");
