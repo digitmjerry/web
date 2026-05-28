@@ -673,7 +673,7 @@
   <script>
     const ALLOWED_DOMAIN = "digitm.com.tw";
     const LOGIN_PAGE = "login.html";
-    const APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybPl_UHB5b7qooGElwbHQcvO3kS0BqG4vqpAmKOeq_gE38s_uNFP7DmPP4QDJ-86Oz1A/exec";
 
     const form = document.getElementById("inventory-form");
     const statusEl = document.getElementById("form-status");
@@ -834,23 +834,14 @@
     }
 
     async function submitPayload(payload) {
-      if (APPS_SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT")) {
-        console.table(payload);
-        await new Promise((resolve) => setTimeout(resolve, 650));
-        return { ok: true, preview: true };
-      }
-
       const body = new URLSearchParams(payload);
-      const response = await fetch(APPS_SCRIPT_URL, {
+      await fetch(APPS_SCRIPT_URL, {
         method: "POST",
-        body
+        body,
+        mode: "no-cors"
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      return response.json();
+      return { ok: true };
     }
 
     form.addEventListener("input", updateConditionals);
@@ -867,9 +858,7 @@
       try {
         const result = await submitPayload(buildPayload());
         resetEntryKeepDefaults();
-        setStatus(result.preview ? "warning" : "ok", result.preview
-          ? "原型模式：資料已在瀏覽器 console 顯示，尚未寫入 Google 試算表。"
-          : "資料已成功送出，可繼續新增下一筆。");
+        setStatus("ok", "資料已送出，可繼續新增下一筆。請到 Google 試算表確認是否寫入。");
       } catch (error) {
         console.error(error);
         setStatus("error", "送出失敗，請確認網路或 Apps Script 設定。");
