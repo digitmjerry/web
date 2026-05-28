@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>填寫盤點資料｜數字廣告外部帳號盤點登錄系統</title>
+  <style>
+    :root {
+      --bg: #eef3f7;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #17202a;
+      --muted: #667085;
+      --line: #d6dee8;
+      --primary: #1463ff;
+      --primary-dark: #0f4ed0;
+      --danger: #b42318;
+      --danger-bg: #fff0ee;
+      --ok: #027a48;
+      --ok-bg: #ecfdf3;
+      --warning: #b54708;
+      --warning-bg: #fffaeb;
+      --shadow: 0 18px 50px rgba(16, 24, 40, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner {
+      width: min(100%, 1120px);
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .brand {
+      min-width: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .userbox {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 0 0 auto;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #dbeafe;
+      display: grid;
+      place-items: center;
+      color: #0f4ed0;
+      font-weight: 800;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .usertext {
+      line-height: 1.35;
+      text-align: right;
+    }
+
+    .usertext strong {
+      display: block;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .usertext span {
+      display: block;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .logout {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: #344054;
+      padding: 9px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .layout {
+      width: min(100%, 1120px);
+      margin: 0 auto;
+      padding: 26px 18px 44px;
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+      gap: 22px;
+    }
+
+    .aside {
+      align-self: start;
+      position: sticky;
+      top: 86px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(16, 24, 40, 0.06);
+    }
+
+    .aside h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .aside p,
+    .aside li {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .aside ul {
+      padding-left: 18px;
+      margin: 12px 0 0;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    form {
+      display: grid;
+      gap: 0;
+    }
+
+    .section {
+      padding: 26px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section:last-of-type {
+      border-bottom: 0;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: baseline;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label,
+    .label {
+      color: #344054;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px 12px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 108px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      outline: 3px solid rgba(20, 99, 255, 0.14);
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid #d6dee8;
+      border-radius: 8px;
+      background: var(--surface-soft);
+    }
+
+    .check-item,
+    .radio-item {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px;
+      border: 1px solid #e4e7ec;
+      border-radius: 6px;
+      background: #fff;
+      color: #344054;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .check-item input,
+    .radio-item input {
+      width: 16px;
+      min-height: auto;
+      height: 16px;
+      flex: 0 0 auto;
+      accent-color: var(--primary);
+    }
+
+    .radio-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .conditional {
+      display: none;
+    }
+
+    .conditional.active {
+      display: grid;
+    }
+
+    .status {
+      display: none;
+      margin: 0 26px 24px;
+      padding: 13px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .status.error {
+      display: block;
+      color: var(--danger);
+      background: var(--danger-bg);
+      border: 1px solid #fecdca;
+    }
+
+    .status.ok {
+      display: block;
+      color: var(--ok);
+      background: var(--ok-bg);
+      border: 1px solid #abefc6;
+    }
+
+    .status.warning {
+      display: block;
+      color: var(--warning);
+      background: var(--warning-bg);
+      border: 1px solid #fedf89;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 22px 26px 26px;
+      background: #fbfcfe;
+      border-top: 1px solid var(--line);
+    }
+
+    button {
+      min-height: 44px;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .secondary {
+      color: #344054;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .primary {
+      color: #fff;
+      background: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+
+    @media (max-width: 920px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .aside {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .userbox {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .usertext {
+        text-align: left;
+      }
+
+      .grid,
+      .check-grid,
+      .radio-row {
+        grid-template-columns: 1fr;
+      }
+
+      .section,
+      .actions {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .status {
+        margin-left: 18px;
+        margin-right: 18px;
+      }
+
+      .actions {
+        flex-direction: column-reverse;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <h1>數字廣告外部帳號盤點登錄系統</h1>
+        <p>登入後填寫外部平台帳號與安全狀態</p>
+      </div>
+      <div class="userbox">
+        <div class="avatar" id="avatar">D</div>
+        <div class="usertext">
+          <strong id="user-name">尚未登入</strong>
+          <span id="user-email">請先返回登入頁</span>
+        </div>
+        <button class="logout" type="button" id="logout">登出</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="aside">
+      <h2>填寫提醒</h2>
+      <p>每次送出一個外部登入帳號。如果同一個帳號用於多個平台，請在外部平台欄位複選。</p>
+      <ul>
+        <li>送出後會保留所屬部門與帳號保管人。</li>
+        <li>手機號碼請填完整號碼；沒有綁定則選「沒有」。</li>
+        <li>密碼明碼不應填入任何欄位。</li>
+      </ul>
+    </aside>
+
+    <section class="form-card" aria-label="盤點表單">
+      <form id="inventory-form">
+        <div class="section">
+          <div class="section-title">
+            <h2>基本資料</h2>
+            <span>必填欄位標示 *</span>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label class="required" for="dept">所屬部門</label>
+              <select id="dept" name="dept" required>
+                <option value="" selected disabled>請選擇部門</option>
+                <option>行銷業務部</option>
+                <option>總經理室</option>
+                <option>管理部</option>
+                <option>媒體企劃部</option>
+                <option>資訊技術中心</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+
+            <div class="field conditional" id="dept-other-wrap">
+              <label class="required" for="deptOther">其他部門名稱</label>
+              <input id="deptOther" name="deptOther" type="text" autocomplete="organization-unit">
+            </div>
+
+            <div class="field">
+              <label class="required" for="manager">帳號保管人</label>
+              <input id="manager" name="manager" type="text" placeholder="例如：王小明" required autocomplete="name">
+            </div>
+
+            <div class="field">
+              <label class="required" for="externalAccount">外部登入帳號</label>
+              <input id="externalAccount" name="externalAccount" type="text" placeholder="例如：123@gmail.com 或平台帳號 ID" required autocomplete="off">
+            </div>
+
+            <div class="field">
+              <label for="accountName">帳號名稱 / 顯示名稱</label>
+              <input id="accountName" name="accountName" type="text" placeholder="例如：數字廣告官方帳號">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <h2>平台與用途</h2>
+            <span>同一帳號可複選平台</span>
+          </div>
+          <div class="grid">
+            <div class="field full">
+              <div class="label required">外部平台</div>
+              <div class="check-grid" id="platforms">
+                <label class="check-item"><input type="checkbox" name="platforms" value="Google">Google</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Facebook">Facebook</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Instagram">Instagram</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Meta Business Suite">Meta Business Suite</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Canva">Canva</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="LINE">LINE</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="TikTok">TikTok</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="YouTube">YouTube</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Google Ads">Google Ads</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Google Analytics">Google Analytics</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Google Tag Manager">Google Tag Manager</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Microsoft">Microsoft</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Notion">Notion</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Shopee">Shopee</label>
+                <label class="check-item"><input type="checkbox" name="platforms" value="Threads">Threads</label>
+                <label class="check-item"><input type="checkbox" id="platformOtherCheck" name="platforms" value="其他">其他</label>
+              </div>
+            </div>
+
+            <div class="field conditional full" id="platform-other-wrap">
+              <label class="required" for="platformOther">其他平台名稱</label>
+              <input id="platformOther" name="platformOther" type="text" placeholder="請填寫其他平台，可用頓號分隔">
+            </div>
+
+            <div class="field full">
+              <label class="required" for="purpose">帳號真實用途</label>
+              <textarea id="purpose" name="purpose" placeholder="例如：管理客戶 Meta 廣告投放、登入 Canva 製作素材、接收平台驗證信件" required></textarea>
+            </div>
+
+            <div class="field">
+              <label class="required" for="loginMethod">登入方式</label>
+              <select id="loginMethod" name="loginMethod" required>
+                <option value="" selected disabled>請選擇登入方式</option>
+                <option>Google 登入</option>
+                <option>Email + 密碼</option>
+                <option>手機號碼 + 驗證碼</option>
+                <option>Facebook 登入</option>
+                <option>Apple 登入</option>
+                <option>不確定</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+
+            <div class="field conditional" id="login-method-other-wrap">
+              <label class="required" for="loginMethodOther">其他登入方式</label>
+              <input id="loginMethodOther" name="loginMethodOther" type="text">
+            </div>
+
+            <div class="field">
+              <label for="permission">權限等級</label>
+              <select id="permission" name="permission">
+                <option value="">不確定 / 未填</option>
+                <option>管理者</option>
+                <option>一般使用者</option>
+                <option>唯讀使用者</option>
+                <option>素材 / 編輯權限</option>
+                <option>廣告投放權限</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+
+            <div class="field conditional" id="permission-other-wrap">
+              <label for="permissionOther">其他權限等級</label>
+              <input id="permissionOther" name="permissionOther" type="text">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <h2>安全狀態</h2>
+            <span>請依目前實際狀況填寫</span>
+          </div>
+          <div class="grid">
+            <div class="field full">
+              <div class="label required">是否綁定手機號碼</div>
+              <div class="radio-row">
+                <label class="radio-item"><input type="radio" name="phoneBound" value="有" required>有</label>
+                <label class="radio-item"><input type="radio" name="phoneBound" value="沒有">沒有</label>
+                <label class="radio-item"><input type="radio" name="phoneBound" value="不確定">不確定</label>
+              </div>
+            </div>
+
+            <div class="field conditional full" id="phone-wrap">
+              <label class="required" for="phone">完整手機號碼</label>
+              <input id="phone" name="phone" type="text" placeholder="例如：0912-345-678" inputmode="tel" autocomplete="tel">
+              <div class="hint">因會收完整手機號碼，請確認 Google 試算表權限僅開放必要管理者。</div>
+            </div>
+
+            <div class="field full">
+              <div class="label required">是否啟用兩階段驗證</div>
+              <div class="radio-row">
+                <label class="radio-item"><input type="radio" name="twoFactorEnabled" value="有" required>有</label>
+                <label class="radio-item"><input type="radio" name="twoFactorEnabled" value="沒有">沒有</label>
+                <label class="radio-item"><input type="radio" name="twoFactorEnabled" value="不確定">不確定</label>
+              </div>
+            </div>
+
+            <div class="field conditional" id="two-factor-method-wrap">
+              <label class="required" for="twoFactorMethod">兩階段驗證方式</label>
+              <select id="twoFactorMethod" name="twoFactorMethod">
+                <option value="" selected>請選擇方式</option>
+                <option>SMS 簡訊驗證</option>
+                <option>驗證器 App</option>
+                <option>Email 驗證碼</option>
+                <option>平台推播確認</option>
+                <option>不確定</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+
+            <div class="field conditional" id="two-factor-other-wrap">
+              <label class="required" for="twoFactorOther">其他驗證方式</label>
+              <input id="twoFactorOther" name="twoFactorOther" type="text">
+            </div>
+
+            <div class="field">
+              <label for="recoveryEmail">備援信箱</label>
+              <input id="recoveryEmail" name="recoveryEmail" type="email" placeholder="例如：info@digitm.com.tw">
+            </div>
+
+            <div class="field">
+              <label for="accountHealth">帳號狀態</label>
+              <select id="accountHealth" name="accountHealth">
+                <option>正常使用</option>
+                <option>待確認</option>
+                <option>停用</option>
+                <option>無法登入</option>
+                <option>不確定</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label for="notes">備註</label>
+              <textarea id="notes" name="notes" placeholder="可補充交接狀態、登入限制、風險事項或其他說明"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="status" id="form-status" role="status"></div>
+
+        <div class="actions">
+          <button class="secondary" type="button" id="clear-entry">清空本筆資料</button>
+          <button class="primary" type="submit" id="submit-button">送出盤點資料</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const ALLOWED_DOMAIN = "digitm.com.tw";
+    const LOGIN_PAGE = "login.html";
+    const APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+
+    const form = document.getElementById("inventory-form");
+    const statusEl = document.getElementById("form-status");
+    const submitButton = document.getElementById("submit-button");
+    const userNameEl = document.getElementById("user-name");
+    const userEmailEl = document.getElementById("user-email");
+    const avatarEl = document.getElementById("avatar");
+
+    const deptEl = document.getElementById("dept");
+    const deptOtherWrap = document.getElementById("dept-other-wrap");
+    const deptOtherEl = document.getElementById("deptOther");
+    const managerEl = document.getElementById("manager");
+    const platformOtherCheck = document.getElementById("platformOtherCheck");
+    const platformOtherWrap = document.getElementById("platform-other-wrap");
+    const platformOtherEl = document.getElementById("platformOther");
+    const loginMethodEl = document.getElementById("loginMethod");
+    const loginMethodOtherWrap = document.getElementById("login-method-other-wrap");
+    const loginMethodOtherEl = document.getElementById("loginMethodOther");
+    const permissionEl = document.getElementById("permission");
+    const permissionOtherWrap = document.getElementById("permission-other-wrap");
+    const permissionOtherEl = document.getElementById("permissionOther");
+    const phoneWrap = document.getElementById("phone-wrap");
+    const phoneEl = document.getElementById("phone");
+    const twoFactorMethodWrap = document.getElementById("two-factor-method-wrap");
+    const twoFactorMethodEl = document.getElementById("twoFactorMethod");
+    const twoFactorOtherWrap = document.getElementById("two-factor-other-wrap");
+    const twoFactorOtherEl = document.getElementById("twoFactorOther");
+
+    let currentUser = null;
+
+    function setStatus(type, message) {
+      statusEl.className = `status ${type}`;
+      statusEl.textContent = message;
+    }
+
+    function clearStatus() {
+      statusEl.className = "status";
+      statusEl.textContent = "";
+    }
+
+    function isAllowedEmail(email) {
+      return typeof email === "string" && email.toLowerCase().endsWith(`@${ALLOWED_DOMAIN}`);
+    }
+
+    function getSessionUser() {
+      try {
+        return JSON.parse(localStorage.getItem("inventoryUser") || "null");
+      } catch {
+        return null;
+      }
+    }
+
+    function requireLogin() {
+      currentUser = getSessionUser();
+
+      if (!currentUser || !isAllowedEmail(currentUser.email)) {
+        localStorage.removeItem("inventoryUser");
+        window.location.href = LOGIN_PAGE;
+        return;
+      }
+
+      userNameEl.textContent = currentUser.name || currentUser.email;
+      userEmailEl.textContent = currentUser.email;
+
+      if (currentUser.picture) {
+        avatarEl.innerHTML = `<img src="${currentUser.picture}" alt="">`;
+      } else {
+        avatarEl.textContent = (currentUser.name || currentUser.email || "D").slice(0, 1).toUpperCase();
+      }
+    }
+
+    function setConditional(wrap, input, active, required = false) {
+      wrap.classList.toggle("active", active);
+      if (input) {
+        input.required = active && required;
+        if (!active) input.value = "";
+      }
+    }
+
+    function updateConditionals() {
+      setConditional(deptOtherWrap, deptOtherEl, deptEl.value === "其他", true);
+      setConditional(platformOtherWrap, platformOtherEl, platformOtherCheck.checked, true);
+      setConditional(loginMethodOtherWrap, loginMethodOtherEl, loginMethodEl.value === "其他", true);
+      setConditional(permissionOtherWrap, permissionOtherEl, permissionEl.value === "其他", false);
+
+      const phoneBound = form.elements.phoneBound.value;
+      setConditional(phoneWrap, phoneEl, phoneBound === "有", true);
+
+      const twoFactorEnabled = form.elements.twoFactorEnabled.value;
+      setConditional(twoFactorMethodWrap, twoFactorMethodEl, twoFactorEnabled === "有", true);
+      setConditional(twoFactorOtherWrap, twoFactorOtherEl, twoFactorEnabled === "有" && twoFactorMethodEl.value === "其他", true);
+    }
+
+    function checkedValues(name) {
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map((input) => input.value);
+    }
+
+    function valueOrOther(selectEl, otherEl) {
+      return selectEl.value === "其他" ? otherEl.value.trim() : selectEl.value;
+    }
+
+    function buildPayload() {
+      const platforms = checkedValues("platforms");
+
+      return {
+        submittedAt: new Date().toISOString(),
+        submitterName: currentUser.name || "",
+        submitterEmail: currentUser.email || "",
+        dept: valueOrOther(deptEl, deptOtherEl),
+        manager: managerEl.value.trim(),
+        externalAccount: form.elements.externalAccount.value.trim(),
+        accountName: form.elements.accountName.value.trim(),
+        platforms: platforms.filter((item) => item !== "其他").join("、"),
+        platformOther: platformOtherCheck.checked ? platformOtherEl.value.trim() : "",
+        purpose: form.elements.purpose.value.trim(),
+        loginMethod: valueOrOther(loginMethodEl, loginMethodOtherEl),
+        permission: valueOrOther(permissionEl, permissionOtherEl),
+        phoneBound: form.elements.phoneBound.value,
+        phone: phoneEl.value.trim(),
+        twoFactorEnabled: form.elements.twoFactorEnabled.value,
+        twoFactorMethod: twoFactorMethodEl.value === "其他" ? twoFactorOtherEl.value.trim() : twoFactorMethodEl.value,
+        recoveryEmail: form.elements.recoveryEmail.value.trim(),
+        accountHealth: form.elements.accountHealth.value,
+        notes: form.elements.notes.value.trim()
+      };
+    }
+
+    function validateForm() {
+      clearStatus();
+      updateConditionals();
+
+      if (!form.reportValidity()) return false;
+
+      if (checkedValues("platforms").length === 0) {
+        setStatus("error", "請至少勾選一個外部平台。");
+        return false;
+      }
+
+      if (!isAllowedEmail(currentUser.email)) {
+        setStatus("error", `此系統僅允許 @${ALLOWED_DOMAIN} 帳號送出。`);
+        return false;
+      }
+
+      return true;
+    }
+
+    function resetEntryKeepDefaults() {
+      const keepDept = deptEl.value;
+      const keepDeptOther = deptOtherEl.value;
+      const keepManager = managerEl.value;
+
+      form.reset();
+
+      deptEl.value = keepDept;
+      deptOtherEl.value = keepDeptOther;
+      managerEl.value = keepManager;
+      updateConditionals();
+    }
+
+    async function submitPayload(payload) {
+      if (APPS_SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT")) {
+        console.table(payload);
+        await new Promise((resolve) => setTimeout(resolve, 650));
+        return { ok: true, preview: true };
+      }
+
+      const body = new URLSearchParams(payload);
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return response.json();
+    }
+
+    form.addEventListener("input", updateConditionals);
+    form.addEventListener("change", updateConditionals);
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!validateForm()) return;
+
+      submitButton.disabled = true;
+      submitButton.textContent = "送出中";
+
+      try {
+        const result = await submitPayload(buildPayload());
+        resetEntryKeepDefaults();
+        setStatus(result.preview ? "warning" : "ok", result.preview
+          ? "原型模式：資料已在瀏覽器 console 顯示，尚未寫入 Google 試算表。"
+          : "資料已成功送出，可繼續新增下一筆。");
+      } catch (error) {
+        console.error(error);
+        setStatus("error", "送出失敗，請確認網路或 Apps Script 設定。");
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "送出盤點資料";
+      }
+    });
+
+    document.getElementById("clear-entry").addEventListener("click", () => {
+      resetEntryKeepDefaults();
+      clearStatus();
+    });
+
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.removeItem("inventoryUser");
+      window.location.href = LOGIN_PAGE;
+    });
+
+    requireLogin();
+    updateConditionals();
+  </script>
+</body>
+</html>
