@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>數字廣告外部帳號盤點儀表板</title>
+  <style>
+    :root {
+      --bg: #eef3f7;
+      --surface: #ffffff;
+      --surface-soft: #f7fafc;
+      --text: #17202a;
+      --muted: #667085;
+      --line: #d6dee8;
+      --blue: #1769e0;
+      --teal: #008a8a;
+      --green: #15803d;
+      --amber: #b54708;
+      --red: #b42318;
+      --shadow: 0 16px 42px rgba(16, 24, 40, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+    }
+
+    header {
+      background: linear-gradient(120deg, #163d72, #087f8c);
+      color: #fff;
+      padding: 30px 22px;
+    }
+
+    .wrap {
+      width: min(100%, 1180px);
+      margin: 0 auto;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      line-height: 1.7;
+    }
+
+    .stamp {
+      flex: 0 0 auto;
+      text-align: right;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    main {
+      padding: 24px 22px 42px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 8px 22px rgba(16, 24, 40, 0.06);
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .kpi .value {
+      margin-top: 8px;
+      font-size: 30px;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .kpi.warn .value { color: var(--amber); }
+    .kpi.danger .value { color: var(--red); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .chart {
+      display: grid;
+      gap: 11px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(96px, 170px) minmax(0, 1fr) 44px;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .bar-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #344054;
+      font-weight: 700;
+    }
+
+    .bar-track {
+      height: 14px;
+      border-radius: 999px;
+      background: #e8eef5;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--blue), var(--teal));
+    }
+
+    .bar-value {
+      color: var(--muted);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .donuts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .donut-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .donut-card h2 {
+      margin: 0 0 14px;
+      font-size: 17px;
+    }
+
+    .donut-wrap {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .donut {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(#1769e0 0deg, #1769e0 360deg);
+    }
+
+    .donut::after {
+      content: "";
+      position: absolute;
+      inset: 34px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .legend {
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 12px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .legend-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #344054;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .search {
+      width: min(100%, 360px);
+      min-height: 40px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 9px 12px;
+      font: inherit;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #e4e7ec;
+      padding: 10px 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      color: #344054;
+      font-size: 12px;
+      z-index: 1;
+    }
+
+    .table-wrap {
+      max-height: 420px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 3px 9px;
+      background: #eef4ff;
+      color: #175cd3;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pill.danger {
+      background: #fef3f2;
+      color: var(--red);
+    }
+
+    .pill.ok {
+      background: #ecfdf3;
+      color: var(--green);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 980px) {
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid, .donuts { grid-template-columns: 1fr; }
+      .title-row, .toolbar { align-items: flex-start; flex-direction: column; }
+      .stamp { text-align: left; }
+    }
+
+    @media (max-width: 560px) {
+      .kpis { grid-template-columns: 1fr; }
+      .donut-wrap { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 110px minmax(0, 1fr) 34px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap title-row">
+      <div>
+        <h1>數字廣告外部帳號盤點儀表板</h1>
+        <p class="subtitle">由 Excel 盤點資料產生，聚焦部門、平台、登入方式與安全狀態。</p>
+      </div>
+      <div class="stamp">
+        <div>產生時間：<strong id="generatedAt"></strong></div>
+        <div>最新送出：<strong id="latestSubmission"></strong></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="kpis" aria-label="KPI">
+      <div class="kpi"><div class="label">盤點筆數</div><div class="value" id="kpiTotal">0</div></div>
+      <div class="kpi"><div class="label">不重複外部帳號</div><div class="value" id="kpiAccounts">0</div></div>
+      <div class="kpi danger"><div class="label">未啟用 2FA</div><div class="value" id="kpiNo2fa">0</div></div>
+      <div class="kpi warn"><div class="label">未綁手機/不確定</div><div class="value" id="kpiWeakPhone">0</div></div>
+      <div class="kpi danger"><div class="label">需追蹤風險筆數</div><div class="value" id="kpiRisk">0</div></div>
+    </section>
+
+    <section class="grid">
+      <div class="panel"><h2>各部門盤點筆數</h2><div class="chart" id="deptChart"></div></div>
+      <div class="panel"><h2>外部平台分布</h2><div class="chart" id="platformChart"></div></div>
+    </section>
+
+    <section class="donuts">
+      <div class="donut-card"><h2>登入方式</h2><div class="donut-wrap"><div class="donut" id="loginDonut"></div><div class="legend" id="loginLegend"></div></div></div>
+      <div class="donut-card"><h2>手機綁定狀態</h2><div class="donut-wrap"><div class="donut" id="phoneDonut"></div><div class="legend" id="phoneLegend"></div></div></div>
+      <div class="donut-card"><h2>兩階段驗證狀態</h2><div class="donut-wrap"><div class="donut" id="twoFactorDonut"></div><div class="legend" id="twoFactorLegend"></div></div></div>
+    </section>
+
+    <section class="grid" style="margin-top:18px;">
+      <div class="panel"><h2>帳號狀態</h2><div class="chart" id="healthChart"></div></div>
+      <div class="panel"><h2>資安追蹤清單</h2><div class="table-wrap"><table><thead><tr><th>部門</th><th>帳號</th><th>保管人</th><th>手機</th><th>2FA</th></tr></thead><tbody id="riskRows"></tbody></table></div></div>
+    </section>
+
+    <section class="panel wide" style="margin-top:18px;">
+      <div class="toolbar">
+        <h2 style="margin:0;">盤點明細</h2>
+        <input class="search" id="searchInput" type="search" placeholder="搜尋部門、帳號、平台、保管人">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>送出時間</th>
+              <th>部門</th>
+              <th>保管人</th>
+              <th>外部帳號</th>
+              <th>平台</th>
+              <th>登入方式</th>
+              <th>手機</th>
+              <th>2FA</th>
+              <th>帳號狀態</th>
+            </tr>
+          </thead>
+          <tbody id="detailRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const dashboardData = {"generatedAt": "2026-05-29 13:08", "latestSubmission": "2026-05-29 11:53", "kpis": {"total": 11, "uniqueAccounts": 9, "no2fa": 11, "weakPhone": 7, "riskCount": 11}, "charts": {"dept": [{"name": "媒體企劃部", "value": 8}, {"name": "總經理室", "value": 3}], "platforms": [{"name": "其他", "value": 8}, {"name": "Google", "value": 5}, {"name": "Canva", "value": 2}, {"name": "Google Analytics", "value": 1}, {"name": "Google Tag Manager", "value": 1}, {"name": "Facebook", "value": 1}, {"name": "TikTok", "value": 1}, {"name": "Notion", "value": 1}], "login": [{"name": "Google 登入", "value": 5}, {"name": "Email + 密碼", "value": 4}, {"name": "帳號 + 密碼", "value": 2}], "phone": [{"name": "沒有", "value": 7}, {"name": "有", "value": 4}], "twoFactor": [{"name": "沒有", "value": 11}], "health": [{"name": "正常使用", "value": 11}]}, "rows": [{"submittedAt": "2026-05-29 10:34", "dept": "總經理室", "manager": "賴敬超", "account": "digitm.room4＠gmail.com", "accountName": "數字廣告會議室四", "platforms": "Google", "platformOther": "", "purpose": "ＭeetingS會議機帳號,用於邀請會議機", "loginMethod": "Google 登入", "phoneBound": "有", "phoneMasked": "9638***150", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 10:36", "dept": "總經理室", "manager": "賴敬超", "account": "digitm.room5@gmail.com", "accountName": "數字廣告會議室五", "platforms": "Google", "platformOther": "", "purpose": "ＭeetingS會議機帳號,用於邀請會議機", "loginMethod": "Google 登入", "phoneBound": "有", "phoneMasked": "9638***150", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 10:38", "dept": "總經理室", "manager": "賴敬超", "account": "digitm.room6@gmail.com", "accountName": "數字廣告會議室六", "platforms": "Google", "platformOther": "", "purpose": "ＭeetingS會議機帳號,用於邀請會議機", "loginMethod": "Google 登入", "phoneBound": "有", "phoneMasked": "9638***150", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 10:59", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "info@digitm.com.tw", "accountName": "數字廣告股份有限公司", "platforms": "其他", "platformOther": "緯育TibaMe", "purpose": "教育訓練資源", "loginMethod": "Email + 密碼", "phoneBound": "沒有", "phoneMasked": "", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 11:07", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "info@digitm.com.tw", "accountName": "數字廣告股份有限公司", "platforms": "其他", "platformOther": "燒賣研究所", "purpose": "教育訓練資源", "loginMethod": "Email + 密碼", "phoneBound": "沒有", "phoneMasked": "", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 11:10", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "lch@digitm.com.tw", "accountName": "林家興", "platforms": "其他", "platformOther": "燒賣研究所", "purpose": "教育訓練資源", "loginMethod": "Email + 密碼", "phoneBound": "沒有", "phoneMasked": "", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 11:15", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "info@digitm.com.tw", "accountName": "許博茜", "platforms": "其他", "platformOther": "大大學院", "purpose": "教育訓練資源", "loginMethod": "Email + 密碼", "phoneBound": "沒有", "phoneMasked": "", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 11:21", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "24736852", "accountName": "24736852", "platforms": "其他", "platformOther": "Hahow好學校", "purpose": "教育訓練資源", "loginMethod": "帳號 + 密碼", "phoneBound": "沒有", "phoneMasked": "", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 11:30", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "digitm24736852", "accountName": "數字廣告", "platforms": "其他", "platformOther": "窩課360", "purpose": "教育訓練資源", "loginMethod": "帳號 + 密碼", "phoneBound": "沒有", "phoneMasked": "", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 11:43", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "system@digitm.com.tw", "accountName": "數字廣告系統研發用", "platforms": "Google、Canva、Google Analytics、Google Tag Manager、其他", "platformOther": "Suno Dreamina", "purpose": "網站分析與追蹤,影音創作設計", "loginMethod": "Google 登入", "phoneBound": "有", "phoneMasked": "9531***630", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}, {"submittedAt": "2026-05-29 11:53", "dept": "媒體企劃部", "manager": "胡嘉倩", "account": "planner@digitm.com.tw", "accountName": "數字廣告企劃單位", "platforms": "Google、Facebook、Canva、TikTok、Notion、其他", "platformOther": "12個連結的應用", "purpose": "早知道FB粉絲專頁管理", "loginMethod": "Google 登入", "phoneBound": "沒有", "phoneMasked": "", "twoFactor": "沒有", "twoFactorMethod": "", "health": "正常使用", "notes": ""}]};
+    const colors = ["#1769e0", "#008a8a", "#16a34a", "#f59e0b", "#dc2626", "#7c3aed", "#0891b2", "#64748b"];
+
+    function el(id) { return document.getElementById(id); }
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[char]));
+    }
+
+    function renderKpis() {
+      el("generatedAt").textContent = dashboardData.generatedAt || "-";
+      el("latestSubmission").textContent = dashboardData.latestSubmission || "-";
+      el("kpiTotal").textContent = dashboardData.kpis.total;
+      el("kpiAccounts").textContent = dashboardData.kpis.uniqueAccounts;
+      el("kpiNo2fa").textContent = dashboardData.kpis.no2fa;
+      el("kpiWeakPhone").textContent = dashboardData.kpis.weakPhone;
+      el("kpiRisk").textContent = dashboardData.kpis.riskCount;
+    }
+
+    function renderBars(containerId, rows) {
+      const max = Math.max(...rows.map(row => row.value), 1);
+      el(containerId).innerHTML = rows.map((row, index) => `
+        <div class="bar-row" title="${escapeHtml(row.name)}：${row.value}">
+          <div class="bar-label">${escapeHtml(row.name)}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.max(4, row.value / max * 100)}%; background:${colors[index % colors.length]};"></div></div>
+          <div class="bar-value">${row.value}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderDonut(donutId, legendId, rows) {
+      const total = rows.reduce((sum, row) => sum + row.value, 0) || 1;
+      let start = 0;
+      const segments = rows.map((row, index) => {
+        const deg = row.value / total * 360;
+        const color = colors[index % colors.length];
+        const segment = `${color} ${start}deg ${start + deg}deg`;
+        start += deg;
+        return segment;
+      });
+      el(donutId).style.background = `conic-gradient(${segments.join(", ")})`;
+      el(legendId).innerHTML = rows.map((row, index) => `
+        <div class="legend-item">
+          <span class="swatch" style="background:${colors[index % colors.length]}"></span>
+          <span class="legend-name">${escapeHtml(row.name)}</span>
+          <strong>${row.value}</strong>
+        </div>
+      `).join("");
+    }
+
+    function statusPill(value, okValue = "有") {
+      const cls = value === okValue || value === "正常使用" ? "ok" : "danger";
+      return `<span class="pill ${cls}">${escapeHtml(value || "未填")}</span>`;
+    }
+
+    function renderRiskRows() {
+      const rows = dashboardData.rows.filter(row => row.phoneBound !== "有" || row.twoFactor !== "有");
+      el("riskRows").innerHTML = rows.map(row => `
+        <tr>
+          <td>${escapeHtml(row.dept)}</td>
+          <td>${escapeHtml(row.account)}<div class="muted">${escapeHtml(row.accountName)}</div></td>
+          <td>${escapeHtml(row.manager)}</td>
+          <td>${statusPill(row.phoneBound)}</td>
+          <td>${statusPill(row.twoFactor)}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderDetails(rows = dashboardData.rows) {
+      el("detailRows").innerHTML = rows.map(row => `
+        <tr>
+          <td>${escapeHtml(row.submittedAt)}</td>
+          <td>${escapeHtml(row.dept)}</td>
+          <td>${escapeHtml(row.manager)}</td>
+          <td>${escapeHtml(row.account)}<div class="muted">${escapeHtml(row.accountName)}</div></td>
+          <td>${escapeHtml(row.platforms)}${row.platformOther ? `<div class="muted">${escapeHtml(row.platformOther)}</div>` : ""}</td>
+          <td>${escapeHtml(row.loginMethod)}</td>
+          <td>${escapeHtml(row.phoneBound)}<div class="muted">${escapeHtml(row.phoneMasked)}</div></td>
+          <td>${escapeHtml(row.twoFactor)}<div class="muted">${escapeHtml(row.twoFactorMethod)}</div></td>
+          <td>${statusPill(row.health, "正常使用")}</td>
+        </tr>
+      `).join("");
+    }
+
+    function setupSearch() {
+      el("searchInput").addEventListener("input", event => {
+        const keyword = event.target.value.trim().toLowerCase();
+        if (!keyword) {
+          renderDetails();
+          return;
+        }
+        const filtered = dashboardData.rows.filter(row =>
+          Object.values(row).some(value => String(value || "").toLowerCase().includes(keyword))
+        );
+        renderDetails(filtered);
+      });
+    }
+
+    renderKpis();
+    renderBars("deptChart", dashboardData.charts.dept);
+    renderBars("platformChart", dashboardData.charts.platforms);
+    renderBars("healthChart", dashboardData.charts.health);
+    renderDonut("loginDonut", "loginLegend", dashboardData.charts.login);
+    renderDonut("phoneDonut", "phoneLegend", dashboardData.charts.phone);
+    renderDonut("twoFactorDonut", "twoFactorLegend", dashboardData.charts.twoFactor);
+    renderRiskRows();
+    renderDetails();
+    setupSearch();
+  </script>
+</body>
+</html>
