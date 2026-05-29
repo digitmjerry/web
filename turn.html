@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>正在開啟 NotebookLM 資料</title>
+    <meta name="robots" content="noindex">
+    <style>
+      :root {
+        color-scheme: light;
+        --accent: #1f4e5f;
+        --text: #12212a;
+        --muted: #58717b;
+        --bg: #f7fafb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      }
+
+      main {
+        width: min(92vw, 760px);
+        text-align: center;
+        padding: 48px 24px;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--accent);
+        font-size: 36px;
+        line-height: 1.25;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      p {
+        margin: 24px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .loader {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 28px;
+        border: 5px solid #d9e8ec;
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.9s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 32px;
+        }
+
+        p {
+          font-size: 17px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="loader" aria-hidden="true"></div>
+      <h1>正在開啟 NotebookLM 資料...</h1>
+      <p>
+        如果沒有自動跳轉，請
+        <a id="manual-link" href="https://notebooklm.google.com/notebook/db3289c7-655b-4313-9309-1d1bf185ae34">點這裡</a>
+      </p>
+    </main>
+
+    <script>
+      const NOTEBOOK_URL = "https://notebooklm.google.com/notebook/db3289c7-655b-4313-9309-1d1bf185ae34";
+      const LOG_URL = "https://script.google.com/macros/s/AKfycbzcjnIw0hIcxO0QJx9foneo4-gvOpbjJHN-1TRjr86vGDuGRb1dAmQxI5VXRBM6A27j/exec";
+      const REDIRECT_DELAY_MS = 1000;
+
+      document.getElementById("manual-link").href = NOTEBOOK_URL;
+
+      function redirectToNotebook() {
+        window.location.replace(NOTEBOOK_URL);
+      }
+
+      try {
+        fetch(LOG_URL, {
+          method: "GET",
+          mode: "no-cors",
+          cache: "no-store",
+          keepalive: true
+        }).catch(() => {});
+      } catch (error) {
+        // Tracking must never block the user from opening the NotebookLM page.
+      }
+
+      window.setTimeout(redirectToNotebook, REDIRECT_DELAY_MS);
+    </script>
+  </body>
+</html>
