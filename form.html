@@ -777,6 +777,12 @@
 
     function buildPayload() {
       const platforms = checkedValues("platforms");
+      const platformOtherValue = platformOtherCheck.checked ? platformOtherEl.value.trim() : "";
+      const normalizedPlatforms = platforms.filter((item) => item !== "其他");
+
+      if (platformOtherValue) {
+        normalizedPlatforms.push(`其他：${platformOtherValue}`);
+      }
 
       return {
         submittedAt: new Date().toISOString(),
@@ -786,8 +792,8 @@
         manager: managerEl.value.trim(),
         externalAccount: form.elements.externalAccount.value.trim(),
         accountName: form.elements.accountName.value.trim(),
-        platforms: platforms.filter((item) => item !== "其他").join("、"),
-        platformOther: platformOtherCheck.checked ? platformOtherEl.value.trim() : "",
+        platforms: normalizedPlatforms.join("、"),
+        platformOther: platformOtherValue,
         purpose: form.elements.purpose.value.trim(),
         loginMethod: valueOrOther(loginMethodEl, loginMethodOtherEl),
         permission: valueOrOther(permissionEl, permissionOtherEl),
