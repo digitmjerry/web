@@ -774,8 +774,6 @@
                 <label class="check-item"><input type="checkbox" name="platforms" value="Google Tag Manager">Google Tag Manager</label>
                 <label class="check-item"><input type="checkbox" name="platforms" value="Microsoft">Microsoft</label>
                 <label class="check-item"><input type="checkbox" name="platforms" value="Notion">Notion</label>
-                <label class="check-item"><input type="checkbox" name="platforms" value="Shopee">Shopee</label>
-                <label class="check-item"><input type="checkbox" name="platforms" value="Threads">Threads</label>
                 <label class="check-item"><input type="checkbox" id="platformOtherCheck" name="platforms" value="其他">其他</label>
               </div>
             </div>
@@ -800,7 +798,6 @@
                 <option>手機號碼 + 驗證碼</option>
                 <option>Facebook 登入</option>
                 <option>Apple 登入</option>
-                <option>不確定</option>
                 <option value="其他">其他</option>
               </select>
             </div>
@@ -813,12 +810,10 @@
             <div class="field">
               <label for="permission">權限等級</label>
               <select id="permission" name="permission">
-                <option value="">不確定 / 未填</option>
+                <option value="">管理者</option>
                 <option>管理者</option>
                 <option>一般使用者</option>
                 <option>唯讀使用者</option>
-                <option>素材 / 編輯權限</option>
-                <option>廣告投放權限</option>
                 <option value="其他">其他</option>
               </select>
             </div>
@@ -841,14 +836,12 @@
               <div class="radio-row">
                 <label class="radio-item"><input type="radio" name="phoneBound" value="有" required>有</label>
                 <label class="radio-item"><input type="radio" name="phoneBound" value="沒有">沒有</label>
-                <label class="radio-item"><input type="radio" name="phoneBound" value="不確定">不確定</label>
               </div>
             </div>
 
             <div class="field conditional full" id="phone-wrap">
               <label class="required" for="phone">完整手機號碼</label>
               <input id="phone" name="phone" type="text" placeholder="例如：0912-345-678" inputmode="tel" autocomplete="tel">
-              <div class="hint">因會收完整手機號碼，請確認 Google 試算表權限僅開放必要管理者。</div>
             </div>
 
             <div class="field full">
@@ -856,7 +849,6 @@
               <div class="radio-row">
                 <label class="radio-item"><input type="radio" name="twoFactorEnabled" value="有" required>有</label>
                 <label class="radio-item"><input type="radio" name="twoFactorEnabled" value="沒有">沒有</label>
-                <label class="radio-item"><input type="radio" name="twoFactorEnabled" value="不確定">不確定</label>
               </div>
             </div>
 
@@ -868,7 +860,6 @@
                 <option>驗證器 App</option>
                 <option>Email 驗證碼</option>
                 <option>平台推播確認</option>
-                <option>不確定</option>
                 <option value="其他">其他</option>
               </select>
             </div>
@@ -890,7 +881,6 @@
                 <option>待確認</option>
                 <option>停用</option>
                 <option>無法登入</option>
-                <option>不確定</option>
               </select>
             </div>
 
@@ -1119,7 +1109,7 @@
       try {
         const result = await submitPayload(buildPayload());
         resetEntryKeepDefaults();
-        setStatus("ok", "資料已送出，可繼續新增下一筆。請到 Google 試算表確認是否寫入。");
+        setStatus("ok", "資料已送出，可繼續新增下一筆。");
       } catch (error) {
         console.error(error);
         setStatus("error", "送出失敗，請確認網路或 Apps Script 設定。");
