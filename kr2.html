@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>資訊安全與 MIS 控管措施優化成果報告</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #334155;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --accent-blue: #0369a1;
+      --accent-sky: #0284c7;
+      --bg-gradient: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
+    }
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      color: var(--text-main);
+      background-color: var(--bg);
+      font-family: "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.7;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .header-banner {
+      background: var(--bg-gradient);
+      border-radius: 12px;
+      padding: 35px;
+      margin-bottom: 35px;
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(3, 105, 161, 0.12);
+    }
+    
+    h1 {
+      font-size: 26px;
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 13px;
+      color: #e0f2fe;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+    
+    .meta-info {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #bae6fd;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+    
+    .meta-info strong {
+      color: #ffffff;
+    }
+    
+    h2 {
+      font-size: 18px;
+      color: var(--accent-blue);
+      border-left: 5px solid var(--accent-sky);
+      padding-left: 12px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
+    p {
+      margin-bottom: 15px;
+      color: var(--text-main);
+      text-align: justify;
+    }
+    
+    .highlight-box {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 5px solid #16a34a;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+    
+    .highlight-box p {
+      margin-bottom: 0;
+      color: #166534;
+      font-size: 15px;
+    }
+    
+    .table-container {
+      overflow-x: auto;
+      margin: 20px 0 35px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: left;
+      background-color: var(--surface);
+    }
+    
+    th {
+      background-color: #f1f5f9;
+      color: var(--text-dark);
+      font-weight: 600;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--border);
+    }
+    
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-main);
+      vertical-align: top;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+    
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-date {
+      font-size: 12px;
+      color: var(--accent-blue);
+      background-color: #e0f2fe;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      border: 1px solid #bae6fd;
+    }
+    
+    ul {
+      margin-left: 22px;
+      margin-bottom: 15px;
+      color: var(--text-main);
+    }
+    
+    li {
+      margin-bottom: 8px;
+    }
+    
+    /* 成果照片樣式控制 */
+    .evidence-pic {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 20px auto 10px auto;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    code {
+      font-family: Consolas, Monaco, monospace;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      .card-title { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-banner">
+    <div class="subtitle">MIS & Cybersecurity Optimization Report</div>
+    <h1>資訊安全與 MIS 控管措施優化成果報告</h1>
+    <div class="meta-info">
+      <span>年度成果：<strong>2026 年上半年</strong></span>
+      <span>執行單位：<strong>資訊技術中心 / MIS</strong></span>
+      <span>評估指標：<strong>高風險漏洞防禦 × 核心控制措施落地</strong></span>
+    </div>
+  </div>
+
+  <h2>一、 執行摘要</h2>
+  <div class="highlight-box">
+    <p>依據本年度之資安風險評估與重大漏洞通報，MIS 團隊針對外部核心防禦邊界、端點安全及外部資產盲區進行精準強化。於 2026 年上半年期間，成功落實 5 項重大資安漏洞修補與 MIS 控管措施。本專案以極高的執行效率，及時封堵了外部網頁防火牆的高危驗證繞過漏洞，並全面填補端點設備、密碼強度、公用帳號交接及數位廣告資產之管理盲區，大幅提升整體營運合規性與扺禦外部威脅之能力。</p>
+  </div>
+
+  <h2>二、 五大優化措施效益總覽</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 15%;">上線日期</th>
+          <th style="width: 30%;">優化控制措施 / 專案</th>
+          <th style="width: 35%;">防範之核心風險痛點</th>
+          <th style="width: 20%;">日常運作現況與綜效</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2026/03/02</td>
+          <td><strong>FortiWeb 防火牆重大漏洞修補</strong></td>
+          <td>未經身分驗證之外部攻擊者，可利用特製檔案繞過登入驗證機制之高危風險。</td>
+          <td>成功由 <code>7.4.9</code> 升級至 <code>7.4.11</code> 新版韌體，確保網頁邊界防禦穩固。</td>
+        </tr>
+        <tr>
+          <td>2026/03/26</td>
+          <td><strong>空白密碼登入電腦改善</strong></td>
+          <td>未設密碼之公務機遭實體接觸、竊取內部機密資訊之風險。</td>
+          <td>全面落實系統密碼化與自動螢幕鎖定管理。</td>
+        </tr>
+        <tr>
+          <td>2026/04/21</td>
+          <td><strong>強化外部公用帳號管理+公務驗證手機門號</strong></td>
+          <td>異動人員未交接、外部服務綁定個人門號導致資產遺失與越權風險。</td>
+          <td>專屬公務門號統一集中管理，建構標準化交接稽核流。</td>
+        </tr>
+        <tr>
+          <td>2026/05/14</td>
+          <td><strong>導入 ninjaOne RMM 管理公務筆電</strong></td>
+          <td>遠端/外派公務筆記型電腦維護盲區、系統漏洞未及時修補漏洞。</td>
+          <td>端點 Agent 部署，實現主動式監控與遠端快速支援。</td>
+        </tr>
+        <tr>
+          <td>2026/05/29</td>
+          <td><strong>完成數字廣告外部帳號盤點儀表板</strong></td>
+          <td>行銷/媒體渠道公用帳號缺乏追蹤，多數未開啟 2FA 之帳號遭盜用風險。</td>
+          <td>資料視覺化呈現，即時掌握高風險外部帳號現況與分佈。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>三、 各項控制措施執行細節</h2>
+
+  <div class="card">
+    <div class="card-title">
+      <span>1. FortiWeb 邊界網頁防火牆重大漏洞修補</span>
+      <span class="card-date">2026/03/02</span>
+    </div>
+    <p><strong>核心執行內容：</strong> 針對 FortiWeb 網頁應用程式防火牆所通報之「驗證繞過漏洞」進行緊急事件應變與應急修補。</p>
+    <ul>
+      <li><strong>漏洞風險評估：</strong> 該漏洞允許未經身分驗證的攻擊者利用特製的檔案，直接繞過防火牆的登入身分驗證機制，取得潛在的管理或控管權限。</li>
+      <li><strong>版本升級實施：</strong> MIS 團隊成功將防火牆韌體由原舊版 <code>7.4.9</code> 升級更新至新版 <code>7.4.11</code>。</li>
+    </ul>
+    <img src="https://digitmjerry.github.io/web/krpic/kr21.jpg" alt="FortiWeb 漏洞修補完成照片" class="evidence-pic">
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>2. 空白密碼登入電腦改善專案</span>
+      <span class="card-date">2026/03/26</span>
+    </div>
+    <p><strong>核心執行內容：</strong> 針對終端設備管理盲區，全面強制執行密碼安全性規範與實體存取控管。</p>
+    <ul>
+      <li><strong>技術規範落地：</strong> 強制規範所有同仁公務電腦取消空白密碼登入設定，必須設置符合複雜度之登入密碼。</li>
+      <li><strong>實體行為防護：</strong> 啟用系統自動鎖定功能，降低電腦在同仁離座期間遭非授權人員實體接觸之風險。</li>
+    </ul>
+    <img src="https://digitmjerry.github.io/web/krpic/kr22.jpg" alt="空白密碼登入電腦改善完成照片" class="evidence-pic">
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>3. 強化外部公用帳號管理與公務驗證手機門號</span>
+      <span class="card-date">2026/04/21</span>
+    </div>
+    <p><strong>核心執行內容：</strong> 針對各單位因業務需求申請之外部公用/共用帳號（如雲端工具、第三方服務），建立權限回收與資產存續機制。</p>
+    <ul>
+      <li><strong>公務手機門號綁定：</strong> 統一規範外部公用帳號之兩步驟驗證（2FA）及密碼重設手機，必須優先綁定公務專用門號。</li>
+      <li><strong>消除資產斷層：</strong> 避免因異動人員未妥善交接或綁定個人門號，導致同仁離職後公司外部渠道資產遺失之潛在風險。</li>
+    </ul>
+    <img src="https://digitmjerry.github.io/web/krpic/kr23.jpg" alt="外部公用帳號管理與公務驗證門號完成照片" class="evidence-pic">
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>4. 導入 ninjaOne RMM 管理公務用筆記型電腦</span>
+      <span class="card-date">2026/05/14</span>
+    </div>
+    <p><strong>核心執行內容：</strong> 為了將離網與外派之公務筆記型電腦納入 MIS 常態合規監控，本中心成功推動並全面部署 ninjaOne RMM 端點軟體。</p>
+    <ul>
+      <li><strong>主動式維運監控：</strong> 納入日常 MIS 營運流程後，系統可針對公務用筆記型電腦進行即時硬體狀態與軟體清查監控。</li>
+      <li><strong>自動化資安補丁：</strong> 實現遠端漏洞修補之自動化更新，解決遠端/外派公務筆記型電腦維護盲區。</li>
+    </ul>
+    <img src="https://digitmjerry.github.io/web/krpic/kr24.jpg" alt="導入 ninjaOne RMM 管理完成照片" class="evidence-pic">
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>5. 完成數字廣告外部帳號盤點儀表板</span>
+      <span class="card-date">2026/05/29</span>
+    </div>
+    <p><strong>核心執行內容：</strong> 將外部渠道帳號盤點資料全面資料化與視覺化，成功建構具備風險識別功能之「數字廣告外部帳號盤點儀表板」。</p>
+
+    <ul>
+      <li><strong>風險全面揭露：</strong> 解決過往行銷、媒體與廣告渠道公用帳號缺乏集中追蹤的痛點，特別是針對許多多數未開啟 2FA（雙重驗證）之帳號。</li>
+      <li><strong>精準強制改善：</strong> 儀表板的完工提供了 MIS 團隊清晰的資產全貌，能更有效預防外部廣告帳號遭惡意盜用。</li>
+    </ul>
+    <img src="https://digitmjerry.github.io/web/krpic/kr25.jpg" alt="數字廣告外部帳號盤點儀表板完成照片" class="evidence-pic">
+  </div>
+
+</body>
+</html>
