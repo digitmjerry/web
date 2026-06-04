@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Google Workspace 授權可視化報表</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
     :root {
       color-scheme: light;
       --bg: #f8fafc;
@@ -23,7 +25,11 @@
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -31,11 +37,17 @@
       letter-spacing: -0.01em;
       color: var(--text);
       background-color: var(--bg);
-      background-image: 
+      background-image:
         radial-gradient(at 0% 0%, rgba(26, 115, 232, 0.04) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(232, 113, 10, 0.04) 0px, transparent 50%);
     }
-    main { width: min(1360px, calc(100% - 40px)); margin: 0 auto; padding: 32px 0 48px; }
+
+    main {
+      width: min(1360px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
     header {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -45,76 +57,418 @@
       border-bottom: 1px solid var(--line);
       margin-bottom: 30px;
     }
-    h1 { margin: 0; font-size: clamp(24px, 3.5vw, 36px); font-weight: 800; color: #0f172a; }
-    h2 { margin: 0; font-size: 26px; font-weight: 700; color: #0f172a; }
-    h2 small { display: block; margin-top: 4px; color: var(--muted); font-size: 14px; font-weight: 500; }
-    h3 { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: #0f172a; }
-    .subtitle { margin: 8px 0 0; color: var(--muted); font-size: 14px; font-weight: 400; }
-    .meta { text-align: right; color: var(--muted); font-size: 14px; }
-    .meta strong { color: var(--blue); }
-    
-    .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
-    .kpi, .panel, .license-card {
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    h2 small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    h3 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .meta {
+      text-align: right;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta strong {
+      color: var(--blue);
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi,
+    .panel,
+    .license-card {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 12px;
       box-shadow: var(--shadow);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .kpi:hover, .panel:hover, .license-card:hover {
+
+    .kpi:hover,
+    .panel:hover,
+    .license-card:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
-    .kpi { padding: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
-    .kpi span { display: block; color: var(--muted); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .kpi strong { display: block; margin-top: 8px; font-size: 32px; font-weight: 800; line-height: 1; color: #0f172a; }
-    .kpi small { display: block; margin-top: auto; color: var(--muted); font-size: 12px; font-weight: 500; }
-    
-    .license-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 24px; }
-    .license-card { padding: 24px; position: relative; overflow: hidden; }
-    .license-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--accent); }
-    .license-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-    .eyebrow { margin: 0 0 4px; color: var(--muted); font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; }
-    .donut { width: 110px; height: 110px; flex: none; }
-    .donut-value { font-size: 24px; font-weight: 800; fill: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; }
-    .donut-label { font-size: 10px; fill: var(--muted); font-weight: 600; }
-    
-    .license-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
-    .license-metrics div, .mini-grid div { background: var(--soft); border-radius: 8px; padding: 14px; border: 1px solid rgba(0, 0, 0, 0.02); }
-    .license-metrics span, .mini-grid span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; }
-    .license-metrics strong { display: block; margin-top: 6px; font-size: 28px; font-weight: 800; color: var(--text); }
-    
-    .bar-track { height: 10px; border-radius: 999px; background: #e2e8f0; overflow: hidden; margin: 20px 0; }
-    .bar-fill { height: 100%; background: var(--accent); border-radius: inherit; }
-    
-    .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .mini-grid strong { display: block; margin-top: 6px; font-size: 18px; font-weight: 700; color: var(--text); }
-    
-    .grid-2 { display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; margin-bottom: 24px; }
-    .panel { padding: 24px; }
-    .availability-row { display: grid; grid-template-columns: 160px 1fr 50px; gap: 16px; align-items: center; margin: 16px 0; }
-    .availability-row em { display: block; margin-top: 4px; color: var(--text); font-size: 14px; font-style: normal; font-weight: 700; }
-    .availability-track { height: 16px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
-    .availability-track i { display: block; height: 100%; border-radius: inherit; }
-    .availability-row b { text-align: right; font-size: 22px; font-weight: 800; color: var(--green); }
-    
-    .usage-row { display: grid; grid-template-columns: 240px 1fr 90px; gap: 16px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
-    .usage-row:last-child { border-bottom: 0; }
-    .usage-name strong { display: block; font-size: 14px; color: #0f172a; }
-    .usage-name span { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
-    .stacked-bar { height: 16px; background: #f1f5f9; border-radius: 999px; overflow: hidden; display: flex; }
-    .stacked-bar i { display: block; height: 100%; }
-    .stacked-bar .email { background: var(--pink); }
-    .stacked-bar .drive { background: var(--cyan); }
-    .usage-row b { text-align: right; font-size: 14px; font-weight: 700; color: #0f172a; }
-    
-    .security-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin: 24px 0; }
-    .security-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-    .security-summary div { border-radius: 8px; padding: 16px; background: #f8fafc; border: 1px solid var(--line); }
-    .security-summary span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; }
-    .security-summary strong { display: block; margin-top: 6px; font-size: 24px; font-weight: 800; color: var(--text); }
-    .panel-note { margin: 0; color: var(--muted); font-size: 13px; }
-    
+
+    .kpi {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 120px;
+    }
+
+    .kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+      color: #0f172a;
+    }
+
+    .kpi small {
+      display: block;
+      margin-top: auto;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .license-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .license-card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .license-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    .license-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .donut {
+      width: 110px;
+      height: 110px;
+      flex: none;
+    }
+
+    .donut-value {
+      font-size: 24px;
+      font-weight: 800;
+      fill: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .donut-label {
+      font-size: 10px;
+      fill: var(--muted);
+      font-weight: 600;
+    }
+
+    .license-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .license-metrics div,
+    .mini-grid div {
+      background: var(--soft);
+      border-radius: 8px;
+      padding: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    .license-metrics span,
+    .mini-grid span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .license-metrics strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: inherit;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .mini-grid strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .panel {
+      padding: 24px;
+    }
+
+    .availability-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 50px;
+      gap: 16px;
+      align-items: center;
+      margin: 16px 0;
+    }
+
+    .availability-row em {
+      display: block;
+      margin-top: 4px;
+      color: var(--text);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .availability-track {
+      height: 16px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .availability-track i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+    }
+
+    .availability-row b {
+      text-align: right;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .usage-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 80px 80px 100px;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--line);
+      border-radius: 6px;
+    }
+
+    .usage-row:last-child {
+      border-bottom: 0;
+    }
+
+    .usage-row:hover {
+      background: #f1f5f9;
+    }
+
+    .usage-name strong {
+      display: block;
+      font-size: 14px;
+      color: #0f172a;
+    }
+
+    .usage-name span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .stacked-bar {
+      height: 14px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .stacked-bar i {
+      display: block;
+      height: 100%;
+    }
+
+    .stacked-bar .email {
+      background: var(--pink);
+    }
+
+    .stacked-bar .drive {
+      background: var(--cyan);
+    }
+
+    .usage-row b {
+      text-align: right;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .usage-val {
+      text-align: right;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .usage-val.email-val {
+      color: #be185d;
+    }
+
+    .usage-val.drive-val {
+      color: #0e7490;
+    }
+
+    .version-stripe-standard {
+      border-left: 3px solid #1a73e8;
+      padding-left: 8px;
+    }
+
+    .version-stripe-starter {
+      border-left: 3px solid #e8710a;
+      padding-left: 8px;
+    }
+
+    .usage-row--alert {
+      background: linear-gradient(90deg, #fff1f2 0%, #fff7ed 100%);
+      border-left: 4px solid #ef4444 !important;
+      padding-left: 10px;
+    }
+
+    .usage-row--alert b {
+      color: #dc2626;
+      font-size: 15px;
+    }
+
+    .usage-row--alert .usage-name strong::after {
+      content: ' ⚠';
+      color: #ef4444;
+      font-size: 12px;
+      vertical-align: super;
+    }
+
+    .security-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .security-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .security-summary div {
+      border-radius: 8px;
+      padding: 16px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+
+    .security-summary span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .security-summary strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .panel-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .version-badge {
       display: inline-flex;
       align-items: center;
@@ -128,13 +482,14 @@
       border: 1px solid var(--badge);
       white-space: nowrap;
     }
+
     .version-badge small {
       font-size: 10px;
       color: var(--badge);
       opacity: 0.8;
       font-weight: 600;
     }
-    
+
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -145,17 +500,19 @@
       background: #f3f4f6;
       color: #4b5563;
     }
+
     .status-active {
       background: #d1fae5;
       color: #065f46;
       border: 1px solid #a7f3d0;
     }
+
     .status-suspended {
       background: #fee2e2;
       color: #991b1b;
       border: 1px solid #fecaca;
     }
-    
+
     .warning-badge {
       display: inline-flex;
       align-items: center;
@@ -168,6 +525,7 @@
       font-size: 12px;
       border: 1px solid #fca5a5;
     }
+
     .departed-badge {
       display: inline-flex;
       align-items: center;
@@ -180,49 +538,207 @@
       margin-left: 6px;
       border: 1px solid #fca5a5;
     }
-    
-    .legend { display: flex; gap: 16px; margin-top: 12px; color: var(--muted); font-size: 12px; font-weight: 500; }
-    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 99px; margin-right: 6px; vertical-align: middle; }
-    
-    .table-panel { margin-top: 24px; overflow: hidden; }
-    .table-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 16px; }
-    .table-head p { margin: 0; color: var(--muted); font-size: 13px; font-weight: 500; }
-    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
-    
-    table { width: 100%; border-collapse: collapse; min-width: 900px; background: #fff; }
-    th, td { padding: 14px 16px; text-align: left; font-size: 14px; vertical-align: middle; }
-    th { background: #f8fafc; color: #475569; font-weight: 600; font-size: 13px; border-bottom: 2px solid var(--line); }
-    td span { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
-    tr { border-bottom: 1px solid var(--line); transition: background-color 0.15s ease; }
-    tr:last-child { border-bottom: 0; }
-    tr:hover td { background: #f8fafc; }
-    
-    tr.departed-row { background: #fff5f5; }
-    tr.departed-row:hover td { background: #ffebeb; }
-    tr.over-limit-row { background: #fffbeb; }
-    tr.over-limit-row:hover td { background: #fef3c7; }
-    
-    .text-danger { color: var(--red); }
-    .font-bold { font-weight: 700; }
-    .empty { text-align: center; color: var(--muted); padding: 32px; font-style: italic; }
-    
-    @media (max-width: 980px) {
-      main { width: min(100% - 24px, 760px); padding-top: 20px; }
-      header, .license-grid, .grid-2, .security-grid { grid-template-columns: 1fr; }
-      .meta { text-align: left; margin-top: 10px; }
-      .kpis { grid-template-columns: repeat(2, 1fr); }
-      .usage-row { grid-template-columns: 1fr; gap: 8px; }
-      .usage-row b { text-align: left; }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
     }
+
+    .legend i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .scroll-chart::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .scroll-chart::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 99px;
+    }
+
+    .scroll-chart::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 99px;
+    }
+
+    .scroll-chart::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .table-panel {
+      margin-top: 24px;
+      overflow: hidden;
+    }
+
+    .table-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+
+    .table-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      font-size: 13px;
+      border-bottom: 2px solid var(--line);
+    }
+
+    td span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    tr {
+      border-bottom: 1px solid var(--line);
+      transition: background-color 0.15s ease;
+    }
+
+    tr:last-child {
+      border-bottom: 0;
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    tr.departed-row {
+      background: #fff5f5;
+    }
+
+    tr.departed-row:hover td {
+      background: #ffebeb;
+    }
+
+    tr.over-limit-row {
+      background: #fffbeb;
+    }
+
+    tr.over-limit-row:hover td {
+      background: #fef3c7;
+    }
+
+    .text-danger {
+      color: var(--red);
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 32px;
+      font-style: italic;
+    }
+
+    @media (max-width: 980px) {
+      main {
+        width: min(100% - 24px, 760px);
+        padding-top: 20px;
+      }
+
+      header,
+      .license-grid,
+      .grid-2,
+      .security-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .meta {
+        text-align: left;
+        margin-top: 10px;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .usage-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .usage-row b {
+        text-align: left;
+      }
+    }
+
     @media (max-width: 560px) {
-      .kpis, .license-metrics, .mini-grid, .security-summary { grid-template-columns: 1fr; }
-      .license-head { align-items: flex-start; flex-direction: column; }
-      .donut { width: 96px; height: 96px; margin-top: 10px; }
-      .availability-row { grid-template-columns: 1fr; gap: 8px; }
-      .availability-row b { text-align: left; }
+
+      .kpis,
+      .license-metrics,
+      .mini-grid,
+      .security-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .license-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .donut {
+        width: 96px;
+        height: 96px;
+        margin-top: 10px;
+      }
+
+      .availability-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .availability-row b {
+        text-align: left;
+      }
     }
   </style>
 </head>
+
 <body>
   <main>
     <header>
@@ -231,7 +747,7 @@
         <p class="subtitle">授權餘額、已離職未收回授權、以及超過 100GB 的帳號使用量追蹤。</p>
       </div>
       <div class="meta">
-        <div>最後更新時間：<strong>2026-06-04 15:00</strong></div>
+        <div>最後更新時間：<strong>2026-06-04 16:41</strong></div>
       </div>
     </header>
 
@@ -244,246 +760,80 @@
     </section>
 
     <section class="license-grid">
-      
-    <section class="license-card" style="--accent:#1a73e8;--soft:#e8f0fe;">
-      <div class="license-head">
-        <div>
-          <p class="eyebrow">Google Workspace 版本</p>
-          <h2><span>標準版</span><small>Standard</small></h2>
-        </div>
-        
-    <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="授權使用比例">
-      <circle cx="60" cy="60" r="44" fill="none" stroke="#e5e7eb" stroke-width="18"></circle>
-      <circle cx="60" cy="60" r="44" fill="none" stroke="#1a73e8" stroke-width="18"
-        stroke-linecap="round" stroke-dasharray="267.54 8.92" transform="rotate(-90 60 60)"></circle>
-      <text x="60" y="56" text-anchor="middle" class="donut-value">97%</text>
-      <text x="60" y="75" text-anchor="middle" class="donut-label">已指派</text>
-    </svg>
-    
-      </div>
-      <div class="license-metrics">
-        <div><span>已購買</span><strong>31</strong></div>
-        <div><span>已指派</span><strong>30</strong></div>
-        <div><span>可用</span><strong>1</strong></div>
-      </div>
-      <div class="bar-track"><div class="bar-fill" style="width:96.8%"></div></div>
-      <div class="mini-grid">
-        <div><span>總用量</span><strong>1.41 TB</strong></div>
-        <div><span>超過 100GB</span><strong>4</strong></div>
-        <div><span>已離職未收回</span><strong>1</strong></div>
-      </div>
-    </section>
-    
 
-    <section class="license-card" style="--accent:#e8710a;--soft:#fef7e0;">
-      <div class="license-head">
-        <div>
-          <p class="eyebrow">Google Workspace 版本</p>
-          <h2><span>入門版</span><small>Starter</small></h2>
+      <section class="license-card" style="--accent:#1a73e8;--soft:#e8f0fe;">
+        <div class="license-head">
+          <div>
+            <p class="eyebrow">Google Workspace 版本</p>
+            <h2><span>標準版</span><small>Standard</small></h2>
+          </div>
+
+          <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="授權使用比例">
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#e5e7eb" stroke-width="18"></circle>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#1a73e8" stroke-width="18" stroke-linecap="round"
+              stroke-dasharray="267.54 8.92" transform="rotate(-90 60 60)"></circle>
+            <text x="60" y="56" text-anchor="middle" class="donut-value">97%</text>
+            <text x="60" y="75" text-anchor="middle" class="donut-label">已指派</text>
+          </svg>
+
         </div>
-        
-    <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="授權使用比例">
-      <circle cx="60" cy="60" r="44" fill="none" stroke="#e5e7eb" stroke-width="18"></circle>
-      <circle cx="60" cy="60" r="44" fill="none" stroke="#e8710a" stroke-width="18"
-        stroke-linecap="round" stroke-dasharray="251.70 24.76" transform="rotate(-90 60 60)"></circle>
-      <text x="60" y="56" text-anchor="middle" class="donut-value">91%</text>
-      <text x="60" y="75" text-anchor="middle" class="donut-label">已指派</text>
-    </svg>
-    
-      </div>
-      <div class="license-metrics">
-        <div><span>已購買</span><strong>67</strong></div>
-        <div><span>已指派</span><strong>61</strong></div>
-        <div><span>可用</span><strong>6</strong></div>
-      </div>
-      <div class="bar-track"><div class="bar-fill" style="width:91.0%"></div></div>
-      <div class="mini-grid">
-        <div><span>總用量</span><strong>1.35 TB</strong></div>
-        <div><span>超過 100GB</span><strong>2</strong></div>
-        <div><span>已離職未收回</span><strong>1</strong></div>
-      </div>
-    </section>
-    
+        <div class="license-metrics">
+          <div><span>已購買</span><strong>31</strong></div>
+          <div><span>已指派</span><strong>30</strong></div>
+          <div><span>可用</span><strong>1</strong></div>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:96.8%"></div>
+        </div>
+        <div class="mini-grid">
+          <div><span>總用量</span><strong>1.41 TB</strong></div>
+          <div><span>超過 100GB</span><strong>4</strong></div>
+          <div><span>已離職未收回</span><strong>1</strong></div>
+        </div>
+      </section>
+
+
+      <section class="license-card" style="--accent:#e8710a;--soft:#fef7e0;">
+        <div class="license-head">
+          <div>
+            <p class="eyebrow">Google Workspace 版本</p>
+            <h2><span>入門版</span><small>Starter</small></h2>
+          </div>
+
+          <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="授權使用比例">
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#e5e7eb" stroke-width="18"></circle>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#e8710a" stroke-width="18" stroke-linecap="round"
+              stroke-dasharray="251.70 24.76" transform="rotate(-90 60 60)"></circle>
+            <text x="60" y="56" text-anchor="middle" class="donut-value">91%</text>
+            <text x="60" y="75" text-anchor="middle" class="donut-label">已指派</text>
+          </svg>
+
+        </div>
+        <div class="license-metrics">
+          <div><span>已購買</span><strong>67</strong></div>
+          <div><span>已指派</span><strong>61</strong></div>
+          <div><span>可用</span><strong>6</strong></div>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:91.0%"></div>
+        </div>
+        <div class="mini-grid">
+          <div><span>總用量</span><strong>1.35 TB</strong></div>
+          <div><span>超過 100GB</span><strong>2</strong></div>
+          <div><span>已離職未收回</span><strong>1</strong></div>
+        </div>
+      </section>
+
     </section>
 
-    <section class="grid-2">
-      <div class="panel">
-        <h3>各版本授權可用數量</h3>
-        
-            <div class="availability-row">
-              <div>
-                <strong>標準版</strong>
-                <em>標準版（Standard）</em>
-                <span>30 / 31 已指派</span>
-              </div>
-              <div class="availability-track">
-                <i style="width:3.2%;background:#1a73e8"></i>
-              </div>
-              <b>1</b>
-            </div>
-            
-            <div class="availability-row">
-              <div>
-                <strong>入門版</strong>
-                <em>入門版（Starter）</em>
-                <span>61 / 67 已指派</span>
-              </div>
-              <div class="availability-track">
-                <i style="width:9.0%;background:#e8710a"></i>
-              </div>
-              <b>6</b>
-            </div>
-            
+    <section class="panel">
+      <h3>長期未登入檢查</h3>
+      <div class="security-summary">
+        <div><span>180 天以上未登入</span><strong>1</strong></div>
+        <div><span>從未登入</span><strong>1</strong></div>
+        <div><span>其中有離職標記</span><strong>0</strong></div>
       </div>
-      <div class="panel">
-        <h3>總用量前 12 名</h3>
-        
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>數字廣告業務行政</strong>
-                <span>入門版（Starter） · teamwork@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="152.51 GB">
-                <i class="email" style="width:100.0%"></i>
-                <i class="drive" style="width:0.0%"></i>
-              </div>
-              <b>152.51 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>林家興</strong>
-                <span>標準版（Standard） · lch@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="135.62 GB">
-                <i class="email" style="width:25.7%"></i>
-                <i class="drive" style="width:63.3%"></i>
-              </div>
-              <b>135.62 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>陳怡雯</strong>
-                <span>標準版（Standard） · chen_mina@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="120.51 GB">
-                <i class="email" style="width:31.1%"></i>
-                <i class="drive" style="width:47.9%"></i>
-              </div>
-              <b>120.51 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>羅翊云</strong>
-                <span>標準版（Standard） · ariello@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="114.36 GB">
-                <i class="email" style="width:4.5%"></i>
-                <i class="drive" style="width:70.5%"></i>
-              </div>
-              <b>114.36 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>蔡嘉峰</strong>
-                <span>標準版（Standard） · ricotsai@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="113.27 GB">
-                <i class="email" style="width:71.4%"></i>
-                <i class="drive" style="width:2.9%"></i>
-              </div>
-              <b>113.27 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>張淑瑜</strong>
-                <span>入門版（Starter） · sammy@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="112.73 GB">
-                <i class="email" style="width:71.2%"></i>
-                <i class="drive" style="width:2.7%"></i>
-              </div>
-              <b>112.73 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>張凱晴</strong>
-                <span>入門版（Starter） · annachang@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="97.07 GB">
-                <i class="email" style="width:63.6%"></i>
-                <i class="drive" style="width:0.1%"></i>
-              </div>
-              <b>97.07 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>任御文</strong>
-                <span>標準版（Standard） · elainejen@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="77.20 GB">
-                <i class="email" style="width:50.5%"></i>
-                <i class="drive" style="width:0.1%"></i>
-              </div>
-              <b>77.20 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>連秀莉</strong>
-                <span>標準版（Standard） · amberlian@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="75.99 GB">
-                <i class="email" style="width:49.3%"></i>
-                <i class="drive" style="width:0.5%"></i>
-              </div>
-              <b>75.99 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>胡嘉倩</strong>
-                <span>標準版（Standard） · sandy.hu@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="69.03 GB">
-                <i class="email" style="width:17.7%"></i>
-                <i class="drive" style="width:27.6%"></i>
-              </div>
-              <b>69.03 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>黃子芳</strong>
-                <span>入門版（Starter） · fanghuang@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="68.68 GB">
-                <i class="email" style="width:42.3%"></i>
-                <i class="drive" style="width:2.7%"></i>
-              </div>
-              <b>68.68 GB</b>
-            </div>
-            
-            <div class="usage-row">
-              <div class="usage-name">
-                <strong>黃縈楨</strong>
-                <span>標準版（Standard） · jessiehuang@digitm.com.tw</span>
-              </div>
-              <div class="stacked-bar" title="66.51 GB">
-                <i class="email" style="width:43.4%"></i>
-                <i class="drive" style="width:0.2%"></i>
-              </div>
-              <b>66.51 GB</b>
-            </div>
-            
-        <div class="legend"><span><i style="background:var(--pink)"></i>Email</span><span><i style="background:var(--cyan)"></i>Drive</span></div>
-      </div>
+
     </section>
 
     <section class="panel">
@@ -497,31 +847,52 @@
         <div style="height:100%;width:76.9%;background:var(--pink);float:left"></div>
         <div style="height:100%;width:23.1%;background:var(--cyan);float:left"></div>
       </div>
-      <div class="legend"><span><i style="background:var(--pink)"></i>Email 76.9%</span><span><i style="background:var(--cyan)"></i>Drive 23.1%</span></div>
-    </section>
-
-    <section class="security-grid">
-      <div class="panel">
-        <h3>長期未登入檢查</h3>
-        <div class="security-summary">
-          <div><span>180 天以上未登入</span><strong>1</strong></div>
-          <div><span>從未登入</span><strong>1</strong></div>
-          <div><span>其中有離職標記</span><strong>0</strong></div>
-        </div>
-        <p class="panel-note">判斷規則：最後登入距離更新時間達 180 天以上，或狀態欄位為 Never logged in。</p>
-      </div>
+      <div class="legend"><span><i style="background:var(--pink)"></i>Email 76.9%</span><span><i
+            style="background:var(--cyan)"></i>Drive 23.1%</span></div>
     </section>
 
     <section class="panel table-panel">
       <div class="table-head">
         <h3>已離職未收回授權</h3>
-        <p>姓名包含「離職、離任、退職、待刪、刪、停用、停權」且授權仍被指派者。</p>
+
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>姓名 / Email</th><th>版本</th><th>狀態</th><th>最後登入</th><th>Email</th><th>Drive</th><th>總用量</th></tr></thead>
-          <tbody><tr class="departed-row"><td><strong>陳郁雯(已離職6/20刪) <span class="departed-badge">已離職</span></strong><span>vivianchen@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#1a73e8;--badge-bg:#e8f0fe">標準版<small>Standard</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-05-24 22:10:16</td><td>24.53 GB</td><td>25.46 GB</td><td><strong>49.99 GB</strong></td></tr>
-<tr class="departed-row"><td><strong>蔡欣道（已離職） <span class="departed-badge">已離職</span></strong><span>deantsai@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-04-09 21:41:31</td><td>0.58 GB</td><td>0.02 GB</td><td><strong>0.60 GB</strong></td></tr></tbody>
+          <thead>
+            <tr>
+              <th>姓名 / Email</th>
+              <th>版本</th>
+              <th>狀態</th>
+              <th>最後登入</th>
+              <th>Email</th>
+              <th>Drive</th>
+              <th>總用量</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="departed-row">
+              <td><strong>陳郁雯(已離職6/20刪) <span
+                    class="departed-badge">已離職</span></strong><span>vivianchen@digitm.com.tw</span></td>
+              <td><span class="version-badge"
+                  style="--badge:#1a73e8;--badge-bg:#e8f0fe">標準版<small>Standard</small></span></td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>2026-05-24 22:10:16</td>
+              <td>24.53 GB</td>
+              <td>25.46 GB</td>
+              <td><strong>49.99 GB</strong></td>
+            </tr>
+            <tr class="departed-row">
+              <td><strong>蔡欣道（已離職） <span class="departed-badge">已離職</span></strong><span>deantsai@digitm.com.tw</span>
+              </td>
+              <td><span class="version-badge"
+                  style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>2026-04-09 21:41:31</td>
+              <td>0.58 GB</td>
+              <td>0.02 GB</td>
+              <td><strong>0.60 GB</strong></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -533,30 +904,1605 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>姓名 / Email</th><th>版本</th><th>最後登入</th><th>未登入時間</th><th>離職標記</th></tr></thead>
-          <tbody><tr><td><strong>數字廣告行銷業務部</strong><span>sales888@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td><td>Never logged in</td><td><strong>從未登入</strong></td><td>否</td></tr>
-<tr><td><strong>HomeRunsupport</strong><span>homerun@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td><td>2025-06-25 20:33:16</td><td><strong>344 天</strong></td><td>否</td></tr></tbody>
+          <thead>
+            <tr>
+              <th>姓名 / Email</th>
+              <th>版本</th>
+              <th>最後登入</th>
+              <th>未登入時間</th>
+              <th>離職標記</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>數字廣告行銷業務部</strong><span>sales888@digitm.com.tw</span></td>
+              <td><span class="version-badge"
+                  style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td>
+              <td>Never logged in</td>
+              <td><strong>從未登入</strong></td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td><strong>HomeRunsupport</strong><span>homerun@digitm.com.tw</span></td>
+              <td><span class="version-badge"
+                  style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td>
+              <td>2025-06-25 20:33:16</td>
+              <td><strong>344 天</strong></td>
+              <td>否</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
 
-    <section class="panel table-panel">
-      <div class="table-head">
-        <h3>總用量超過 100GB</h3>
-        <p>Email + Drive 空間加總，大於 100GB 之使用者。</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>姓名 / Email</th><th>版本</th><th>狀態</th><th>最後登入</th><th>Email</th><th>Drive</th><th>總用量</th></tr></thead>
-          <tbody><tr class="over-limit-row"><td><strong>數字廣告業務行政</strong><span>teamwork@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-06-02 01:23:13</td><td>152.45 GB</td><td>0.06 GB</td><td><strong><span class="warning-badge">152.51 GB ⚠️ 已超量</span></strong></td></tr>
-<tr class="over-limit-row"><td><strong>林家興</strong><span>lch@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#1a73e8;--badge-bg:#e8f0fe">標準版<small>Standard</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-06-03 02:38:27</td><td>39.12 GB</td><td>96.50 GB</td><td><strong><span class="warning-badge">135.62 GB ⚠️ 已超量</span></strong></td></tr>
-<tr class="over-limit-row"><td><strong>陳怡雯</strong><span>chen_mina@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#1a73e8;--badge-bg:#e8f0fe">標準版<small>Standard</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-05-27 19:20:03</td><td>47.41 GB</td><td>73.10 GB</td><td><strong><span class="warning-badge">120.51 GB ⚠️ 已超量</span></strong></td></tr>
-<tr class="over-limit-row"><td><strong>羅翊云</strong><span>ariello@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#1a73e8;--badge-bg:#e8f0fe">標準版<small>Standard</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-06-01 19:25:24</td><td>6.83 GB</td><td>107.53 GB</td><td><strong><span class="warning-badge">114.36 GB ⚠️ 已超量</span></strong></td></tr>
-<tr class="over-limit-row"><td><strong>蔡嘉峰</strong><span>ricotsai@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#1a73e8;--badge-bg:#e8f0fe">標準版<small>Standard</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-06-02 08:40:21</td><td>108.83 GB</td><td>4.44 GB</td><td><strong><span class="warning-badge">113.27 GB ⚠️ 已超量</span></strong></td></tr>
-<tr class="over-limit-row"><td><strong>張淑瑜</strong><span>sammy@digitm.com.tw</span></td><td><span class="version-badge" style="--badge:#e8710a;--badge-bg:#fef7e0">入門版<small>Starter</small></span></td><td><span class="status-badge status-active">Active</span></td><td>2026-06-02 04:36:10</td><td>108.61 GB</td><td>4.12 GB</td><td><strong><span class="warning-badge">112.73 GB ⚠️ 已超量</span></strong></td></tr></tbody>
-        </table>
+    <section class="panel">
+      <h3 style="border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 20px;">儲存空間用量分析與警示</h3>
+      <div style="margin-bottom: 0;">
+        <h4 style="margin: 0 0 12px; font-size: 15px; color: var(--muted); font-weight: 600;">所有帳號儲存空間用量排行</h4>
+        <div class="scroll-chart"
+          style="max-height: 520px; overflow-y: auto; padding-right: 12px; border: 1px solid var(--line); border-radius: 8px; padding-left: 12px; background: #fafafa;">
+          <div class="usage-row usage-row-header"
+            style="position:sticky;top:0;z-index:1;background:#f1f5f9;border-bottom:2px solid var(--line);border-radius:6px 6px 0 0;padding:8px 12px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">
+            <span>姓名 / Email</span>
+            <span>用量比例</span>
+            <span style="text-align:right;color:#be185d;">📧 Email</span>
+            <span style="text-align:right;color:#0e7490;">💾 Drive</span>
+            <span style="text-align:right;color:#0f172a;">總用量</span>
+          </div>
+
+          <div class="usage-row usage-row--alert">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告業務行政</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">teamwork@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 152.45 GB / Drive 0.06 GB">
+              <i class="email" style="width:100.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">152.45 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.06 GB</span>
+            <b>152.51 GB</b>
+          </div>
+
+          <div class="usage-row usage-row--alert">
+            <div class="usage-name version-stripe-standard">
+              <strong>林家興</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">lch@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 39.12 GB / Drive 96.50 GB">
+              <i class="email" style="width:25.7%"></i>
+              <i class="drive" style="width:63.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">39.12 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">96.50 GB</span>
+            <b>135.62 GB</b>
+          </div>
+
+          <div class="usage-row usage-row--alert">
+            <div class="usage-name version-stripe-standard">
+              <strong>陳怡雯</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">chen_mina@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 47.41 GB / Drive 73.10 GB">
+              <i class="email" style="width:31.1%"></i>
+              <i class="drive" style="width:47.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">47.41 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">73.10 GB</span>
+            <b>120.51 GB</b>
+          </div>
+
+          <div class="usage-row usage-row--alert">
+            <div class="usage-name version-stripe-standard">
+              <strong>羅翊云</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">ariello@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 6.83 GB / Drive 107.53 GB">
+              <i class="email" style="width:4.5%"></i>
+              <i class="drive" style="width:70.5%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">6.83 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">107.53 GB</span>
+            <b>114.36 GB</b>
+          </div>
+
+          <div class="usage-row usage-row--alert">
+            <div class="usage-name version-stripe-standard">
+              <strong>蔡嘉峰</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">ricotsai@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 108.83 GB / Drive 4.44 GB">
+              <i class="email" style="width:71.4%"></i>
+              <i class="drive" style="width:2.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">108.83 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">4.44 GB</span>
+            <b>113.27 GB</b>
+          </div>
+
+          <div class="usage-row usage-row--alert">
+            <div class="usage-name version-stripe-starter">
+              <strong>張淑瑜</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">sammy@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 108.61 GB / Drive 4.12 GB">
+              <i class="email" style="width:71.2%"></i>
+              <i class="drive" style="width:2.7%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">108.61 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">4.12 GB</span>
+            <b>112.73 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>張凱晴</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">annachang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 96.99 GB / Drive 0.08 GB">
+              <i class="email" style="width:63.6%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">96.99 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.08 GB</span>
+            <b>97.07 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>任御文</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">elainejen@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 77.00 GB / Drive 0.20 GB">
+              <i class="email" style="width:50.5%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">77.00 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.20 GB</span>
+            <b>77.20 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>連秀莉</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">amberlian@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 75.24 GB / Drive 0.75 GB">
+              <i class="email" style="width:49.3%"></i>
+              <i class="drive" style="width:0.5%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">75.24 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.75 GB</span>
+            <b>75.99 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>胡嘉倩</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">sandy.hu@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 26.96 GB / Drive 42.07 GB">
+              <i class="email" style="width:17.7%"></i>
+              <i class="drive" style="width:27.6%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">26.96 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">42.07 GB</span>
+            <b>69.03 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>黃子芳</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">fanghuang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 64.49 GB / Drive 4.19 GB">
+              <i class="email" style="width:42.3%"></i>
+              <i class="drive" style="width:2.7%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">64.49 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">4.19 GB</span>
+            <b>68.68 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>黃縈楨</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">jessiehuang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 66.24 GB / Drive 0.27 GB">
+              <i class="email" style="width:43.4%"></i>
+              <i class="drive" style="width:0.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">66.24 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.27 GB</span>
+            <b>66.51 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>洪佩蓉</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">emilyhung@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 59.10 GB / Drive 4.41 GB">
+              <i class="email" style="width:38.8%"></i>
+              <i class="drive" style="width:2.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">59.10 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">4.41 GB</span>
+            <b>63.51 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>程鈺雯</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">cute200334@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 61.53 GB / Drive 1.26 GB">
+              <i class="email" style="width:40.3%"></i>
+              <i class="drive" style="width:0.8%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">61.53 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.26 GB</span>
+            <b>62.79 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>吳婉慈</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">wld@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 46.62 GB / Drive 15.92 GB">
+              <i class="email" style="width:30.6%"></i>
+              <i class="drive" style="width:10.4%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">46.62 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">15.92 GB</span>
+            <b>62.54 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>李綺芳</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">chifangli@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 60.35 GB / Drive 1.36 GB">
+              <i class="email" style="width:39.6%"></i>
+              <i class="drive" style="width:0.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">60.35 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.36 GB</span>
+            <b>61.71 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>張珮琪</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">lilyzhang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 61.58 GB / Drive 0.01 GB">
+              <i class="email" style="width:40.4%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">61.58 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.01 GB</span>
+            <b>61.59 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>楊亜綺</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">judyyang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 58.26 GB / Drive 1.19 GB">
+              <i class="email" style="width:38.2%"></i>
+              <i class="drive" style="width:0.8%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">58.26 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.19 GB</span>
+            <b>59.45 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>薛伊均</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">yijunxue@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 55.74 GB / Drive 1.85 GB">
+              <i class="email" style="width:36.5%"></i>
+              <i class="drive" style="width:1.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">55.74 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.85 GB</span>
+            <b>57.59 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>黃俐穎</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">lillianhuang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 41.58 GB / Drive 14.87 GB">
+              <i class="email" style="width:27.3%"></i>
+              <i class="drive" style="width:9.8%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">41.58 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">14.87 GB</span>
+            <b>56.45 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>呂佩宜</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">unalu@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 47.04 GB / Drive 3.96 GB">
+              <i class="email" style="width:30.8%"></i>
+              <i class="drive" style="width:2.6%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">47.04 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">3.96 GB</span>
+            <b>51.00 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>陳郁雯(已離職6/20刪)</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">vivianchen@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 24.53 GB / Drive 25.46 GB">
+              <i class="email" style="width:16.1%"></i>
+              <i class="drive" style="width:16.7%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">24.53 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">25.46 GB</span>
+            <b>49.99 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>周欣樺</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">florachou@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 6.29 GB / Drive 41.91 GB">
+              <i class="email" style="width:4.1%"></i>
+              <i class="drive" style="width:27.5%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">6.29 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">41.91 GB</span>
+            <b>48.20 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>曾家羚</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">aviis_tseng@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 44.59 GB / Drive 2.41 GB">
+              <i class="email" style="width:29.2%"></i>
+              <i class="drive" style="width:1.6%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">44.59 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">2.41 GB</span>
+            <b>47.00 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>蕭伃廷</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">emilyshiao@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 3.50 GB / Drive 41.99 GB">
+              <i class="email" style="width:2.3%"></i>
+              <i class="drive" style="width:27.5%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">3.50 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">41.99 GB</span>
+            <b>45.49 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>簡艷華</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">jennyjian@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 37.03 GB / Drive 6.66 GB">
+              <i class="email" style="width:24.3%"></i>
+              <i class="drive" style="width:4.4%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">37.03 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">6.66 GB</span>
+            <b>43.69 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>許孟瑋</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">jimmyhsu@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 42.04 GB / Drive 1.20 GB">
+              <i class="email" style="width:27.6%"></i>
+              <i class="drive" style="width:0.8%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">42.04 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.20 GB</span>
+            <b>43.24 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>陳琬臻</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">j77725@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 41.69 GB / Drive 1.26 GB">
+              <i class="email" style="width:27.3%"></i>
+              <i class="drive" style="width:0.8%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">41.69 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.26 GB</span>
+            <b>42.95 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>王振豪</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">tonywang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 35.56 GB / Drive 5.19 GB">
+              <i class="email" style="width:23.3%"></i>
+              <i class="drive" style="width:3.4%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">35.56 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">5.19 GB</span>
+            <b>40.75 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>張喜茵</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">danazhang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 34.30 GB / Drive 3.68 GB">
+              <i class="email" style="width:22.5%"></i>
+              <i class="drive" style="width:2.4%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">34.30 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">3.68 GB</span>
+            <b>37.98 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>張瓊文</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">wenwenchang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 37.87 GB / Drive 0.07 GB">
+              <i class="email" style="width:24.8%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">37.87 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.07 GB</span>
+            <b>37.94 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>曾方音</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">ivy.tseng@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 35.38 GB / Drive 0.59 GB">
+              <i class="email" style="width:23.2%"></i>
+              <i class="drive" style="width:0.4%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">35.38 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.59 GB</span>
+            <b>35.97 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>蕭方筑</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">lydiahsiao@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 35.34 GB / Drive 0.39 GB">
+              <i class="email" style="width:23.2%"></i>
+              <i class="drive" style="width:0.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">35.34 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.39 GB</span>
+            <b>35.73 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>彭莉芳</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">vivi@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 32.30 GB / Drive 1.98 GB">
+              <i class="email" style="width:21.2%"></i>
+              <i class="drive" style="width:1.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">32.30 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.98 GB</span>
+            <b>34.28 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>郭彥孝</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">godfrey_guo@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 29.37 GB / Drive 1.73 GB">
+              <i class="email" style="width:19.3%"></i>
+              <i class="drive" style="width:1.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">29.37 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.73 GB</span>
+            <b>31.10 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>黃宜家</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">yijiahuang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 30.52 GB / Drive 0.01 GB">
+              <i class="email" style="width:20.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">30.52 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.01 GB</span>
+            <b>30.53 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>張雅婷</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">emilychang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 3.06 GB / Drive 24.84 GB">
+              <i class="email" style="width:2.0%"></i>
+              <i class="drive" style="width:16.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">3.06 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">24.84 GB</span>
+            <b>27.90 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>耿珮綺</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">peggygeng@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 25.01 GB / Drive 2.87 GB">
+              <i class="email" style="width:16.4%"></i>
+              <i class="drive" style="width:1.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">25.01 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">2.87 GB</span>
+            <b>27.88 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>姚蘋芸</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">appleyao@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 27.29 GB / Drive 0.47 GB">
+              <i class="email" style="width:17.9%"></i>
+              <i class="drive" style="width:0.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">27.29 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.47 GB</span>
+            <b>27.76 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>賴渝琇</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">layla@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.35 GB / Drive 26.18 GB">
+              <i class="email" style="width:0.2%"></i>
+              <i class="drive" style="width:17.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.35 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">26.18 GB</span>
+            <b>26.53 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>鄧瑋婷</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">wendyteng@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 25.19 GB / Drive 0.21 GB">
+              <i class="email" style="width:16.5%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">25.19 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.21 GB</span>
+            <b>25.40 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>蘇怡臻</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">adsl71016@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 24.62 GB / Drive 0.21 GB">
+              <i class="email" style="width:16.1%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">24.62 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.21 GB</span>
+            <b>24.83 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>黃淑萍</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">pennyhuang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 20.14 GB / Drive 3.39 GB">
+              <i class="email" style="width:13.2%"></i>
+              <i class="drive" style="width:2.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">20.14 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">3.39 GB</span>
+            <b>23.53 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>簡順隆</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">dirochien@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 21.42 GB / Drive 1.94 GB">
+              <i class="email" style="width:14.0%"></i>
+              <i class="drive" style="width:1.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">21.42 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.94 GB</span>
+            <b>23.36 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>古艾立</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">ailiku@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 22.76 GB / Drive 0.45 GB">
+              <i class="email" style="width:14.9%"></i>
+              <i class="drive" style="width:0.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">22.76 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.45 GB</span>
+            <b>23.21 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>陳美秀</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">mei66@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 22.64 GB / Drive 0.25 GB">
+              <i class="email" style="width:14.8%"></i>
+              <i class="drive" style="width:0.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">22.64 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.25 GB</span>
+            <b>22.89 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>趙斯蓓</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">kellychao@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 10.95 GB / Drive 10.26 GB">
+              <i class="email" style="width:7.2%"></i>
+              <i class="drive" style="width:6.7%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">10.95 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">10.26 GB</span>
+            <b>21.21 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>黃姿茜</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">cynthiahuang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 19.83 GB / Drive 0.12 GB">
+              <i class="email" style="width:13.0%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">19.83 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.12 GB</span>
+            <b>19.95 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>張瑋秦</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">aprilchang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 10.51 GB / Drive 8.99 GB">
+              <i class="email" style="width:6.9%"></i>
+              <i class="drive" style="width:5.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">10.51 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">8.99 GB</span>
+            <b>19.50 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>何詩慧</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">cherieho@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 18.85 GB / Drive 0.10 GB">
+              <i class="email" style="width:12.4%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">18.85 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.10 GB</span>
+            <b>18.95 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>吳子敬</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">patrickwu@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 14.38 GB / Drive 1.59 GB">
+              <i class="email" style="width:9.4%"></i>
+              <i class="drive" style="width:1.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">14.38 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.59 GB</span>
+            <b>15.97 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>陳文昕</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">jasminechen@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 5.46 GB / Drive 9.48 GB">
+              <i class="email" style="width:3.6%"></i>
+              <i class="drive" style="width:6.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">5.46 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">9.48 GB</span>
+            <b>14.94 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>王思婷</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">vivian@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 13.77 GB / Drive 0.87 GB">
+              <i class="email" style="width:9.0%"></i>
+              <i class="drive" style="width:0.6%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">13.77 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.87 GB</span>
+            <b>14.64 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>李佳隆</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">ronli@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.23 GB / Drive 13.62 GB">
+              <i class="email" style="width:0.2%"></i>
+              <i class="drive" style="width:8.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.23 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">13.62 GB</span>
+            <b>13.85 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>楊君柔</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">joyceyang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 11.95 GB / Drive 1.81 GB">
+              <i class="email" style="width:7.8%"></i>
+              <i class="drive" style="width:1.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">11.95 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.81 GB</span>
+            <b>13.76 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>廖澤源</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">allenliao@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 1.26 GB / Drive 11.72 GB">
+              <i class="email" style="width:0.8%"></i>
+              <i class="drive" style="width:7.7%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">1.26 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">11.72 GB</span>
+            <b>12.98 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>趙紹亨</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">miachao@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 9.14 GB / Drive 0.11 GB">
+              <i class="email" style="width:6.0%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">9.14 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.11 GB</span>
+            <b>9.25 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>謝霆樺</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">marinxie@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 1.92 GB / Drive 7.01 GB">
+              <i class="email" style="width:1.3%"></i>
+              <i class="drive" style="width:4.6%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">1.92 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">7.01 GB</span>
+            <b>8.93 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>程湣傑</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">leocheng@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 6.68 GB / Drive 1.60 GB">
+              <i class="email" style="width:4.4%"></i>
+              <i class="drive" style="width:1.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">6.68 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.60 GB</span>
+            <b>8.28 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>李抒姮</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">yuralee@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 4.72 GB / Drive 2.60 GB">
+              <i class="email" style="width:3.1%"></i>
+              <i class="drive" style="width:1.7%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">4.72 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">2.60 GB</span>
+            <b>7.32 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>楊儀菲</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">fifiyang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 6.63 GB / Drive 0.67 GB">
+              <i class="email" style="width:4.3%"></i>
+              <i class="drive" style="width:0.4%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">6.63 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.67 GB</span>
+            <b>7.30 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>仲綨柱</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">rebichung@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 5.30 GB / Drive 1.47 GB">
+              <i class="email" style="width:3.5%"></i>
+              <i class="drive" style="width:1.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">5.30 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.47 GB</span>
+            <b>6.77 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>郭宴菱</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">erinkuo@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 2.57 GB / Drive 1.43 GB">
+              <i class="email" style="width:1.7%"></i>
+              <i class="drive" style="width:0.9%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">2.57 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.43 GB</span>
+            <b>4.00 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>陳怡雯</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">vanessachen@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 1.73 GB / Drive 0.67 GB">
+              <i class="email" style="width:1.1%"></i>
+              <i class="drive" style="width:0.4%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">1.73 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.67 GB</span>
+            <b>2.40 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>章慧潔</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">chloezhang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 2.09 GB / Drive 0.25 GB">
+              <i class="email" style="width:1.4%"></i>
+              <i class="drive" style="width:0.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">2.09 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.25 GB</span>
+            <b>2.34 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告系統研發用</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">system@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.11 GB / Drive 1.91 GB">
+              <i class="email" style="width:0.1%"></i>
+              <i class="drive" style="width:1.3%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.11 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.91 GB</span>
+            <b>2.02 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>林碧茹</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">birulin@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 1.62 GB / Drive 0.01 GB">
+              <i class="email" style="width:1.1%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">1.62 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.01 GB</span>
+            <b>1.63 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告企劃單位</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">planner@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.24 GB / Drive 1.22 GB">
+              <i class="email" style="width:0.2%"></i>
+              <i class="drive" style="width:0.8%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.24 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.22 GB</span>
+            <b>1.46 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>賴敬超</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">jerrylai@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 1.12 GB / Drive 0.32 GB">
+              <i class="email" style="width:0.7%"></i>
+              <i class="drive" style="width:0.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">1.12 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.32 GB</span>
+            <b>1.44 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>吳佳怡</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">evawu@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.08 GB / Drive 1.19 GB">
+              <i class="email" style="width:0.1%"></i>
+              <i class="drive" style="width:0.8%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.08 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">1.19 GB</span>
+            <b>1.27 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">info@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 1.01 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.7%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">1.01 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>1.01 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>楊淳斐</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">winneyyang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.67 GB / Drive 0.15 GB">
+              <i class="email" style="width:0.4%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.67 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.15 GB</span>
+            <b>0.82 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>蔡欣道（已離職）</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">deantsai@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.58 GB / Drive 0.02 GB">
+              <i class="email" style="width:0.4%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.58 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.02 GB</span>
+            <b>0.60 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>王采葳</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">weiwang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.52 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.3%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.52 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.52 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>財會工讀生</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">0000@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.47 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.3%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.47 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.47 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-standard">
+              <strong>劉美恩</strong>
+              <span class="version-badge"
+                style="--badge:#1a73e8;--badge-bg:#e8f0fe;margin-top:4px;font-size:11px;padding:3px 8px;">標準版<small
+                  style="margin-left:4px;opacity:.8">Standard</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">laurenliu@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.12 GB / Drive 0.32 GB">
+              <i class="email" style="width:0.1%"></i>
+              <i class="drive" style="width:0.2%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.12 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.32 GB</span>
+            <b>0.44 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>方昱淇</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">yuchifang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.38 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.2%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.38 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.38 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>陳玉芳</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">joychen@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.16 GB / Drive 0.19 GB">
+              <i class="email" style="width:0.1%"></i>
+              <i class="drive" style="width:0.1%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.16 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.19 GB</span>
+            <b>0.35 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告人資單位</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">hr@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.26 GB / Drive 0.01 GB">
+              <i class="email" style="width:0.2%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.26 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.01 GB</span>
+            <b>0.27 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告(個資通知)</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">service@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.19 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.1%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.19 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.19 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>陳卉蓁</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">jennychen@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.10 GB / Drive 0.06 GB">
+              <i class="email" style="width:0.1%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.10 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.06 GB</span>
+            <b>0.16 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>洪嘉彣</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">wendyhung@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.08 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.1%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.08 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.08 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>李音慧</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">evalee@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.05 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.05 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.05 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>張易政</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">tomyzhang@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.04 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.04 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.04 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告行銷顧問</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">contact@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.02 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.02 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.02 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告會議室</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">meeting@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.01 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.01 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.01 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>程式開發(防火牆、NAS)</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">engineering@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.00 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.00 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.00 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>HomeRunsupport</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">homerun@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.00 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.00 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.00 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告會議室(台中)</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">meetingc@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.00 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.00 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.00 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告會議室(高雄)</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">meetingk@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.00 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.00 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.00 GB</b>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-name version-stripe-starter">
+              <strong>數字廣告行銷業務部</strong>
+              <span class="version-badge"
+                style="--badge:#e8710a;--badge-bg:#fef7e0;margin-top:4px;font-size:11px;padding:3px 8px;">入門版<small
+                  style="margin-left:4px;opacity:.8">Starter</small></span>
+              <span style="margin-top:3px;font-size:11px;color:var(--muted)">sales888@digitm.com.tw</span>
+            </div>
+            <div class="stacked-bar" title="Email 0.00 GB / Drive 0.00 GB">
+              <i class="email" style="width:0.0%"></i>
+              <i class="drive" style="width:0.0%"></i>
+            </div>
+            <span class="usage-val email-val" title="Email 用量">0.00 GB</span>
+            <span class="usage-val drive-val" title="Drive 用量">0.00 GB</span>
+            <b>0.00 GB</b>
+          </div>
+
+        </div>
+        <div class="legend" style="margin-top: 16px;"><span><i style="background:var(--pink)"></i>Email</span><span><i
+              style="background:var(--cyan)"></i>Drive</span></div>
       </div>
     </section>
   </main>
 </body>
+
 </html>
