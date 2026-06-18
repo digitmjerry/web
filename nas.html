@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAS 使用量儀表板 - 未變更使用者</title>
+    <style>
+        :root {
+            --bg: #f4f7fb;
+            --panel: #ffffff;
+            --text: #223044;
+            --muted: #66758a;
+            --line: #dbe3ef;
+            --blue: #2563eb;
+            --teal: #0f766e;
+            --amber: #b45309;
+            --rose: #be123c;
+            --shadow: 0 18px 45px rgba(32, 45, 64, 0.10);
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
+            line-height: 1.55;
+            color: var(--text);
+            margin: 0 auto;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.13), transparent 32rem),
+                linear-gradient(180deg, #eef4ff 0%, var(--bg) 42%, #f8fafc 100%);
+            padding: 28px;
+        }
+        .dashboard {
+            max-width: 1220px;
+            margin: 0 auto;
+        }
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 24px;
+            align-items: end;
+            padding: 28px 0 22px;
+        }
+        .eyebrow {
+            color: var(--blue);
+            font-size: 0.86rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin: 0 0 8px;
+        }
+        h1 {
+            font-size: clamp(2rem, 4vw, 3.35rem);
+            line-height: 1.08;
+            margin: 0;
+        }
+        .subtitle {
+            color: var(--muted);
+            margin: 12px 0 0;
+            max-width: 760px;
+        }
+        .meta {
+            display: grid;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.92rem;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .pill-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .pill {
+            background: rgba(255, 255, 255, 0.74);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: #334155;
+            padding: 6px 12px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin: 10px 0 22px;
+        }
+        .stat-box {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(219, 227, 239, 0.8);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.88rem;
+            margin-bottom: 8px;
+        }
+        .stat-number {
+            font-size: clamp(1.55rem, 3vw, 2.25rem);
+            font-weight: bold;
+            color: var(--text);
+            line-height: 1.05;
+        }
+        .stat-note {
+            color: var(--muted);
+            font-size: 0.82rem;
+            margin-top: 8px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.85fr);
+            gap: 18px;
+            align-items: start;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(219, 227, 239, 0.9);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .panel-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 20px 12px;
+            border-bottom: 1px solid var(--line);
+        }
+        h2 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        .panel-copy {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin: 4px 0 0;
+        }
+        .chart {
+            padding: 18px 20px 20px;
+        }
+        .bar-row {
+            display: grid;
+            grid-template-columns: minmax(96px, 150px) minmax(120px, 1fr) 82px;
+            gap: 12px;
+            align-items: center;
+            min-height: 32px;
+            margin: 9px 0;
+        }
+        .bar-name {
+            min-width: 0;
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .bar-track {
+            height: 14px;
+            background: #e7eef8;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            min-width: 3px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--blue), var(--teal));
+        }
+        .bar-value {
+            color: var(--muted);
+            font-size: 0.86rem;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .distribution {
+            display: grid;
+            gap: 14px;
+        }
+        .dist-item {
+            display: grid;
+            gap: 7px;
+        }
+        .dist-label {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            color: #334155;
+            font-size: 0.92rem;
+            font-weight: 650;
+        }
+        .dist-track {
+            height: 12px;
+            background: #e7eef8;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .dist-fill {
+            height: 100%;
+            min-width: 3px;
+            border-radius: 999px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--panel);
+        }
+        th, td {
+            padding: 13px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+        th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+        tbody tr:hover {
+            background-color: #f8fbff;
+        }
+        .usage {
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .rank {
+            width: 54px;
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+        }
+        .mini-meter {
+            display: inline-block;
+            width: 86px;
+            height: 8px;
+            background: #e7eef8;
+            border-radius: 999px;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+        .mini-meter span {
+            display: block;
+            height: 100%;
+            background: var(--blue);
+            border-radius: inherit;
+        }
+        .no-data {
+            text-align: center;
+            padding: 54px 22px;
+            color: var(--muted);
+        }
+        .footer {
+            text-align: center;
+            margin: 28px 0 8px;
+            color: var(--muted);
+            font-size: 0.9em;
+        }
+        @media (max-width: 880px) {
+            body {
+                padding: 18px;
+            }
+            .hero, .grid {
+                grid-template-columns: 1fr;
+            }
+            .meta {
+                text-align: left;
+                white-space: normal;
+            }
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 560px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            .bar-row {
+                grid-template-columns: 1fr;
+            }
+            .bar-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="dashboard">
+        <section class="hero">
+            <div>
+                <p class="eyebrow">NAS 個人專屬目錄監測</p>
+                <h1>NAS 使用量儀表板</h1>
+                <p class="subtitle">快速找出在分析期間內儲存量完全未變更的帳號，並用排行與分布圖判讀哪些目錄值得優先檢視。</p>
+                <div class="pill-row"><span class="pill">115-1月</span><span class="pill">115-2月</span><span class="pill">115-3月</span><span class="pill">115-4月</span><span class="pill">115-5月</span><span class="pill">115-6月</span></div>
+            </div>
+            <div class="meta">
+                <span>分析期間：115-1月, 115-2月, 115-3月, 115-4月, 115-5月, 115-6月</span>
+                <span>報告生成：2026-06-18 14:35:33</span>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-box">
+                <div class="stat-label">分析月份數</div>
+                <div class="stat-number">6</div>
+                <div class="stat-note">工作表月份</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">未變更使用者</div>
+                <div class="stat-number">37</div>
+                <div class="stat-note">所有月份用量一致</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">未變更總量</div>
+                <div class="stat-number">824.5 GB</div>
+                <div class="stat-note">864,566,348 KB</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">平均未變更用量</div>
+                <div class="stat-number">22.3 GB</div>
+                <div class="stat-note">以未變更使用者計算</div>
+            </div>
+        </section>
+
+        <section class="grid">
+            <article class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h2>Top 10 未變更用量排行</h2>
+                        <p class="panel-copy">長條越長代表該帳號的固定儲存量越高。</p>
+                    </div>
+                </div>
+                <div class="chart"><div class="bar-row"><div class="bar-name" title="簡順隆 / 50079">簡順隆</div><div class="bar-track"><div class="bar-fill" style="width: 100.00%"></div></div><div class="bar-value">169.0 GB</div></div><div class="bar-row"><div class="bar-name" title="陳琬臻 / 50052">陳琬臻</div><div class="bar-track"><div class="bar-fill" style="width: 84.92%"></div></div><div class="bar-value">143.5 GB</div></div><div class="bar-row"><div class="bar-name" title="曾家羚 / 50019">曾家羚</div><div class="bar-track"><div class="bar-fill" style="width: 77.25%"></div></div><div class="bar-value">130.6 GB</div></div><div class="bar-row"><div class="bar-name" title="陳美秀 / 50056">陳美秀</div><div class="bar-track"><div class="bar-fill" style="width: 47.05%"></div></div><div class="bar-value">79.5 GB</div></div><div class="bar-row"><div class="bar-name" title="鄧瑋婷 / 50084">鄧瑋婷</div><div class="bar-track"><div class="bar-fill" style="width: 45.26%"></div></div><div class="bar-value">76.5 GB</div></div><div class="bar-row"><div class="bar-name" title="呂佩宜 / 50038">呂佩宜</div><div class="bar-track"><div class="bar-fill" style="width: 32.03%"></div></div><div class="bar-value">54.1 GB</div></div><div class="bar-row"><div class="bar-name" title="彭莉芳 / 50020">彭莉芳</div><div class="bar-track"><div class="bar-fill" style="width: 17.96%"></div></div><div class="bar-value">30.4 GB</div></div><div class="bar-row"><div class="bar-name" title="簡艷華 / 50049">簡艷華</div><div class="bar-track"><div class="bar-fill" style="width: 17.68%"></div></div><div class="bar-value">29.9 GB</div></div><div class="bar-row"><div class="bar-name" title="胡嘉倩 / 50047">胡嘉倩</div><div class="bar-track"><div class="bar-fill" style="width: 15.61%"></div></div><div class="bar-value">26.4 GB</div></div><div class="bar-row"><div class="bar-name" title="楊亜綺 / 50072">楊亜綺</div><div class="bar-track"><div class="bar-fill" style="width: 8.68%"></div></div><div class="bar-value">14.7 GB</div></div></div>
+            </article>
+            <article class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h2>容量級距分布</h2>
+                        <p class="panel-copy">用量區間可協助區分大型靜置目錄與零散小檔。</p>
+                    </div>
+                </div>
+                <div class="chart"><div class="distribution"><div class="dist-item"><div class="dist-label"><span>100 GB 以上</span><span>3 人</span></div><div class="dist-track"><div class="dist-fill" style="width: 21.43%; background: #2563eb;"></div></div></div><div class="dist-item"><div class="dist-label"><span>10 GB - 100 GB</span><span>7 人</span></div><div class="dist-track"><div class="dist-fill" style="width: 50.00%; background: #0f766e;"></div></div></div><div class="dist-item"><div class="dist-label"><span>1 GB - 10 GB</span><span>14 人</span></div><div class="dist-track"><div class="dist-fill" style="width: 100.00%; background: #b45309;"></div></div></div><div class="dist-item"><div class="dist-label"><span>1 GB 以下</span><span>13 人</span></div><div class="dist-track"><div class="dist-fill" style="width: 92.86%; background: #be123c;"></div></div></div></div></div>
+            </article>
+        </section>
+
+        <section class="panel" style="margin-top: 18px;">
+            <div class="panel-head">
+                <div>
+                    <h2>NAS 儲存使用量未變更的使用者</h2>
+                    <p class="panel-copy">依儲存量由大到小排序。</p>
+                </div>
+            </div>
+            <div class="table-wrap"><table><thead><tr><th class="rank">#</th><th>員編</th><th>姓名</th><th>視覺比例</th><th class="usage">原始值 (KB)</th><th class="usage">換算後容量</th></tr></thead><tbody><tr><td class="rank">1</td><td>50079</td><td>簡順隆</td><td><span class="mini-meter"><span style="width: 100.00%"></span></span></td><td class="usage">177,228,996</td><td class="usage">169.0 GB</td></tr>
+<tr><td class="rank">2</td><td>50052</td><td>陳琬臻</td><td><span class="mini-meter"><span style="width: 84.92%"></span></span></td><td class="usage">150,510,688</td><td class="usage">143.5 GB</td></tr>
+<tr><td class="rank">3</td><td>50019</td><td>曾家羚</td><td><span class="mini-meter"><span style="width: 77.25%"></span></span></td><td class="usage">136,917,168</td><td class="usage">130.6 GB</td></tr>
+<tr><td class="rank">4</td><td>50056</td><td>陳美秀</td><td><span class="mini-meter"><span style="width: 47.05%"></span></span></td><td class="usage">83,389,776</td><td class="usage">79.5 GB</td></tr>
+<tr><td class="rank">5</td><td>50084</td><td>鄧瑋婷</td><td><span class="mini-meter"><span style="width: 45.26%"></span></span></td><td class="usage">80,209,280</td><td class="usage">76.5 GB</td></tr>
+<tr><td class="rank">6</td><td>50038</td><td>呂佩宜</td><td><span class="mini-meter"><span style="width: 32.03%"></span></span></td><td class="usage">56,763,512</td><td class="usage">54.1 GB</td></tr>
+<tr><td class="rank">7</td><td>50020</td><td>彭莉芳</td><td><span class="mini-meter"><span style="width: 17.96%"></span></span></td><td class="usage">31,832,788</td><td class="usage">30.4 GB</td></tr>
+<tr><td class="rank">8</td><td>50049</td><td>簡艷華</td><td><span class="mini-meter"><span style="width: 17.68%"></span></span></td><td class="usage">31,333,460</td><td class="usage">29.9 GB</td></tr>
+<tr><td class="rank">9</td><td>50047</td><td>胡嘉倩</td><td><span class="mini-meter"><span style="width: 15.61%"></span></span></td><td class="usage">27,658,736</td><td class="usage">26.4 GB</td></tr>
+<tr><td class="rank">10</td><td>50072</td><td>楊亜綺</td><td><span class="mini-meter"><span style="width: 8.68%"></span></span></td><td class="usage">15,382,944</td><td class="usage">14.7 GB</td></tr>
+<tr><td class="rank">11</td><td>50177</td><td>廖澤源</td><td><span class="mini-meter"><span style="width: 5.88%"></span></span></td><td class="usage">10,415,096</td><td class="usage">9.9 GB</td></tr>
+<tr><td class="rank">12</td><td>50070</td><td>趙斯蓓</td><td><span class="mini-meter"><span style="width: 5.33%"></span></span></td><td class="usage">9,439,592</td><td class="usage">9.0 GB</td></tr>
+<tr><td class="rank">13</td><td>50014</td><td>曾方音</td><td><span class="mini-meter"><span style="width: 4.31%"></span></span></td><td class="usage">7,631,104</td><td class="usage">7.3 GB</td></tr>
+<tr><td class="rank">14</td><td>50016</td><td>許孟瑋</td><td><span class="mini-meter"><span style="width: 3.84%"></span></span></td><td class="usage">6,810,816</td><td class="usage">6.5 GB</td></tr>
+<tr><td class="rank">15</td><td>50132</td><td>趙紹亨</td><td><span class="mini-meter"><span style="width: 3.68%"></span></span></td><td class="usage">6,521,032</td><td class="usage">6.2 GB</td></tr>
+<tr><td class="rank">16</td><td>50089</td><td>連秀莉</td><td><span class="mini-meter"><span style="width: 3.55%"></span></span></td><td class="usage">6,293,444</td><td class="usage">6.0 GB</td></tr>
+<tr><td class="rank">17</td><td>50104</td><td>程湣傑</td><td><span class="mini-meter"><span style="width: 2.84%"></span></span></td><td class="usage">5,035,760</td><td class="usage">4.8 GB</td></tr>
+<tr><td class="rank">18</td><td>50060</td><td>蘇怡臻</td><td><span class="mini-meter"><span style="width: 2.76%"></span></span></td><td class="usage">4,897,900</td><td class="usage">4.7 GB</td></tr>
+<tr><td class="rank">19</td><td>50099</td><td>吳子敬</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">3,194,212</td><td class="usage">3.0 GB</td></tr>
+<tr><td class="rank">20</td><td>50146</td><td>仲綨柱</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">3,012,560</td><td class="usage">2.9 GB</td></tr>
+<tr><td class="rank">21</td><td>50092</td><td>姚蘋芸</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">2,953,908</td><td class="usage">2.8 GB</td></tr>
+<tr><td class="rank">22</td><td>50017</td><td>吳婉慈</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">2,408,596</td><td class="usage">2.3 GB</td></tr>
+<tr><td class="rank">23</td><td>50082</td><td>張凱晴</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">2,264,836</td><td class="usage">2.2 GB</td></tr>
+<tr><td class="rank">24</td><td>50107</td><td>郭宴菱</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">2,101,704</td><td class="usage">2.0 GB</td></tr>
+<tr><td class="rank">25</td><td>50154</td><td>黃宜家</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">221,544</td><td class="usage">216 MB</td></tr>
+<tr><td class="rank">26</td><td>50055</td><td>吳佩諭</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">134,544</td><td class="usage">131 MB</td></tr>
+<tr><td class="rank">27</td><td>50152</td><td>楊儀菲</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">2,152</td><td class="usage">2 MB</td></tr>
+<tr><td class="rank">28</td><td>50040</td><td>賴渝琇</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">60</td><td class="usage">60 KB</td></tr>
+<tr><td class="rank">29</td><td>50122</td><td>楊君柔</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">56</td><td class="usage">56 KB</td></tr>
+<tr><td class="rank">30</td><td>50158</td><td>黃姿茜</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">32</td><td class="usage">32 KB</td></tr>
+<tr><td class="rank">31</td><td>50176</td><td>張易政</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">8</td><td class="usage">8 KB</td></tr>
+<tr><td class="rank">32</td><td>50170</td><td>謝霆樺</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">8</td><td class="usage">8 KB</td></tr>
+<tr><td class="rank">33</td><td>50179</td><td>方昱淇</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">8</td><td class="usage">8 KB</td></tr>
+<tr><td class="rank">34</td><td>50164</td><td>何詩慧</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">8</td><td class="usage">8 KB</td></tr>
+<tr><td class="rank">35</td><td>50173</td><td>陳怡雯V</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">8</td><td class="usage">8 KB</td></tr>
+<tr><td class="rank">36</td><td>50174</td><td>劉美恩</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">8</td><td class="usage">8 KB</td></tr>
+<tr><td class="rank">37</td><td>50162</td><td>耿珮綺</td><td><span class="mini-meter"><span style="width: 2.00%"></span></span></td><td class="usage">4</td><td class="usage">4 KB</td></tr>
+</tbody></table></div>
+        </section>
+
+        <div class="footer">
+            <p>由 NAS 使用量儀表板生成器產生</p>
+            <p>說明：此報告識別出在所有分析月份中 NAS 儲存使用量保持完全相同的使用者。</p>
+        </div>
+    </main>
+</body>
+</html>
