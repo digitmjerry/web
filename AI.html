@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>地端私有化 AI 架構建置方案與環境評估報告</title>
+    <style>
+        :root {
+            --primary: #0F172A;
+            --accent: #D97706;
+            --bg-light: #F8FAFC;
+            --text-main: #334155;
+            --text-dark: #0F172A;
+            --border: #E2E8F0;
+            --color-a: #15803D;
+            --color-b: #B45309;
+            --color-c: #1D4ED8;
+        }
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg-light); color: var(--text-main); line-height: 1.6; margin: 0; padding: 40px 20px; }
+        .container { max-width: 950px; margin: 0 auto; background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        header { border-bottom: 3px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; text-align: center; }
+        h1 { color: var(--text-dark); font-size: 24px; margin: 0 0 8px 0; }
+        .section-title { color: var(--primary); border-left: 5px solid var(--accent); padding-left: 10px; font-size: 18px; margin: 30px 0 15px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 15px 0; }
+        th { background-color: var(--primary); color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        tr:nth-child(even) { background-color: #F8FAFC; }
+        .total-row { background-color: #FEF3C7 !important; font-weight: bold; }
+        .total-row td { color: #B45309; border-bottom: 2px solid var(--accent); }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .card { border: 1px solid var(--border); border-radius: 8px; padding: 18px; background: white; }
+        .card-title { font-weight: bold; font-size: 15px; margin-bottom: 10px; }
+        ul { margin: 0; padding-left: 20px; font-size: 14px; }
+        li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; font-size: 14px; color: #94A3B8; }
+        @media (max-width: 768px) { .grid-3 { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>企業地端 AI 私有化架構：建置方案與環境評估報告</h1>
+        <p style="font-size: 13px; color: #64748B; margin: 5px 0 0;">評估目標：5人團隊「財會文書多模態辨識」與「企劃行銷短影音生產線」</p>
+    </header>
+
+    <div class="section-title">一、 專案核心需求與現有資產（NAS）活化規劃</div>
+    <p style="font-size: 14px; margin: 0 0 15px;">本案旨在建立完全物理隔離（Air-Gapped）的地端 AI 算力，確保公司核心財務數據與未公開行銷策略 100% 不外洩。針對現有配備<strong>傳統機械硬碟（HDD）的 QNAP NAS</strong>，評估其最佳定位如下：</p>
+    <div class="card" style="background-color: #F1F5F9; margin-bottom: 20px;">
+        <strong style="color: var(--text-dark); display:block; margin-bottom: 6px;">💾 現有 QNAP NAS (HDD) 營運策略：動靜分離</strong>
+        <ul>
+            <li><strong>冷資料儲存庫：</strong>存放已產出的高畫質行銷影音成品、歷史財報 PDF、備用大模型權重檔。</li>
+            <li><strong>自動安全備份中心：</strong>設定每日排程，將 AI 主機本機的系統環境、Dify 提示詞範本自動打包儲存至 NAS。</li>
+            <li><strong>本機硬件優化：</strong>新購 AI 主機時本機必須配滿高速 NVMe SSD（至少 2TB~4TB）負責主推論；NAS 端可加購 2 支 M.2 SSD 開啟 QNAP 後台的「SSD 快取加速」，以千元級預算提升 5 人讀取小檔案之效率。</li>
+        </ul>
+    </div>
+
+    <div class="section-title">二、 三大建置方案、預算與環境要求全面對比</div>
+    <p style="font-size: 14px; margin: 0;">以下為評估的三種實體建置方案。包含主機報價、周邊建置成本（電力/冷氣/資安）：</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>評估項目</th>
+                <th>方案 A：經濟型桌上 AI<br><span style="color:#0369A1; font-weight:normal;">NVIDIA GB10</span></th>
+                <th>方案 B：標準型企業伺服器<br><span style="color:#1D4ED8; font-weight:normal;">4卡 NVIDIA L40S</span></th>
+                <th>方案 C：頂級桌面超級電腦<br><span style="color:#86198F; font-weight:normal;">NVIDIA GB300</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>核心定位</strong></td>
+                <td>輕量型個人 / 隨插即用工作站</td>
+                <td>企業級 AI / 影音加速專用伺服器</td>
+                <td>頂級桌面級企業私有化 AI 核心</td>
+            </tr>
+            <tr>
+                <td><strong>統一記憶體</strong></td>
+                <td><strong>128 GB</strong> LPDDR5x</td>
+                <td><strong>192 GB</strong> 高速專用顯存</td>
+                <td><strong>748 GB</strong> 高頻寬一致性記憶體</td>
+            </tr>
+            <tr>
+                <td><strong>5人併發體驗</strong></td>
+                <td>需排隊輪流機制，尖峰略有卡頓</td>
+                <td>多卡併發順暢，可負擔中高強度多工</td>
+                <td>頂級流暢，支援實體算力硬體切分</td>
+            </tr>
+            <tr>
+                <td><strong>模型極限能力</strong></td>
+                <td>中小型多模態模型 (Qwen-VL 7B)</td>
+                <td>中高階量化大模型 (Qwen-VL 72B-INT4)</td>
+                <td>完全體旗艦大模型 (Qwen-VL 72B 完整版)</td>
+            </tr>
+            <tr>
+                <td><strong>影音生成效果</strong></td>
+                <td>寫行銷腳本、配音、10秒內生4K圖</td>
+                <td>生圖極快、具備專用多媒體影音加速</td>
+                <td>支援好萊塢級高流暢之 3D 動態短片生成</td>
+            </tr>
+            <tr>
+                <td><strong>電力迴路需求</strong></td>
+                <td><strong>一般 110V 插座隨插即用</strong> (240W)</td>
+                <td><strong>獨立 220V / 30A 專用迴路</strong> (2500W)</td>
+                <td><strong>獨立 220V 專用迴路</strong> (1600W)</td>
+            </tr>
+            <tr>
+                <td><strong>空調與冷氣要求</strong></td>
+                <td><strong>無需獨立冷氣</strong><br>正常有人辦公的室溫環境即可</td>
+                <td><strong>嚴格空調需求</strong><br>需機房專用 24h 強制製冷空調 (1.5噸以上)</td>
+                <td><strong>常駐冷氣環境</strong><br>需維持在 22°C~25°C 空調環境</td>
+            </tr>
+            <tr>
+                <td><strong>實體安置與噪音</strong></td>
+                <td>約 35 分貝，接近靜音<br>可直接放在辦公桌上</td>
+                <td>高達 80 分貝 (如除草機)<br><strong>現無機房，必須加購主動隔音冷卻機櫃</strong></td>
+                <td>內建一體式水冷，低噪環境<br>可放辦公室角落 (下班需維持空調)</td>
+            </tr>
+            <tr style="border-top: 2px solid var(--primary);">
+                <td><strong>【硬體主機報價】</strong></td>
+                <td>約 NT$ 19 萬 ～ 22 萬元</td>
+                <td>約 NT$ 120 萬 ～ 150 萬元</td>
+                <td>約 NT$ 310 萬 ～ 350 萬元</td>
+            </tr>
+            <tr>
+                <td><strong>【周邊配套建置費】</strong></td>
+                <td>約 NT$ 2,000 ～ 5,000 元<br><small style="color:#64748B;">• 僅需採購家用小型 1KVA UPS</small></td>
+                <td>約 NT$ 20 萬 ～ 45 萬元<br><small style="color:#64748B;">• 智能隔音冷卻機櫃、3KVA 在線式 UPS</small></td>
+                <td>約 NT$ 50 萬 ～ 120 萬元<br><small style="color:#64748B;">• 3KVA 線上式 UPS、物理隔離與審計系統</small></td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>綜合總建置成本</strong></td>
+                <td><strong>最低約 NT$ 19.2 萬 ～ 22.5 萬元</strong></td>
+                <td><strong>專案約 NT$ 140 萬 ～ 195 萬元</strong></td>
+                <td><strong>專案約 NT$ 360 萬 ～ 470 萬元</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">三、 決策導向綜合建議</div>
+    <div class="grid-3">
+        <div class="card" style="border-top: 4px solid var(--color-a);">
+            <div class="card-title" style="color: var(--color-a);">🟢 方案 A：小資試水溫方案 (GB10)</div>
+            <p style="font-size: 13px; margin: 0;"><strong>優勢：</strong>硬體與配套成本最低（約 20 萬元級別），環境要求零門檻，插 110V 牆壁插座即可隨開即用，免去任何改配電與冷氣的工期與工資。<br><strong>妥協：</strong>5 人高強度尖峰併發時需稍微排隊，財報辨識需採用 7B 等級中小型量化模型。</p>
+        </div>
+        <div class="card" style="border-top: var(--color-c) 4px solid;">
+            <div class="card-title" style="color: var(--color-c);">🔵 方案 B：無機房中大型企業首選 (4卡 L40S)</div>
+            <p style="font-size: 13px; margin: 0;"><strong>優勢：</strong>針對公司目前「無高架地板、無專用空調」的痛點，透過搭配「主動式 AI 智慧隔音冷卻機櫃」，免去昂貴的機房土木裝修改建。192GB 顯存加上 L40S 的多媒體加速，能完美負擔 72B 財報結構化與行銷短影音批量生產，是企業最實惠的黃金替代方案。</p>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--color-b);">
+            <div class="card-title" style="color: var(--color-b);">🟡 方案 C：一步到位旗艦頂配 (GB300)</div>
+            <p style="font-size: 13px; margin: 0;"><strong>優勢：</strong>單機運算效能攻頂。748GB 大記憶體能以完全體、零失真的最高精度直接解讀跨頁複雜上市公司財報。5 人全員高強度併發使用完全不卡頓，行銷短影音更能解鎖高階物理動態生成效果，適合預算充足且追求極致成效的企業。</p>
+        </div>
+    </div>
+
+    <footer>
+    </footer>
+</div>
+</body>
+</html>
