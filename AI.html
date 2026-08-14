@@ -6,301 +6,339 @@
     <title>企業地端 AI 私有化架構：建置方案與環境評估報告</title>
     <style>
         :root {
-            --primary: #1e293b;
-            --secondary: #0f172a;
-            --accent-a: #10b981;
-            --accent-b: #3b82f6;
-            --accent-c: #f59e0b;
+            --primary: #0F172A;
+            --accent: #D97706;
+            --bg-light: #F8FAFC;
             --text-main: #334155;
-            --text-dark: #0f172a;
-            --bg-light: #f8fafc;
-            --border-color: #cbd5e1;
+            --text-dark: #0F172A;
+            --border: #E2E8F0;
+            --color-a: #15803D;
+            --color-b: #B45309;
+            --color-c: #1D4ED8;
+            --card-bg: #FFFFFF;
+            --highlight-bg: #FEF3C7;
+            --elec-bg: #EFF6FF;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background-color: #f1f5f9;
-            margin: 0;
-            padding: 40px 20px;
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif; 
+            background-color: var(--bg-light); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 40px 20px; 
         }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            background: #ffffff; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
         }
-
-        .header {
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 35px;
+        header { 
+            border-bottom: 3px solid var(--primary); 
+            padding-bottom: 18px; 
+            margin-bottom: 30px; 
+            text-align: center; 
         }
-
-        .header h1 {
-            color: var(--text-dark);
-            font-size: 28px;
-            margin: 0 0 10px 0;
+        h1 { 
+            color: var(--text-dark); 
+            font-size: 26px; 
+            margin: 0 0 10px 0; 
             font-weight: 700;
         }
-
-        .meta-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            font-size: 14px;
-            color: #64748b;
+        .subtitle {
+            font-size: 14px; 
+            color: #64748B; 
+            margin: 5px 0 0;
         }
-
-        .meta-item strong {
-            color: var(--text-dark);
-        }
-
-        h2 {
-            color: var(--text-dark);
-            font-size: 20px;
-            border-left: 5px solid var(--primary);
-            padding-left: 12px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-
-        h3 {
-            color: var(--text-dark);
-            font-size: 16px;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            margin: 0 0 15px 0;
-            text-align: justify;
-        }
-
-        .nas-strategy {
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .nas-strategy ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .nas-strategy li {
-            margin-bottom: 10px;
-        }
-
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            margin: 30px 0;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            min-width: 800px;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: var(--primary);
-            color: #ffffff;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        th:first-child { width: 15%; }
-        th:nth-child(2), th:nth-child(3), th:nth-child(4) { width: 28%; }
-
-        tr:last-child td { border-bottom: none; }
-        tr:nth-child(even) td { background-color: #f8fafc; }
-
         .badge {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: #fff;
+            background-color: #E0F2FE;
+            color: #0369A1;
+            padding: 3px 10px;
+            border-radius: 12px;
             font-size: 12px;
-            margin-bottom: 5px;
+            font-weight: 600;
+            margin-top: 8px;
         }
-        .badge-a { background-color: var(--accent-a); }
-        .badge-b { background-color: var(--accent-b); }
-        .badge-c { background-color: var(--accent-c); }
-
-        .card-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .card-container { grid-template-columns: 1fr 1fr 1fr; }
-        }
-
-        .card {
-            border-top: 4px solid var(--primary);
-            background: var(--bg-light);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .card-a { border-top-color: var(--accent-a); }
-        .card-b { border-top-color: var(--accent-b); }
-        .card-c { border-top-color: var(--accent-c); }
-
-        .card h3 {
-            margin-top: 0;
+        .section-title { 
+            color: var(--primary); 
+            border-left: 5px solid var(--accent); 
+            padding-left: 12px; 
+            font-size: 19px; 
+            margin: 35px 0 18px; 
+            font-weight: bold; 
             display: flex;
             align-items: center;
-            gap: 8px;
         }
-
-        .strong-highlight {
-            color: #b91c1c;
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 14px; 
+            margin: 20px 0; 
+        }
+        th { 
+            background-color: var(--primary); 
+            color: white; 
+            padding: 12px 14px; 
+            text-align: left; 
+            font-weight: 600; 
+            line-height: 1.4;
+        }
+        td { 
+            padding: 12px 14px; 
+            border-bottom: 1px solid var(--border); 
+            vertical-align: top; 
+        }
+        tr:nth-child(even) { 
+            background-color: #F8FAFC; 
+        }
+        .highlight-row {
+            background-color: #F0F9FF !important;
+        }
+        .total-row { 
+            background-color: #FEF3C7 !important; 
+            font-weight: bold; 
+        }
+        .total-row td { 
+            color: #B45309; 
+            border-bottom: 2px solid var(--accent); 
+        }
+        .tco-row {
+            background-color: #ECFDF5 !important;
             font-weight: bold;
+        }
+        .tco-row td {
+            color: #047857;
+            border-bottom: 2px solid #10B981;
+        }
+        .grid-3 { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 18px; 
+            margin-top: 18px; 
+        }
+        .card { 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            padding: 20px; 
+            background: white; 
+        }
+        .card-title { 
+            font-weight: bold; 
+            font-size: 15px; 
+            margin-bottom: 10px; 
+        }
+        .elec-box {
+            background-color: var(--elec-bg);
+            border: 1px solid #BFDBFE;
+            border-radius: 8px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+        .elec-title {
+            color: #1E40AF;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        ul { 
+            margin: 0; 
+            padding-left: 20px; 
+            font-size: 14px; 
+        }
+        li { 
+            margin-bottom: 6px; 
+        }
+        footer { 
+            margin-top: 45px; 
+            padding-top: 20px; 
+            border-top: 1px solid var(--border); 
+            text-align: center; 
+            font-size: 13px; 
+            color: #94A3B8; 
+        }
+        @media (max-width: 768px) { 
+            body { padding: 15px 10px; }
+            .container { padding: 20px 15px; }
+            .grid-3 { grid-template-columns: 1fr; } 
+            table { display: block; overflow-x: auto; }
         }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <!-- 報告基本資訊 -->
-    <div class="header">
+    <header>
         <h1>企業地端 AI 私有化架構：建置方案與環境評估報告</h1>
-        <div class="meta-info">
-            <div class="meta-item"><strong>評估目標：</strong>多用戶共享「財會文書多模態辨識」與「企劃行銷短影音生產線」</div>
-            <div class="meta-item"><strong>環境特性：</strong>完全物理隔離 (Air-Gapped) / 確保核心數據安全</div>
-        </div>
-    </div>
+        <div class="subtitle">評估目標：地端算力規劃</div>
+        <div class="badge">⚡ 包含全天候運轉用電評估與併發團隊規模容納度評估</div>
+    </header>
 
-    <!-- 第一章節 -->
-    <h2>一、 專案核心需求與現有資產（NAS）活化規劃</h2>
-    <p>本案旨在建立完全物理隔離（Air-Gapped）的地端 AI 算力，確保公司核心財務數據與未公開行銷策略 100% 不外洩。針對現有配備傳統機械硬碟（HDD）的 QNAP NAS，評估其最佳定位如下：</p>
-    
-    <div class="nas-strategy">
-        <h3>💾 現有 QNAP NAS (HDD) 營運策略：動靜分離</h3>
+    <!-- 第一區塊 -->
+    <div class="section-title">一、 專案核心需求與現有資產活化規劃</div>
+    <p style="font-size: 14px; margin: 0 0 15px;">本案旨在建立完全的地端 AI 算力，確保公司核心財務數據不外洩。針對現有配備<strong>NAS</strong>，評估其最佳定位如下：</p>
+    <div class="card" style="background-color: #F1F5F9; margin-bottom: 20px;">
+        <strong style="color: var(--text-dark); display:block; margin-bottom: 6px;">💾 現有NAS儲存空間營運策略：動靜分離</strong>
         <ul>
-            <li><strong>冷資料儲存庫：</strong>存放已產出的高畫質行銷影音成品、歷史財報 PDF、備用大模型權重檔。</li>
-            <li><strong>自動安全備份中心：</strong>設定每日排程，將 AI 主機本機的系統環境、Dify 提示詞範本自動打包儲存至 NAS。</li>
-            <li><strong>本機硬件優化：</strong>新購 AI 主機時本機必須配滿高速 NVMe SSD（至少 2TB~4TB）負責主推論；NAS 端可加購 M.2 SSD 開啟 QNAP 後台的「SSD 快取加速」，以千元級預算提升多人在線讀取小檔案之效率。</li>
+            <li><strong>冷資料儲存庫：</strong>存放已產出的行銷影音成品、財報、PDF、備用大模型檔。</li>
+            <li><strong>自動安全備份中心：</strong>將 AI 主機本機的系統環境、提示詞範本打包儲存至 NAS。</li>
+            <li><strong>NAS本機硬件優化：</strong>NAS 端可加購 2 支 M.2 SSD 開啟NAS後台的「SSD 快取加速」，以低預算提升團隊讀取小檔案之效率。</li>
         </ul>
     </div>
 
-    <!-- 第二章節 -->
-    <h2>二、 三大建置方案、預算與環境要求全面對比</h2>
-    <p>以下為評估的三種實體建置方案，包含主機報價、周邊建置成本（電力/冷氣/資安）以及不同規模下的多用戶併發流量與使用體驗整合對比：</p>
+    <!-- 第二區塊 -->
+    <div class="section-title">二、 建置方案、容量、用電與環境要求全面對比</div>
+    <p style="font-size: 14px; margin: 0 0 10px;">以下為評估的三種實體建置方案。包含硬體規格、<strong>建議同時使用人數</strong>、周邊建置成本與 <strong>運轉用電費用</strong>：</p>
 
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>評估項目</th>
-                    <th>
-                        <span class="badge badge-a">方案 A：經濟型桌上 AI</span><br>
-                        <strong>NVIDIA GB10</strong>
-                    </th>
-                    <th>
-                        <span class="badge badge-b">方案 B：標準型企業伺服器</span><br>
-                        <strong>4卡 NVIDIA L40S</strong>
-                    </th>
-                    <th>
-                        <span class="badge badge-c">方案 C：頂級桌面超級電腦</span><br>
-                        <strong>NVIDIA GB300</strong>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>核心定位</strong></td>
-                    <td>輕量型個人 / 隨插即用工作站</td>
-                    <td>企業級 AI / 影音加速專用伺服器</td>
-                    <td>頂級桌面級企業私有化 AI 核心</td>
-                </tr>
-                <tr>
-                    <td><strong>記憶體規格</strong></td>
-                    <td>128 GB LPDDR5x 統一記憶體</td>
-                    <td>192 GB 高速專用顯存 (48GB × 4)</td>
-                    <td>748 GB 高頻寬一致性記憶體</td>
-                </tr>
-                <tr>
-                    <td><strong>多用戶併發與<br>同時在線體驗</strong></td>
-                    <td>
-                        <strong>需排隊輪流機制</strong><br>
-                        • 尖峰併發略有卡頓<br>
-                        • 適合單人主力研發，其餘人員低頻率輕量推論 (上限約 5~15 人在線)。
-                    </td>
-                    <td>
-                        <strong>多卡併發順暢</strong><br>
-                        • 可負擔中高強度多工<br>
-                        • 支援 vGPU 切分，可支撐日常 50~100 人同時在線，應對部門級併發極為寬裕。
-                    </td>
-                    <td>
-                        <strong>頂級流暢體驗</strong><br>
-                        • 支援實體算力硬體切分<br>
-                        • 零延遲吞吐，可支援 150~300 人同時在線，全員極致高強度多工不卡頓。
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>模型極限能力</strong></td>
-                    <td>中小型多模態模型 (Qwen-VL 7B)</td>
-                    <td>中高階量化大模型 (Qwen-VL 72B-INT4)</td>
-                    <td>完全體旗艦大模型 (Qwen-VL 72B 完整版)</td>
-                </tr>
-                <tr>
-                    <td><strong>影音生成效果</strong></td>
-                    <td>寫行銷腳本、配音、10秒內生4K圖</td>
-                    <td>生圖極快、具備專用多媒體影音加速</td>
-                    <td>支援好萊塢級高流暢之 3D 動態短片生成</td>
-                </tr>
-                <tr>
-                    <td><strong>電力迴路需求</strong></td>
-                    <td>一般 110V 插座隨插即用 (240W)</td>
-                    <td>獨立 220V / 30A 專用迴路 (2500W)</td>
-                    <td>獨立 220V 專用迴路 (1600W)</td>
-                </tr>
-                <tr>
-                    <td><strong>空調與冷氣要求</strong></td>
-                    <td>無需獨立冷氣<br><small>正常有人辦公的室溫環境即可</small></td>
-                    <td><span class="strong-highlight">嚴格空調需求</span><br><small>需機房專用 24h 強制製冷空調 (1.5噸以上)</small></td>
-                    <td>常駐冷氣環境<br><small>需維持在 22°C~25°C 空調環境</small></td>
-                </tr>
-                <tr>
-                    <td><strong>實體安置與噪音</strong></td>
-                    <td>約 35 分貝，接近靜音<br><small>可直接放在辦公桌上</small></td>
-                    <td><span class="strong-highlight">高達 80 分貝 (如除草機)</span><br><small>現無機房，必須加購主動隔音冷卻機櫃</small></td>
-                    <td>內建一體式水冷，低噪環境<br><small>可放辦公室角落 (下班需維持空調)</small></td>
-                </tr>
-                <tr>
-                    <td><strong>【硬體主機報價】</strong></td>
-                    <td>約 NT$ 19 萬 ～ 22 萬元</td>
-                    <td>約 NT$ 120 萬 ～ 150 萬元</td>
-                    <td>約 NT$ 310 萬 ～ 350 萬元</td>
-                </tr>
-                <tr>
-                    <td><strong>【周邊配套費】</strong></td>
-                    <td>約 NT$ 2,000 ～ 5,000 元<br><small>• 僅需採購家用小型 1KVA UPS</small></td>
-                    <td>約 NT$ 20 萬 ～ 45 萬元<br><small>• 智能隔音冷卻機櫃、3KVA 在線式 UPS</small></td>
-                    <td>約 NT$ 50 萬 ～ 120 萬元<br><small>• 3KVA 線上式 UPS、物理隔離與審計系統</small></td>
-                </tr>
-                <tr>
-</tr></tbody></table></div></div></body></html>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 22%;">評估項目</th>
+                <th style="width: 26%;">方案 A：經濟型桌上 AI<br><span style="color:#38BDF8; font-weight:normal;">NVIDIA GB10</span></th>
+                <th style="width: 26%;">方案 B：標準型企業伺服器<br><span style="color:#60A5FA; font-weight:normal;">4卡 NVIDIA L40S</span></th>
+                <th style="width: 26%;">方案 C：頂級桌面超級電腦<br><span style="color:#E879F9; font-weight:normal;">NVIDIA GB300</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>核心定位</strong></td>
+                <td>輕量型個人 / 隨插即用工作站</td>
+                <td>企業級 AI / 影音加速專用伺服器</td>
+                <td>頂級桌面級企業私有化 AI 核心</td>
+            </tr>
+            <tr>
+                <td><strong>統一記憶體</strong></td>
+                <td><strong>128 GB</strong> LPDDR5x</td>
+                <td><strong>192 GB</strong> 高速專用顯存</td>
+                <td><strong>748 GB</strong> 高頻寬一致性記憶體</td>
+            </tr>
+            <tr style="background-color: #FEFCE8; font-weight: bold;">
+                <td><strong>建議同時線上人數<br><small style="color:#854D0E; font-weight:normal;">(併發容量評估)</small></strong></td>
+                <td><strong style="color:#B45309; font-size:15px;">1 ～ 3 人</strong><br><small style="color:#64748B; font-weight:normal;">個人或小型工作室；多人同時生成需排隊佇列</small></td>
+                <td><strong style="color:#1D4ED8; font-size:15px;">5 ～ 15 人</strong><br><small style="color:#64748B; font-weight:normal;">中型部門團隊；4卡可獨立切分工作，併發順暢</small></td>
+                <td><strong style="color:#15803D; font-size:15px;">15 ～ 30+ 人</strong><br><small style="color:#64748B; font-weight:normal;">跨部門 / 全公司等級；支援硬體切分與旗艦併發</small></td>
+            </tr>
+            <tr>
+                <td><strong>模型極限能力</strong></td>
+                <td>中小型多模態模型 (Qwen-VL 7B)</td>
+                <td>中高階量化大模型 (Qwen-VL 72B-INT4)</td>
+                <td>完全體旗艦大模型 (Qwen-VL 72B 完整版)</td>
+            </tr>
+            <tr>
+                <td><strong>影音生成效果</strong></td>
+                <td>寫行銷腳本、配音、10秒內生圖</td>
+                <td>生圖極快、具備專用多媒體影音加速</td>
+                <td>支援高流暢之 3D 動態短片生成</td>
+            </tr>
+            <tr>
+                <td><strong>電力迴路需求</strong></td>
+                <td><strong>一般 110V 插座隨插即用</strong> (240W)</td>
+                <td><strong>獨立 220V / 30A 專用迴路</strong> (2500W)</td>
+                <td><strong>獨立 220V 專用迴路</strong> (1600W)</td>
+            </tr>
+            <tr>
+                <td><strong>空調與冷氣要求</strong></td>
+                <td><strong>無需獨立冷氣</strong><br>正常有人辦公的室溫環境即可</td>
+                <td><strong>嚴格空調需求</strong><br>需機房專用 24h 強制製冷空調 (1.5噸以上)</td>
+                <td><strong>常駐冷氣環境</strong><br>需維持在 22°C~25°C 空調環境</td>
+            </tr>
+            <tr>
+                <td><strong>實體安置與噪音</strong></td>
+                <td>約 35 分貝，接近靜音<br>可直接放在辦公桌上</td>
+                <td>高達 80 分貝 (如除草機)<br><strong>必須加購主動隔音冷卻機櫃</strong></td>
+                <td>內建一體式水冷，低噪環境<br>可放辦公室角落 (下班需維持空調)</td>
+            </tr>
+            <tr class="highlight-row">
+                <td><strong>【24h 運轉總功耗】<br><small style="color:#64748B;">(含主機+冷卻機櫃/空調)</small></strong></td>
+                <td><strong>0.24 kW</strong><br><small style="color:#64748B;">(主機 240W，免額外冷氣)</small></td>
+                <td><strong>3.50 kW</strong><br><small style="color:#64748B;">(主機 2500W + 機櫃冷卻 1000W)</small></td>
+                <td><strong>2.20 kW</strong><br><small style="color:#64748B;">(主機 1600W + 常駐空調 600W)</small></td>
+            </tr>
+            <tr class="highlight-row">
+                <td><strong>【24h 估算月電費】<br><small style="color:#64748B;">(NT$ 5.0 / 度, 30天)</small></strong></td>
+                <td><strong>NT$ 864 元 / 月</strong><br><small style="color:#64748B;">(172.8 度/月)</small></td>
+                <td><strong>NT$ 12,600 元 / 月</strong><br><small style="color:#64748B;">(2,520 度/月)</small></td>
+                <td><strong>NT$ 7,920 元 / 月</strong><br><small style="color:#64748B;">(1,584 度/月)</small></td>
+            </tr>
+            <tr class="highlight-row">
+                <td><strong>【24h 估算年電費】<br><small style="color:#64748B;">(NT$ 5.0 / 度, 365天)</small></strong></td>
+                <td><strong>NT$ 10,512 元 / 年</strong><br><small style="color:#64748B;">(2,102.4 度/年)</small></td>
+                <td><strong>NT$ 153,300 元 / 年</strong><br><small style="color:#64748B;">(30,660 度/年)</small></td>
+                <td><strong>NT$ 96,360 元 / 年</strong><br><small style="color:#64748B;">(19,272 度/年)</small></td>
+            </tr>
+            <tr style="border-top: 2px solid var(--primary);">
+                <td><strong>【硬體主機報價】</strong></td>
+                <td>約 NT$ 19 萬 ～ 22 萬元</td>
+                <td>約 NT$ 120 萬 ～ 150 萬元</td>
+                <td>約 NT$ 310 萬 ～ 350 萬元</td>
+            </tr>
+            <tr>
+                <td><strong>【周邊配套建置費】</strong></td>
+                <td>約 NT$ 0.2 萬 ～ 0.5 萬元<br><small style="color:#64748B;">• 僅需採購家用小型 1KVA UPS</small></td>
+                <td>約 NT$ 20 萬 ～ 45 萬元<br><small style="color:#64748B;">• 智能隔音冷卻機櫃、3KVA 在線式 UPS</small></td>
+                <td>約 NT$ 50 萬 ～ 120 萬元<br><small style="color:#64748B;">• 3KVA 線上式 UPS、物理隔離與審計系統</small></td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>初始總建置成本</strong></td>
+                <td><strong>約 NT$ 19.2 萬 ～ 22.5 萬元</strong></td>
+                <td><strong>約 NT$ 140 萬 ～ 195 萬元</strong></td>
+                <td><strong>約 NT$ 360 萬 ～ 470 萬元</strong></td>
+            </tr>
+            <tr class="tco-row">
+                <td><strong>3 年 TCO 總成本<br><small style="color:#047857;">(建置費 + 3年24h電費)</small></strong></td>
+                <td><strong>約 NT$ 22.4 萬 ～ 25.7 萬元</strong><br><small style="color:#047857;">(3年電費累計約 3.2 萬元)</small></td>
+                <td><strong>約 NT$ 186 萬 ～ 241 萬元</strong><br><small style="color:#047857;">(3年電費累計約 46.0 萬元)</small></td>
+                <td><strong>約 NT$ 388.9 萬 ～ 498.9 萬元</strong><br><small style="color:#047857;">(3年電費累計約 28.9 萬元)</small></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 第三區塊：用電評估與併發容納專題 -->
+    <div class="section-title">三、用電與併發團隊規模評估分析</div>
+    <div class="elec-box">
+        <div class="elec-title">👥 各方案適合之團隊規模與併發分析：</div>
+        <ul>
+            <li><strong>方案 A (GB10) — 建議 1 ～ 3 人輕量團隊：</strong>適合個人專用或 1~3 人的微型小組。推論 7B 等級模型速度快，但當多位同仁同時請求生圖或渲染影音時，會產生排隊隊列，適合任務較少或採非即時批次處理的情境。</li>
+            <li><strong>方案 B (4卡 L40S) — 建議 5 ～ 15 人中型團隊：</strong>搭載 4 張獨立 GPU（共 192GB 顯存），可利用 vLLM 或 Multi-Instance 實施 task 切分。能同時支應 5~15 位同仁同時進行財報 OCR 結構化解析、文案生成與短影音渲染，併發負載力強。</li>
+            <li><strong>方案 C (GB300) — 建議 15 ～ 30+ 人跨部門 / 全企業級：</strong>擁有高達 748GB 一致性大記憶體，能硬體切分（MIG）多個獨立執行階段。可輕鬆支應 15~30 人以上高強度同時併發，完全不影響推論與影音生成速度。</li>
+        </ul>
+    </div>
+
+    <!-- 第四區塊 -->
+    <div class="section-title">四、 決策導向綜合建議</div>
+    <div class="grid-3">
+        <div class="card" style="border-top: 4px solid var(--color-a);">
+            <div class="card-title" style="color: var(--color-a);">🟢 方案 A：微型團隊 / 個人試水溫 (GB10)</div>
+            <p style="font-size: 13px; margin: 0; line-height: 1.6;">
+                <strong>適用規模：</strong> 1 ～ 3 人。<br>
+                <strong>優勢：</strong> 成本最低（建置約 20 萬元，月電費低於 900 元），免專用迴路與冷氣，隨插即用。<br>
+                <strong>瓶頸：</strong> 團隊超過 3 人且尖峰併發高時會需要排隊等待，模型上限為 7B 量化版。
+            </p>
+        </div>
+        <div class="card" style="border-top: var(--color-c) 4px solid;">
+            <div class="card-title" style="color: var(--color-c);">🔵 方案 B：中型部門黃金黃金替代 (4卡 L40S)</div>
+            <p style="font-size: 13px; margin: 0; line-height: 1.6;">
+                <strong>適用規模：</strong> 5 ～ 15 人。<br>
+                <strong>優勢：</strong> 多卡獨立加速，192GB 顯存能順暢處理 72B 財報結構化與批量短影音生成，且免改建土木機房（搭隔音冷卻機櫃即可）。<br>
+                <strong>考量：</strong> 24/7 運轉每年電費約 15.3 萬元（3 年約 46 萬元），需編列長期運轉預算。
+            </p>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--color-b);">
+            <div class="card-title" style="color: var(--color-b);">🟡 方案 C：全企業 / 跨部門旗艦首選 (GB300)</div>
+            <p style="font-size: 13px; margin: 0; line-height: 1.6;">
+                <strong>適用規模：</strong> 15 ～ 30+ 人。<br>
+                <strong>優勢：</strong> 748GB 頂級大記憶體，支援最高精度完整版大模型與 3D 動態短片，多部門併發極度流暢。且能效比高，電費比方案 B 每年省約 5.7 萬元。<br>
+                <strong>考量：</strong> 初始建置成本較高（360 萬 ~ 470 萬元），適合企業級長遠戰略佈局。
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        地端私有化 AI 架構建置方案與環境評估報告 | 本報告包含容量規模與運轉電費(NT$5.0/度）綜合評估
+    </footer>
+</div>
+
+</body></html>
