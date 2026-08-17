@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)https://digitmjerry.github.io/web/dgx.html -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA DGX Spark 架構 AI 主機採購評比報告 (128GB / 4TB / 1年保固 齊平規格版)</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm;
+  }
+  
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    margin: 0;
+    padding: 24px;
+    color: #0f172a;
+    background-color: #f1f5f9;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1050px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Header Section */
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 28px;
+    border-bottom: 5px solid #3b82f6;
+  }
+
+  .header h1 {
+    font-size: 26px;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+  }
+
+  .header .subtitle {
+    font-size: 16px;
+    color: #cbd5e1;
+    margin: 0;
+  }
+
+  /* Executive Summary Box */
+  .summary-card {
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-left: 6px solid #2563eb;
+    border-radius: 8px;
+    padding: 22px;
+    margin-bottom: 30px;
+  }
+
+  .summary-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 19px;
+    color: #1e3a8a;
+  }
+
+  .summary-card p {
+    margin: 0;
+    color: #334155;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* Section Headings */
+  h2 {
+    font-size: 20px;
+    color: #0f172a;
+    border-left: 5px solid #2563eb;
+    padding-left: 12px;
+    margin: 32px 0 18px 0;
+  }
+
+  /* Table Styling */
+  .table-responsive {
+    overflow-x: auto;
+    margin-bottom: 30px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+  }
+
+  th {
+    background-color: #0f172a;
+    color: #f8fafc;
+    text-align: left;
+    padding: 16px 14px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 16px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+    vertical-align: middle;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  .star-rating {
+    color: #d97706;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .badge-spec {
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+  }
+
+  .badge-onsite {
+    background-color: #fef3c7;
+    color: #92400e;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+  }
+
+  /* Recommendation List */
+  .recommendation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .rec-item {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+
+  .rec-item .tag {
+    font-weight: 700;
+    color: #1d4ed8;
+    margin-bottom: 8px;
+    font-size: 17px;
+  }
+
+  .rec-item .desc {
+    color: #475569;
+    font-size: 15.5px;
+    line-height: 1.6;
+  }
+
+  /* Base Specs Banner */
+  .base-spec-banner {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .base-spec-item {
+    font-size: 15.5px;
+    color: #1e40af;
+    font-weight: 600;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>NVIDIA DGX Spark 架構 AI 主機採購評比報告</h1>
+    <div class="subtitle">完全齊平基準條件評比：128GB Unified Memory / 4TB NVMe SSD / 1年保固</div>
+  </div>
+
+  <div class="base-spec-banner">
+    <div class="base-spec-item">🧠 統一記憶體：128GB</div>
+    <div class="base-spec-item">💾 儲存容量：4TB NVMe SSD</div>
+    <div class="base-spec-item">🛡️ 保固期限：1 年完整原廠/企業保固</div>
+    <div class="base-spec-item">⚡ 核心晶片：NVIDIA GB10 Superchip</div>
+  </div>
+
+  <div class="summary-card">
+    <h3>核心評比結論摘要</h3>
+    <p>在控制所有硬體變數（128GB + 4TB）與保固年限（1 年）一致的前提下：<br>
+    • <strong>CP 值與開箱即用首選：GIGABYTE AI TOP ATOM</strong>，提供專屬軟體工具降低 LLM 微調門檻。<br>
+    • <strong>高階散熱與旗艦工藝首選：ASUS Ascent GX10</strong>，搭載 QuietFlow 雙均熱板與 3 風扇頂級散熱系統，確保長時間高負載運算不降頻。<br>
+    • <strong>企業服務與零停機保障：Dell Pro Max / HP ZGX Nano</strong>，包含 1 年專人到府快修服務與企業級資安防護。</p>
+  </div>
+
+  <h2>一、 齊平規格比較表 (128GB / 4TB / 1年保固)</h2>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">品牌與型號</th>
+          <th style="width: 20%;">保固與服務類型</th>
+          <th style="width: 15%;">散熱評級</th>
+          <th style="width: 40%;">關鍵優勢與技術特色</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>GIGABYTE AI TOP ATOM</strong></td>
+          <td><span class="badge-spec">1 年原廠完整保固</span></td>
+          <td><span class="star-rating">★★★☆☆</span></td>
+          <td>• 獨家 AI TOP Utility 輔助軟體<br>• 簡化本地 LLM 模型微調流程<br>• 具備極佳入手門檻優勢</td>
+        </tr>
+        <tr>
+          <td><strong>Altos BrainSphere GB10 F1</strong></td>
+          <td><span class="badge-spec">1 年伺服器級保固</span></td>
+          <td><span class="star-rating">★★★☆☆</span></td>
+          <td>• 宏碁雲端伺服器品質規範<br>• 全網孔對流機身設計<br>• 企業級部署防護</td>
+        </tr>
+        <tr>
+          <td><strong>Acer Veriton GN100</strong></td>
+          <td><span class="badge-spec">1 年原廠完整保固</span></td>
+          <td><span class="star-rating">★★★☆☆</span></td>
+          <td>• 精巧迷你機身設計<br>• ConnectX-7 200G 高速介面<br>• 適合邊緣部署與多台串聯</td>
+        </tr>
+        <tr>
+          <td><strong>LEADTEK DGX Spark FE</strong></td>
+          <td><span class="badge-spec">1 年代理專屬保固</span></td>
+          <td><span class="star-rating">★★★☆☆</span></td>
+          <td>• 100% DGX 原廠純血架構<br>• 預載完整 NVIDIA AI 軟體堆疊<br>• 提供台灣在地技術支援</td>
+        </tr>
+        <tr>
+          <td><strong>Dell Pro Max with GB10</strong></td>
+          <td><span class="badge-onsite">1 年 ProSupport 到府</span></td>
+          <td><span class="star-rating">★★★★☆</span></td>
+          <td>• 伺服器級主動風道+雙M.2散熱片<br>• 含 1 年專人到府快速維修<br>• 適合高穩定度運營需求</td>
+        </tr>
+        <tr>
+          <td><strong>ASUS Ascent GX10</strong></td>
+          <td><span class="badge-spec">1 年原廠完整保固</span></td>
+          <td><span class="star-rating">★★★★★</span></td>
+          <td>• QuietFlow 雙均熱板+3風扇<br>• 散熱涵蓋率提升 1.6 倍<br>• 旗艦級散熱工藝，極致安靜防降頻</td>
+        </tr>
+        <tr>
+          <td><strong>HP ZGX Nano AI Station</strong></td>
+          <td><span class="badge-onsite">1 年 Z系列全球到府</span></td>
+          <td><span class="star-rating">★★★★☆</span></td>
+          <td>• 內建 Wolf Security 企業資安<br>• 標配頂級全球專人到府維修<br>• 工業級品質與絕佳穩定度</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>二、 選購建議與決策分析</h2>
+  <div class="recommendation-grid">
+    <div class="rec-item">
+      <div class="tag">💡CP 值與開箱即用首選：GIGABYTE AI TOP ATOM</div>
+      <div class="desc">技嘉 AI TOP ATOM 提供同級最具競爭力的入手門檻。搭配專屬的 AI TOP Utility 輔助軟體，顯著降低本地端 LLM 模型微調與訓練的技術門檻，是追求高性價比與快速部署開發團隊的最佳首選。</div>
+    </div>
+    <div class="rec-item">
+      <div class="tag">💡高階散熱與穩定運算首選：ASUS Ascent GX10</div>
+      <div class="desc">華碩 Ascent GX10 定位為高階旗艦機種，獨家配備 QuietFlow 雙均熱板與 3 風扇頂級散熱系統，能提供同級最佳的熱管理，確保 4TB SSD 與 128GB 記憶體在高強度 AI 算力輸出下不降頻，極適合追求極致靜音與散熱表現的使用者。</div>
+    </div>
+    <div class="rec-item">
+      <div class="tag">💡企業營運與零停機保障首選：Dell Pro Max / HP ZGX Nano</div>
+      <div class="desc">此選購方向主打最高規格的 **1 年專人到府快修（On-site Service）** 與企業級資安防護（如 HP Wolf Security），當硬體出現故障時有專人攜備品到場更換，適合不容許任何停機風險的商業及研究單位。</div>
+    </div>
+  </div>
+
+</div>
+
+
+</body></html>
