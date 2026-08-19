@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HP Color LaserJet Pro M154nw MacBook 設定指南</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f9fa;
+        }
+        h1 {
+            color: #0076d6;
+            border-bottom: 2px solid #0076d6;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            border-left: 5px solid #0076d6;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #34495e;
+        }
+        .step-box {
+            background-color: #fff;
+            border: 1px solid #e1e4e6;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .highlight {
+            background-color: #f1f8ff;
+            border-left: 4px solid #0366d6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            color: #111;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>HP Color LaserJet Pro M154nw MacBook 設定指南</h1>
+    <p>當 MacBook 無法在網路中找到印表機時，通常是因為印表機尚未成功連線至 Wi-Fi 網路。請依照以下完整步驟進行設定。</p>
+
+    <h2>第一步：重設印表機網路設定</h2>
+    <div class="step-box">
+        <p>此步驟可清除舊的錯誤連線資訊，讓印表機重新進入配對狀態：</p>
+        <ol>
+            <li>確保印表機電源已開啟。</li>
+            <li>同時按住印表機控制面板上的<strong>「無線」按鈕（藍色 Wi-Fi 圖示）</strong>與<strong>「取消」按鈕（❌ 圖示）</strong>。</li>
+            <li>持續按住約 <strong>5 秒鐘</strong>，直到電源指示燈與無線指示燈開始閃爍後放開。</li>
+            <li>靜待約 1 分鐘，當<strong>藍色無線燈呈現緩慢閃爍</strong>狀態時，即代表已成功進入配對模式。</li>
+        </ol>
+    </div>
+
+    <h2>第二步：將印表機連上 Wi-Fi（二選一）</h2>
+    <div class="step-box">
+        <h3>方法 A：使用 WPS 按鈕（最快速，免輸入密碼）</h3>
+        <ol>
+            <li>確認印表機的藍色無線燈目前正處於閃爍狀態。</li>
+            <li>按下家中的 <strong>Wi-Fi 分享器（路由器）</strong>上的 <strong>WPS 按鈕</strong>（部分機型需按住 3 秒）。</li>
+            <li>在 2 分鐘內回到印表機旁，<strong>按住「無線」按鈕 3～5 秒</strong> 啟動配對。</li>
+            <li>當印表機的<strong>藍色無線燈停止閃爍並保持常亮</strong>時，即表示連線成功。</li>
+        </ol>
+
+        <h3>方法 B：使用 USB 傳輸線輔助設定</h3>
+        <ol>
+            <li>若分享器無 WPS 按鈕，請使用 <strong>USB 傳輸線</strong> 直接連接 MacBook 與印表機。</li>
+            <li>開啟 Mac 瀏覽器，前往 <a href="https://123.hp.com" target="_blank">123.hp.com</a> 下載並安裝 <strong>HP Smart App</strong>。</li>
+            <li>開啟 App 並點擊「新增印表機」，系統將透過 USB 偵測到印表機。</li>
+            <li>依照畫面引導輸入家中的 Wi-Fi 密碼，協助印表機完成網路連線。</li>
+            <li>連線成功後，即可將 USB 傳輸線拔除。</li>
+        </ol>
+    </div>
+
+    <h2>第三步：在 Mac 系統中新增印表機</h2>
+    <div class="step-box">
+        <p>當印表機的<strong>藍色 Wi-Fi 燈常亮</strong>後，請確認 MacBook 已連線至<strong>相同的 Wi-Fi 網路名稱</strong>：</p>
+        <ol>
+            <li>點擊 Mac 畫面左上角的 <strong>蘋果標誌 ()</strong>。</li>
+            <li>進入 <strong>「系統設定」</strong>（舊版系統為「系統偏好設定」）。</li>
+            <li>於左側選單滑動並點選 <strong>「印表機與掃描器」</strong>。</li>
+            <li>點擊 <strong>「加入印表機、掃描器或傳真機...」</strong> 按鈕。</li>
+            <li>在清單中選取 <strong>HP Color LaserJet Pro M154nw</strong>，確認使用 AirPrint 後點擊 <strong>「加入」</strong> 即可完成。</li>
+        </ol>
+    </div>
+
+    <div class="highlight">
+        <strong>💡 注意事項：</strong>
+        <ul>
+            <li>本印表機僅支援 <strong>2.4GHz</strong> 頻段的 Wi-Fi 網路，不支援 5GHz。設定時請確保 Mac 連接至 2.4GHz 的網路名稱。</li>
+            <li>若後續需要進階管理或檢視碳粉匣狀態，可至 <a href="https://support.hp.com/tw-zh/drivers/hp-color-laserjet-pro-m153-m154-printer-series/model/14121231" target="_blank">HP 官方驅動程式頁面</a> 下載專屬工具。</li>
+        </ul>
+    </div>
+
+</body>
+</html>
