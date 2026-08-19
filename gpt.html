@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 平台團隊方案付費方式與固定費用機制比較報告（年繳專用）</title>
+    <script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=e7wcNSbW-tlpR3AGifb6w8xaAFeLyR6kn99PfbPfSfkMPIYxRg53eQN6fN4f_HiFt7KIKG4bd-OmnUdxulsIgoPwZuczZjjHxCPDgLvGXe3bfLQw04fHqAa68iK1aoYt0Mn8FEHXo7fb9kfnUhFfOvJmPVrmg10cTJHnM5elK50Gc7ldnTOAwFGPmJwEHNGaDnuswQQtZ8s755hw9AiUBI8Hk5bB26pJBrph4INCeCG-RHfEIUnMcFhAgJDkNLraxizDqr1AyUpFwrQFpA_9SKpKpeasldBFJ2VsQ_xQr2x_-JTaYhg-Jls6_g5fLWw6w0IkjmR4kPYbm6GnEZcWRi_UOOVRJvb1c6qXd5uYcnU" charset="UTF-8"></script><style>
+        :root {
+            --primary-color: #0f172a;
+            --chatgpt-color: #10a37f;
+            --claude-color: #d97706;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #e2e8f0;
+            --warning-bg: #fffbeeb0;
+            --warning-border: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .alert-banner {
+            background-color: #f0fdf4;
+            border: 1px solid #86efac;
+            color: #166534;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .threshold-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-top: 5px solid #cbd5e1;
+        }
+
+        .card.chatgpt {
+            border-top-color: var(--chatgpt-color);
+        }
+
+        .card.claude {
+            border-top-color: var(--claude-color);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge.chatgpt { background-color: #e6f4ea; color: #137333; }
+        .badge.claude { background-color: #fef3c7; color: #b45309; }
+
+        .price-tag {
+            margin-bottom: 15px;
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .price-period {
+            font-size: 1rem;
+            color: #64748b;
+        }
+
+        .threshold-detail {
+            list-style: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .threshold-detail li {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
+
+        .threshold-detail li span.label {
+            color: #64748b;
+        }
+
+        .threshold-detail li span.value {
+            font-weight: 600;
+        }
+
+        section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        section h2 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .note-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #1e40af;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-list {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .feature-list li {
+            margin-bottom: 8px;
+        }
+
+        .status-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-tag.success {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-tag.warning {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI 平台年繳固定費用與用量防護比較報告</h1>
+            <p class="subtitle">針對 ChatGPT Business 與 Claude Team 方案之「年繳制」與「零超額費用」機制研析</p>
+        </header>
+
+        <div class="alert-banner">
+            <strong>📌 核心確認結論：</strong>
+            兩大平台（ChatGPT Business 與 Claude Team）的「標準席位」均採用<strong>完全預付固定費用機制</strong>。使用者即使高度頻繁使用，系統只會予以<strong>速率限制（Rate Limit / 冷卻時間）</strong>，<strong>絕不會自動加收額外超量費用</strong>。
+        </div>
+
+        <!-- 最低門檻亮點卡片 (年繳) -->
+        <div class="threshold-cards">
+            <div class="card chatgpt">
+                <div class="card-header">
+                    <span class="card-title">ChatGPT Business</span>
+                    <span class="badge chatgpt">年繳起步最低</span>
+                </div>
+                <div class="price-tag">
+                    <span class="price-amount">$480</span>
+                    <span class="price-period">USD / 年 (年繳低消)</span>
+                </div>
+                <ul class="threshold-detail">
+                    <li><span class="label">年繳單價 (標準席)</span><span class="value">$20 / 席 / 月 ($240/年)</span></li>
+                    <li><span class="label">最低席位限制</span><span class="value">2 席</span></li>
+                    <li><span class="label">固定費用保障</span><span class="value"><span class="status-tag success">100% 絕對固定</span></span></li>
+                    <li><span class="label">用量過多處理方式</span><span class="value">暫時限制速率，不加收費用</span></li>
+                </ul>
+            </div>
+
+            <div class="card claude">
+                <div class="card-header">
+                    <span class="card-title">Claude Team</span>
+                    <span class="badge claude">年繳低消金額高</span>
+                </div>
+                <div class="price-tag">
+                    <span class="price-amount">$1,200</span>
+                    <span class="price-period">USD / 年 (年繳低消)</span>
+                </div>
+                <ul class="threshold-detail">
+                    <li><span class="label">年繳單價 (標準席)</span><span class="value">$20 / 席 / 月 ($240/年)</span></li>
+                    <li><span class="label">最低席位限制</span><span class="value">5 席</span></li>
+                    <li><span class="label">固定費用保障</span><span class="value"><span class="status-tag success">100% 絕對固定</span></span></li>
+                    <li><span class="label">用量過多處理方式</span><span class="value">暫時觸發冷卻，不加收費用</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 年繳與用量防護比較表 -->
+        <section>
+            <h2>年繳方案與固定費用（零超額計費）機制比較</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>比較項目</th>
+                            <th>ChatGPT Business (標準席位)</th>
+                            <th>Claude Team (標準席位)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>年繳單人費用</strong></td>
+                            <td><strong>$240 USD / 年</strong> (折合 $20/月)</td>
+                            <td><strong>$240 USD / 年</strong> (折合 $20/月)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>最低年繳總開通成本</strong></td>
+                            <td><strong>$480 USD / 年</strong> (最少 2 席)</td>
+                            <td><strong>$1,200 USD / 年</strong> (最少 5 席)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>用量過多會被加收費用嗎？</strong></td>
+                            <td><strong><span class="status-tag success">絕對不會</span></strong><br>全額預付固定月/年費，無超量後扣機制。</td>
+                            <td><strong><span class="status-tag success">絕對不會</span></strong><br>全額預付固定月/年費，無超量後扣機制。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>成員用量超限時的系統行為</strong></td>
+                            <td>
+                                觸發速率限制（Rate Limit），使用者需等待幾小時重置配額。工作區管理員可自主選擇是否手動購買點數（Credits），<strong>系統絕不會自動扣款</strong>。
+                            </td>
+                            <td>
+                                觸發對話上限冷卻時間（如顯示「4小時後重置」），成員需等待時間恢復配額。標準席位費用固定，無自動加價條款。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>需注意的按用量計費項目（可完全避開）</strong></td>
+                            <td>
+                                • <strong>Codex 按用量席位/工作區點數</strong>：若僅選擇「標準席位」且不設定自動加值，即可完全維持 100% 固定費用。
+                            </td>
+                            <td>
+                                • <strong>無</strong>：標準席位完全為訂閱制，Cowork 任務若用量過高僅會加速達上限冷卻，不會產生任何額外帳單。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 年繳費用試算表 -->
+        <section>
+            <h2>年繳模式下不同人數費用試算（固定費用）</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>團隊總人數</th>
+                            <th>ChatGPT Business (年繳總金額)</th>
+                            <th>Claude Team (年繳總金額)</th>
+                            <th>費用與防護說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>2 人</strong></td>
+                            <td><strong>$480 USD / 年</strong></td>
+                            <td><strong>$1,200 USD / 年</strong></td>
+                            <td>Claude 有 5 人低消限制；兩者無論員工當月用多少，全年費用固定不變。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5 人</strong></td>
+                            <td><strong>$1,200 USD / 年</strong></td>
+                            <td><strong>$1,200 USD / 年</strong></td>
+                            <td>開通成本完全相同（每人固定 $240/年），無任何額外隱性收費。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>10 人</strong></td>
+                            <td><strong>$2,400 USD / 年</strong></td>
+                            <td><strong>$2,400 USD / 年</strong></td>
+                            <td>每人每年 $240 封頂，完全符合企業固定預算管控需求。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 固定預算管理建議 -->
+        <section>
+            <h2>企業固定預算管控指南</h2>
+            <div class="grid-2">
+                <div>
+                    <h3 style="margin-bottom: 12px; color: var(--chatgpt-color);">ChatGPT Business 設定建議</h3>
+                    <ul class="feature-list">
+                        <li><strong>不購買/不安裝點數 (Credits)</strong>：只要工作區不儲值點數或不開啟「自動增值 (Auto-recharge)」，帳單就只會有純席位的固定年費。</li>
+                        <li><strong>新增席位即時補差價</strong>：年繳期間若需增加新成員，系統會按剩餘天數收取比例費用（例如剩餘 6 個月則加收 $120/席）。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 12px; color: var(--claude-color);">Claude Team 設定建議</h3>
+                    <ul class="feature-list">
+                        <li><strong>明確了解用量上限</strong>：標準席位提供 Pro 版的 1.25 倍用量。若員工使用 Cowork 自動化流致配額用盡，只需等待重置時間即可，財務不會有額外負擔。</li>
+                        <li><strong>無需擔心後續帳單</strong>：方案無任何按量後付款（Pay-as-you-go）彈性條款，預算掌控度極高。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="note-box">
+                <h4>總結分析</h4>
+                <p>在<strong>統一採用年繳</strong>且<strong>要求成員費用 100% 固定</strong>的前提下：<br>
+                1. 兩大平台的「標準席位」年繳單價均為 <strong>$20 USD / 席 / 月（即每人每年 $240 USD）</strong>。<br>
+                2. 兩者均具備<strong>「用量封頂、觸發限制但不加價」</strong>的防護機制，能有效鎖定財務預算。<br>
+                3. 若團隊規模在 5 人以下（如 2 人），<strong>ChatGPT Business 年繳門檻只需 $480 USD</strong>，相較 Claude Team 的低消 $1,200 USD 更具優勢。</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>報告產生時間：2026年8月 | 資料來源：官方公開計費說明文件與條款</p>
+        </footer>
+    </div>
+</body>
+</html>
