@@ -1,0 +1,259 @@
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中華電信網路方案升級與費用分析報告</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 10mm;
+            background-color: #f8fafc;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            margin: 0 auto;
+            padding: 24px;
+            max-width: 1024px; /* 限制最大寬度為 1024px */
+            color: #1e293b;
+            background-color: #f8fafc;
+            line-height: 1.6;
+            font-size: 13pt; /* 調大整體基礎字體大小 */
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 28px 32px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 24pt; /* 標題字體調大 */
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            margin: 0;
+            font-size: 13pt; /* 副標題字體調大 */
+            color: #93c5fd;
+        }
+        
+        .summary-cards {
+            width: 100%;
+            margin-bottom: 28px;
+            border-spacing: 16px 0;
+            margin-left: -16px;
+            margin-right: -16px;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 20px 24px;
+            vertical-align: top;
+        }
+        .card-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .card-value {
+            font-size: 24pt; /* 金額字體調大 */
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+        .card-desc {
+            font-size: 12pt; /* 卡片描述字體調大 */
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .card-desc.blue {
+            color: #2563eb;
+        }
+
+        h2 {
+            font-size: 16pt; /* 章節標題字體調大 */
+            color: #0f172a;
+            border-left: 5px solid #2563eb;
+            padding-left: 12px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            page-break-after: avoid;
+        }
+
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 28px;
+        }
+        table.data-table th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 700;
+            text-align: left;
+            padding: 14px 18px;
+            font-size: 13pt; /* 表頭字體調大 */
+            border-bottom: 2px solid #cbd5e1;
+        }
+        table.data-table td {
+            padding: 16px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 12.5pt; /* 表格內容字體調大 */
+        }
+        table.data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11pt; /* Badge 字體調大 */
+            font-weight: 700;
+        }
+        .badge-current { background-color: #e2e8f0; color: #334155; }
+        .badge-save { background-color: #dcfce7; color: #15803d; }
+        .badge-upgrade { background-color: #dbeafe; color: #1e40af; }
+
+        .recommendation-box {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+        .recommendation-title {
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 14pt; /* 建議標題字體調大 */
+            margin-bottom: 12px;
+        }
+        .recommendation-box ul {
+            margin: 0;
+            padding-left: 22px;
+            color: #1e293b;
+        }
+        .recommendation-box li {
+            margin-bottom: 10px;
+            font-size: 12.5pt; /* 建議內文字體調大 */
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 11pt; /* 頁腳字體調大 */
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>中華電信網路方案升級與費用分析報告</h1>
+        <p>比較項目：目前方案（含企業防駭守門員）vs. 最新非固定制企業防駭守門員PLUS方案(2.0) 二年約</p>
+    </div>
+
+    <table class="summary-cards">
+        <tr>
+            <td class="card" width="50%">
+                <div class="card-title">方案 A：同速降價 (300M)</div>
+                <div class="card-value">$1,119 <span style="font-size: 13pt; color: #64748b; font-weight: normal;">/ 月</span></div>
+                <div class="card-desc">↓ 每月省 $80（兩年共省 $1,920）＋ 升級 PLUS 2.0 防護</div>
+            </td>
+            <td class="card" width="50%">
+                <div class="card-title">方案 B：加價升級 (500M)</div>
+                <div class="card-value">$1,219 <span style="font-size: 13pt; color: #64748b; font-weight: normal;">/ 月</span></div>
+                <div class="card-desc blue">↑ 網速提升 66.7%（每月只需 +$20）＋ 升級 PLUS 2.0 防護</div>
+            </td>
+        </tr>
+    </table>
+
+    <h2>方案詳細對比表</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>方案項目</th>
+                <th>目前使用方案</th>
+                <th>新方案 300M</th>
+                <th>新方案 500M</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>合約類別</strong></td>
+                <td><span class="badge badge-current">舊版企業防駭方案</span></td>
+                <td><span class="badge badge-save">企業防駭PLUS 2.0 (2年)</span></td>
+                <td><span class="badge badge-upgrade">企業防駭PLUS 2.0 (2年)</span></td>
+            </tr>
+            <tr>
+                <td><strong>下載/上傳速率</strong></td>
+                <td>300M / 300M</td>
+                <td>300M / 300M</td>
+                <td><strong>500M / 500M</strong></td>
+            </tr>
+            <tr>
+                <td><strong>月租費用</strong></td>
+                <td><strong>$1,199</strong> 元/月</td>
+                <td><strong style="color: #16a34a;">$1,119</strong> 元/月</td>
+                <td><strong style="color: #2563eb;">$1,219</strong> 元/月</td>
+            </tr>
+            <tr>
+                <td><strong>相對目前費用變化</strong></td>
+                <td>基準點</td>
+                <td><strong style="color: #16a34a;">每月省 $80 (-6.7%)</strong></td>
+                <td><strong style="color: #dc2626;">每月多 $20 (+1.7%)</strong></td>
+            </tr>
+            <tr>
+                <td><strong>2年（24個月）總費用</strong></td>
+                <td>$28,776 元</td>
+                <td>$26,856 元</td>
+                <td>$29,256 元</td>
+            </tr>
+            <tr>
+                <td><strong>2年總支出差異</strong></td>
+                <td>基準點</td>
+                <td><strong style="color: #16a34a;">省下 $1,920 元</strong></td>
+                <td>增加 $480 元</td>
+            </tr>
+            <tr>
+                <td><strong>附加資安服務</strong></td>
+                <td>企業防駭守門員</td>
+                <td><strong>企業防駭守門員 PLUS (2.0)</strong></td>
+                <td><strong>企業防駭守門員 PLUS (2.0)</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>決策建議與分析</h2>
+    <div class="recommendation-box">
+        <div class="recommendation-title">💡 選擇建議</div>
+        <ul>
+            <li><strong>首選建議 — 升級 500M（網速資安雙升級）：</strong>
+                目前已有企業防駭守門員，若升級至此方案，每月僅需比現行費用<strong>多花 20 元</strong>（每日不到 1 元），除了防駭服務升級至 PLUS (2.0) 版本之外，下載與上傳網速更直升至 500M（提升 66.7%），CP值極高。
+            </li>
+            <li><strong>次選建議 — 續留 300M（資安升級且降低成本）：</strong>
+                若現有 300M 網速已滿足需求，轉換至新方案不僅能將防禦等級升級為 PLUS (2.0)，月費還能<strong>調降至 $1,119 元</strong>，兩年合約內為您節省 $1,920 元。
+            </li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        本報告由系統自動演算生成 • 資料基準日期：2026年9月
+    </div>
+
+</body>
+</html>
