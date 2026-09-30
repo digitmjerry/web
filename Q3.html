@@ -1,32 +1,637 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>2026 年第三季資安風險報告</title>
+<!-- Fonts: Archivo (Latin display) + Noto Sans TC (Chinese) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#183044;--muted:#607184;--line:#dce5ed;--red:#ba3342;--orange:#a96812;--blue:#126378}
-*{box-sizing:border-box}body{margin:0;background:#edf2f6;color:var(--ink);font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;line-height:1.7}main{max-width:1120px;margin:32px auto;background:#fff;border-radius:18px;box-shadow:0 12px 45px #19364a12;overflow:hidden}header{padding:38px 44px;background:#17394b;color:#fff;border-top:6px solid #46b5b5}.eyebrow{font-size:12px;letter-spacing:2px;color:#9fd8dd}h1{font-size:32px;margin:8px 0 14px;line-height:1.35}.meta{display:flex;flex-wrap:wrap;gap:8px 25px;font-size:13px;color:#c7d9e3}.toolbar{display:flex;justify-content:flex-end;padding:14px 36px 0}button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:8px 16px;color:var(--ink);cursor:pointer;font:inherit;font-size:13px}button:hover{background:#edf5f7}.content{padding:20px 44px 36px}section{margin:0 0 26px}h2{font-size:19px;margin:0 0 13px;display:flex;gap:10px;align-items:center}h2 span{color:var(--blue);font-size:12px;letter-spacing:1px}h3{font-size:16px;margin:0 0 8px}p{margin:0 0 10px}.summary{background:#f1f7fa;border-left:4px solid var(--blue);padding:18px 22px;border-radius:0 9px 9px 0}.summary p{margin:0}.risk-line{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:9px}.badge{display:inline-block;border-radius:5px;padding:2px 9px;font-size:12px;font-weight:700;white-space:nowrap}.high{color:var(--red);background:#fcebed}.medium{color:var(--orange);background:#fff1db}.neutral{color:#50697b;background:#edf2f5}.note{font-size:12px;color:var(--muted)}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.kpi{border:1px solid var(--line);border-radius:10px;padding:15px 18px}.kpi .label{font-size:13px;color:var(--muted)}.kpi strong{display:block;font-size:34px;line-height:1.5}.kpi small{font-size:12px;color:var(--muted)}.kpi.red strong{color:var(--red)}.kpi.orange strong{color:var(--orange)}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:9px}table{border-collapse:collapse;width:100%;font-size:13px;table-layout:fixed}th{text-align:left;background:#eff4f7;color:#446075;font-size:12px;padding:12px 10px}td{padding:14px 10px;border-top:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}td strong{display:block;font-size:13px}.email{display:block;color:var(--muted);font-size:11px;margin-top:4px}td p{margin:0}.date{white-space:nowrap;font-size:12px}.status{font-size:12px;color:var(--muted)}.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.analysis{border:1px solid var(--line);padding:19px;border-radius:9px}.analysis .count{font-size:12px;color:var(--blue);font-weight:bold;margin-bottom:7px}.analysis p{font-size:13px}.analysis p:last-child{margin-bottom:0}.track th,.track td{padding:11px 12px}.footnote{margin-top:10px;font-size:12px;color:var(--muted)}footer{border-top:1px solid var(--line);padding:18px 44px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:20px}.decision{background:#f5f8fa;padding:15px 18px;border-radius:8px;font-size:13px;margin-top:15px}
-@media(max-width:760px){main{margin:0;border-radius:0}header{padding:28px 22px}h1{font-size:26px}.content{padding:20px 22px}.kpis{grid-template-columns:1fr 1fr}.analysis-grid{grid-template-columns:1fr}.table-wrap table{min-width:870px}.track table{min-width:670px}footer{padding:18px 22px;flex-direction:column;gap:4px}}
-@page{size:A4 portrait;margin:13mm}
-@media print{body{background:#fff;font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}main{margin:0;max-width:none;box-shadow:none;border-radius:0}header{padding:20px 24px;border-top-width:4px}h1{font-size:25px}.toolbar{display:none}.content{padding:20px 0 0}section{margin-bottom:19px}h2{font-size:16px}h3{font-size:14px}.summary{padding:14px 17px;font-size:12px}.kpis{gap:10px;margin-top:14px}.kpi{padding:11px 13px}.kpi strong{font-size:27px}.table-wrap{overflow:visible}.table-wrap table,.track table{min-width:0}table{font-size:11px}th{font-size:10px;padding:9px 7px}td{padding:10px 7px}td strong{font-size:11px}.email{font-size:10px}.date,.status{font-size:10px}tr,.kpi,.analysis,.summary,.decision{break-inside:avoid}thead{display:table-header-group}.next-page{break-before:page;padding-top:4px}.analysis{padding:15px}.analysis p{font-size:12px}.track th,.track td{padding:9px}.footnote,.note{font-size:10px}footer{padding:12px 0;font-size:10px}h2,h3{break-after:avoid}}
+* { margin:0; padding:0; box-sizing:border-box; }
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* ===========================================
+   THEME: SWISS MODERN
+   Change these variables to restyle the whole deck.
+   =========================================== */
+:root {
+  --stage-bg: #e9e9e6;           /* letterbox colour around the stage */
+  --slide-bg: #ffffff;
+  --ink: #0d0d0d;                /* primary text */
+  --ink-2: #444444;              /* body text */
+  --grey: #8c8c8c;               /* labels */
+  --line: #e4e4e4;               /* grid lines & hairlines */
+  --red: #ff3300;                /* the ONLY accent: risk / emphasis */
+  --red-soft: #fff1ec;
+  --latin: 'Archivo', 'Noto Sans TC', 'Noto Sans CJK TC', sans-serif;
+  --cjk: 'Noto Sans TC', 'Noto Sans CJK TC', sans-serif;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* === BASE SLIDE === */
+.slide { font-family: var(--cjk); color: var(--ink); transition: opacity .35s ease, visibility .35s; }
+.slide h2 { font: 900 72px/1.25 var(--cjk); letter-spacing: 0; }
+em { font-style: normal; color: var(--red); font-weight: 700; }
+
+/* === VISIBLE 12-COLUMN GRID (Swiss signature) === */
+.grid { position: absolute; inset: 0 96px; display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; pointer-events: none; }
+.grid i { border-left: 1px solid var(--line); border-right: 1px solid var(--line); opacity: .5; }
+
+/* === SLIDE CHROME: section header + footer === */
+.chrome { position: absolute; left: 96px; right: 96px; top: 72px; display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 3px solid var(--ink); padding-bottom: 22px; }
+.chrome .sec { font: 700 24px/1 var(--cjk); }
+.chrome .sec b { font: 800 24px/1 var(--latin); color: var(--red); margin-right: 18px; letter-spacing: .04em; }
+.chrome .pgno { font: 600 20px/1 var(--latin); color: var(--grey); letter-spacing: .08em; }
+.foot { position: absolute; left: 96px; right: 96px; bottom: 48px; display: flex; justify-content: space-between;
+  font: 400 17px/1 var(--cjk); color: var(--grey); }
+.foot span { font-family: var(--latin); letter-spacing: .04em; }
+
+/* === SHARED TAGS === */
+.tag { display: inline-block; font: 700 22px/1 var(--cjk); padding: 9px 14px; border: 2px solid var(--ink); color: var(--ink); }
+.tag.hi { background: var(--red); border-color: var(--red); color: #fff; }
+
+/* ===========================================
+   1. COVER
+   =========================================== */
+.cover .kicker { position: absolute; left: 96px; top: 88px; font: 600 20px/1 var(--latin); letter-spacing: .18em; }
+.cover .kicker b { color: var(--red); }
+.cover .pg { position: absolute; right: 96px; top: 88px; font: 500 20px/1 var(--latin); color: var(--grey); }
+.q3 { position: absolute; left: 84px; top: 150px; font: 900 520px/.8 var(--latin); letter-spacing: -.05em; }
+.q3 span { color: var(--red); }
+.redbar { position: absolute; left: 96px; top: 748px; height: 14px; width: 0; background: var(--red); transition: width 1s .3s var(--ease); }
+.visible .redbar { width: 716px; }
+.ctitle { position: absolute; left: 1015px; top: 210px; width: 810px; }
+.ctitle h1 { font: 900 104px/1.18 var(--cjk); letter-spacing: 0; }
+.ctitle p { margin-top: 36px; font: 400 30px/1.6 var(--cjk); color: var(--ink-2); }
+.cmeta { position: absolute; left: 96px; right: 96px; bottom: 96px; display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 24px;
+  border-top: 3px solid var(--ink); padding-top: 28px; }
+.cmeta div, .cmeta { font: 500 26px/1.5 var(--cjk); }
+.cmeta small { display: block; font: 600 16px/1 var(--latin); letter-spacing: .16em; color: var(--grey); margin-bottom: 14px; }
+.cmeta .risk { color: var(--red); font-weight: 900; font-size: 40px; line-height: 1.1; }
+
+/* ===========================================
+   2. SUMMARY — risk level (left) + key points (right)
+   =========================================== */
+.sum-left { position: absolute; left: 96px; top: 210px; width: 700px; }
+.sum-left .label { font: 700 28px/1 var(--cjk); }
+.huge { font: 900 260px/1 var(--cjk); color: var(--red); margin: 30px 0 40px -8px; letter-spacing: 0; }
+.scale { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.scale i { height: 18px; background: #f0f0ee; }
+.scale i.on { background: var(--ink); }
+.scale i.on:nth-child(3) { background: var(--red); }
+.scale-lab { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; font: 500 24px/1 var(--cjk); color: var(--grey); }
+.scale-lab .cur { color: var(--red); font-weight: 900; }
+.sum-left .note { margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--line); font: 400 22px/1.7 var(--cjk); color: var(--grey); width: 620px; }
+.sum-right { position: absolute; left: 1015px; top: 210px; width: 810px; }
+.points { list-style: none; margin-top: 44px; }
+.points li { display: grid; grid-template-columns: 76px 1fr; padding: 24px 0; border-top: 1px solid var(--line); }
+.points li:last-child { border-bottom: 1px solid var(--line); }
+.points b { font: 800 24px/1.6 var(--latin); color: var(--red); }
+.points p { font: 400 28px/1.6 var(--cjk); color: var(--ink-2); }
+
+/* ===========================================
+   3. STATS — four figures + distribution bars
+   =========================================== */
+.stat-h { position: absolute; left: 96px; top: 180px; }
+.stats { position: absolute; left: 96px; right: 96px; top: 330px; display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 24px; }
+.stat { border-top: 14px solid var(--ink); padding-top: 26px; }
+.stat.hi { border-color: var(--red); }
+.stat.zero { border-color: var(--line); }
+.stat small { display: block; font: 700 26px/1 var(--cjk); }
+.stat b { display: block; font: 900 220px/1 var(--latin); letter-spacing: -.04em; margin: 16px 0 6px; }
+.stat.hi b { color: var(--red); }
+.stat.zero b { color: #cfcfcf; }
+.stat span { font: 400 22px/1.4 var(--cjk); color: var(--grey); }
+.dist { position: absolute; left: 96px; right: 96px; top: 800px; display: grid; gap: 22px; }
+.dist-row { display: grid; grid-template-columns: 200px 1fr; align-items: center; }
+.dl { font: 700 22px/1 var(--cjk); }
+.dbar { display: flex; height: 64px; gap: 6px; }
+.dbar i { width: 0; display: flex; align-items: center; padding-left: 20px; overflow: hidden; white-space: nowrap;
+  font: 700 22px/1 var(--cjk); font-style: normal; transition: width 1s var(--ease) .5s; }
+.visible .dbar i { width: var(--w); }
+.dbar .red { background: var(--red); color: #fff; }
+.dbar .ink { background: var(--ink); color: #fff; }
+.dbar .mid { background: #8c8c8c; color: #fff; }
+
+/* ===========================================
+   4. TIMELINE — numbered pins on an Aug–Sep axis, cards in a row below
+   =========================================== */
+.tl-h { position: absolute; left: 96px; top: 180px; }
+.axis { position: absolute; inset: 0; }
+.axis-line { position: absolute; left: 96px; right: 96px; top: 480px; height: 4px; background: var(--ink); }
+.mon { position: absolute; top: 500px; font: 600 20px/1 var(--latin); color: var(--grey); letter-spacing: .06em; }
+.mon::before { content: ''; position: absolute; left: 0; top: -30px; width: 2px; height: 26px; background: var(--ink); }
+.mon.end { transform: translateX(-100%); }
+.mon.end::before { left: auto; right: 0; }
+.quiet { position: absolute; left: 96px; top: 330px; font: 400 22px/1 var(--cjk); color: var(--grey); }
+/* pin = stem rising from the axis + numbered box; --h staggers close dates */
+.pin { position: absolute; top: calc(480px - var(--h)); height: var(--h); width: 2px; margin-left: -1px; background: var(--ink); }
+.pin b { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); width: 46px; height: 46px; display: grid; place-items: center;
+  font: 800 24px/1 var(--latin); background: #fff; border: 3px solid var(--ink); color: var(--ink); }
+.pin.hi { background: var(--red); }
+.pin.hi b { background: var(--red); border-color: var(--red); color: #fff; }
+.tcards { position: absolute; left: 96px; right: 96px; top: 580px; display: grid; grid-template-columns: repeat(5, 1fr); column-gap: 24px; }
+.tc { border-top: 10px solid var(--ink); padding-top: 22px; }
+.tc.hi { border-color: var(--red); }
+.tc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.tc-top b { font: 900 48px/1 var(--latin); }
+.tc.hi .tc-top b { color: var(--red); }
+.tc .tag { font-size: 19px; padding: 7px 11px; }
+.tc time { display: block; font: 800 26px/1 var(--latin); }
+.tc .ty { display: block; margin-top: 14px; font: 700 19px/1 var(--cjk); color: var(--grey); letter-spacing: .04em; }
+.tc h3 { margin-top: 10px; font: 900 29px/1.3 var(--cjk); }
+.tc p { margin-top: 10px; font: 400 20px/1.5 var(--cjk); color: var(--ink-2); word-break: break-all; }
+
+/* ===========================================
+   5. TABLE — incident details
+   =========================================== */
+.tb-h { position: absolute; left: 96px; top: 160px; font-size: 60px !important; }
+.tbl { position: absolute; left: 96px; top: 270px; width: 1728px; border-collapse: collapse; table-layout: fixed; }
+.tbl th { text-align: left; font: 700 20px/1 var(--cjk); color: var(--grey); padding: 0 20px 18px 0; border-bottom: 3px solid var(--ink); }
+.tbl td { vertical-align: top; padding: 17px 20px 17px 0; border-bottom: 1px solid #d6d6d6; font: 400 21px/1.5 var(--cjk); color: var(--ink-2); }
+.tbl td.date { font: 700 22px/1.5 var(--latin); color: var(--ink); }
+.tbl td b { display: block; font: 900 24px/1.4 var(--cjk); color: var(--ink); }
+.tbl .acct { display: block; margin-top: 6px; font: 500 21px/1.4 var(--latin); color: var(--grey); word-break: break-all; }
+.tbl .tag { font-size: 20px; padding: 7px 12px; }
+.st span { display: block; font: 700 21px/1.4 var(--cjk); }
+.st .done { color: var(--ink); }
+.st .todo { margin-top: 6px; color: var(--red); padding-left: 14px; border-left: 4px solid var(--red); }
+.st .todo.watch { color: var(--ink-2); border-color: var(--ink); }
+.tnote { position: absolute; left: 96px; top: 950px; width: 1500px; font: 400 21px/1.6 var(--cjk); color: var(--grey); }
+.tnote b { color: var(--ink); margin-right: 16px; }
+
+/* ===========================================
+   6–7. RISK ANALYSIS
+   =========================================== */
+.rk-left { position: absolute; left: 96px; top: 210px; width: 700px; }
+.rk-idx { font: 800 24px/1 var(--latin); color: var(--red); letter-spacing: .04em; }
+.rk-kind { margin-top: 18px; font: 900 44px/1.2 var(--cjk); }
+.rk-num { font: 900 330px/1 var(--latin); letter-spacing: -.05em; margin: 20px 0 0 -12px; }
+.rk-num.hi { color: var(--red); }
+.rk-num small { font: 900 64px/1 var(--cjk); margin-left: 12px; letter-spacing: 0; color: var(--ink); }
+.rk-pct { margin-top: 26px; font: 500 26px/1 var(--cjk); color: var(--ink-2); }
+.rk-pct b { font: 800 30px/1 var(--latin); color: var(--ink); }
+.rk-bar { margin-top: 22px; height: 18px; background: #f0f0ee; width: 620px; }
+.rk-bar i { display: block; height: 100%; width: 0; background: var(--red); transition: width 1s var(--ease) .4s; }
+.visible .rk-bar i { width: var(--w); }
+.rk-right { position: absolute; left: 1015px; top: 210px; width: 810px; }
+.rk-lead { margin-top: 36px; font: 500 30px/1.65 var(--cjk); color: var(--ink); }
+.rk-cards { margin-top: 44px; display: grid; gap: 22px; }
+.rk-card { padding: 26px 30px; border-left: 8px solid var(--ink); background: #f6f6f4; }
+.rk-card.open { border-color: var(--red); background: var(--red-soft); }
+.rk-card small { display: block; font: 900 22px/1 var(--cjk); margin-bottom: 14px; }
+.rk-card.open small { color: var(--red); }
+.rk-card p { font: 400 25px/1.65 var(--cjk); color: var(--ink-2); }
+
+/* ===========================================
+   8. OPEN ITEMS & DATA NOTES
+   =========================================== */
+.end-h { position: absolute; left: 96px; top: 180px; }
+.end-grid { position: absolute; left: 96px; right: 96px; top: 320px; display: grid; grid-template-columns: 1065px 1fr; column-gap: 96px; }
+.ti { display: grid; grid-template-columns: 90px 1fr; padding: 20px 0; border-top: 1px solid var(--line); }
+.ti:last-child { border-bottom: 1px solid var(--line); }
+.ti b { font: 900 44px/1 var(--latin); color: var(--red); }
+.ti h3 { font: 900 30px/1.3 var(--cjk); }
+.ti p { margin-top: 8px; font: 400 23px/1.6 var(--cjk); color: var(--ink-2); }
+.limits { border-top: 14px solid var(--ink); padding-top: 26px; }
+.limits small { display: block; font: 900 24px/1 var(--cjk); margin-bottom: 20px; }
+.limits p { font: 400 22px/1.65 var(--cjk); color: var(--ink-2); margin-bottom: 18px; }
+.limits b { color: var(--ink); }
+.limits .ver { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); font: 500 20px/1.7 var(--latin); color: var(--grey); }
+
+/* ===========================================
+   REVEAL ANIMATIONS (triggered by .visible)
+   =========================================== */
+.r { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.visible .r { opacity: 1; transform: none; }
+.visible .d1 { transition-delay: .05s; } .visible .d2 { transition-delay: .15s; } .visible .d3 { transition-delay: .28s; }
+.visible .d4 { transition-delay: .4s; }  .visible .d5 { transition-delay: .52s; } .visible .d6 { transition-delay: .64s; }
+
+/* ===========================================
+   DECK CHROME (outside the stage): progress, edit mode
+   =========================================== */
+.progress { position: fixed; left: 0; right: 0; bottom: 0; height: 4px; z-index: 900; }
+.progress i { display: block; height: 100%; width: 0; background: var(--red); transition: width .4s var(--ease); }
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: calc(16px + env(safe-area-inset-top, 0px)); left: 16px; z-index: 10001; opacity: 0; pointer-events: none;
+  transition: opacity .3s ease; font: 700 15px/1 var(--cjk); padding: 10px 14px; border: 2px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-toggle.active { background: var(--red); border-color: var(--red); color: #fff; }
+body.editing [contenteditable="true"] { outline: 2px dashed rgba(255, 51, 0, .45); outline-offset: 4px; }
+.toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 10002; opacity: 0; transition: opacity .3s;
+  font: 500 15px/1 var(--cjk); background: var(--ink); color: #fff; padding: 12px 18px; pointer-events: none; }
+.toast.show { opacity: 1; }
+@media print { .progress, .edit-hotzone, .edit-toggle, .toast { display: none !important; } .r { opacity: 1 !important; transform: none !important; } }
+
 </style>
 </head>
 <body>
-<main>
-<header><div class="eyebrow">INFORMATION SECURITY · QUARTERLY REPORT</div><h1>2026 年第三季資安風險報告</h1><div class="meta"><span>報告期間｜2026/07/01–2026/09/30</span><span>編製日期｜2026/09/30</span><span>使用範圍｜內部主管參閱</span></div></header>
-<div class="toolbar"><button type="button" onclick="window.print()">列印／另存 PDF</button></div>
-<div class="content">
-<section><h2><span>01</span>本季風險摘要</h2><div class="summary"><div class="risk-line"><strong>本季整體風險</strong><span class="badge medium">中高</span><span class="note">管理判斷：依本季事件類型與已提供風險等級歸納，非正式量化評分。</span></div><p>本季共記錄 <strong>3 起資安事件</strong>，其中高風險 2 起、中風險 1 起。高風險事件均涉及 Google Workspace 帳號密碼遭他人取得，顯示<strong>帳號憑證安全為本季主要風險</strong>；另發現假冒公司主管姓名之郵件，須持續關注郵件社交工程風險。三起事件均已記錄處置措施，帳號密碼變更完成情形、異常登入查核與結案狀態仍須確認。</p></div><div class="kpis"><div class="kpi"><div class="label">本季事件總數</div><strong>3</strong><small>依本次提供紀錄統計</small></div><div class="kpi red"><div class="label">高風險事件</div><strong>2</strong><small>占本季事件 66.7%</small></div><div class="kpi orange"><div class="label">中風險事件</div><strong>1</strong><small>占本季事件 33.3%</small></div><div class="kpi"><div class="label">低風險事件</div><strong>0</strong><small>本次紀錄未列低風險事件</small></div></div></section>
-<section><h2><span>02</span>資安事件明細與處置紀錄</h2><div class="table-wrap"><table><colgroup><col style="width:10%"><col style="width:22%"><col style="width:7%"><col style="width:23%"><col style="width:25%"><col style="width:13%"></colgroup><thead><tr><th scope="col">事件日期</th><th scope="col">事件／涉及帳號</th><th scope="col">風險</th><th scope="col">事件說明</th><th scope="col">已記錄處置措施</th><th scope="col">目前狀態</th></tr></thead><tbody>
-<tr><td class="date">2026/08/20</td><td><strong>Google 帳號密碼外洩</strong><span class="email">sammy@digitm.com.tw</span></td><td><span class="badge high">高</span></td><td>Google 通知有人取得該帳號密碼，因此已停用帳戶。</td><td>立即聯繫使用者更改高強度密碼。</td><td class="status">已聯繫處置<br>變更完成及結案待確認</td></tr>
-<tr><td class="date">2026/09/07</td><td><strong>偽造寄件人姓名信件</strong><span class="email">公司官網對外信箱 info@</span></td><td><span class="badge medium">中</span></td><td>公司官網對外信箱收到假冒公司主管姓名寄出的信件。</td><td>啟用 Google Workspace Gmail 防範假冒姓名隔離設定，並發布資安公告提醒所有同仁。</td><td class="status">防護及公告已執行<br>持續監控</td></tr>
-<tr><td class="date">2026/09/16</td><td><strong>Google 帳號密碼外洩</strong><span class="email">cute200334@digitm.com.tw</span></td><td><span class="badge high">高</span></td><td>Google 通知有人取得該帳號密碼，因此已停用帳戶。</td><td>立即聯繫使用者更改高強度密碼。</td><td class="status">已聯繫處置<br>變更完成及結案待確認</td></tr>
-</tbody></table></div><p class="footnote">事件風險等級沿用原始紀錄。上述資料未提供實際損失、資料外洩結果或異常登入查核結果，不據此判定「無損失」或「已結案」。</p></section>
-<section class="next-page"><h2><span>03</span>主要風險分析</h2><div class="analysis-grid"><article class="analysis"><div class="count">帳號憑證風險｜2 起 · 66.7%</div><h3>兩個帳號出現密碼外洩通知</h3><p>不同帳號於本季先後遭 Google 通知密碼被他人取得，帳號憑證保護應列為優先改善項目。</p><p><strong>潛在影響：</strong>若帳號遭未授權使用，可能影響郵件、雲端資料及帳號身分安全；實際受影響範圍仍待查核。</p><p class="note">目前無法由既有紀錄確認密碼外洩來源，也無法判定是否涉及密碼重複使用或釣魚攻擊。</p></article><article class="analysis"><div class="count">郵件社交工程風險｜1 起 · 33.3%</div><h3>以主管姓名提高郵件可信度</h3><p>已觀察到假冒公司主管姓名的信件。若收件人僅依顯示名稱判斷真偽，可能誤信郵件指示。</p><p><strong>潛在影響：</strong>可能誘導提供資訊、點擊連結或執行非正常作業；本次紀錄未提供員工受騙或金錢損失情形。</p><p class="note">已啟用假冒姓名隔離並發布公告，後續仍須追蹤隔離效果與同仁通報情況。</p></article></div></section>
-
-</div>
-<footer><span>內部主管參閱｜含帳號資訊，對外提供前請先遮罩。</span><span>資料來源：本次提供之 3 筆事件紀錄｜版本 1.0</span></footer>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+<section class="slide cover" aria-label="封面">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="kicker r d1">INFORMATION SECURITY <b>·</b> QUARTERLY REPORT</div>
+  <div class="pg r d1">01 / 08</div>
+  <div class="q3 r d2">Q<span>3</span></div>
+  <div class="redbar"></div>
+  <div class="ctitle r d3">
+    <h1>2026 年<br>第三季<br>資安風險報告</h1>
+    <p>本季記錄 5 起資安事件，帳號憑證安全為主要風險。</p>
+  </div>
+  <div class="cmeta r d4">
+    <div><small>PERIOD</small>2026/07/01–09/30</div>
+    <div><small>ISSUED</small>2026/09/30</div>
+    <div><small>SCOPE</small>內部主管參閱</div>
+    <div><small>OVERALL RISK</small><span class="risk">中高</span></div>
+  </div>
+</section>
+<section class="slide" aria-label="本季風險摘要">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="chrome r d1"><span class="sec"><b>01</b>本季風險摘要</span><span class="pgno">02 / 08</span></header>
+  <footer class="foot">內部主管參閱｜含帳號資訊，對外提供前請先遮罩<span>2026 Q3 資安風險報告　v1.0</span></footer>
+  <div class="sum-left r d2">
+    <div class="label">本季整體風險</div>
+    <div class="huge">中高</div>
+    <div class="scale"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+    <div class="scale-lab"><span>低</span><span>中</span><span class="cur">中高</span><span>高</span></div>
+    <p class="note">管理判斷：依本季事件類型與已提供風險等級歸納，非正式量化評分。</p>
+  </div>
+  <div class="sum-right">
+    <h2 class="r d2">帳號憑證安全<br>為本季主要風險</h2>
+    <ol class="points">
+      <li class="r d3"><b>01</b><p>本季共記錄 <em>5 起</em>資安事件，其中高風險 2 起、中風險 3 起。</p></li>
+      <li class="r d4"><b>02</b><p>高風險事件<em>均涉及 Google Workspace 帳號密碼</em>遭他人取得。</p></li>
+      <li class="r d5"><b>03</b><p>另有假冒主管姓名郵件 1 起，以及下班後大門保全未上鎖／無法上鎖 2 起，均為中風險。</p></li>
+    </ol>
+  </div>
+</section>
+<section class="slide" aria-label="事件統計">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="chrome r d1"><span class="sec"><b>01</b>本季風險摘要｜事件統計</span><span class="pgno">03 / 08</span></header>
+  <footer class="foot">內部主管參閱｜含帳號資訊，對外提供前請先遮罩<span>2026 Q3 資安風險報告　v1.0</span></footer>
+  <h2 class="stat-h r d2">本季事件數量與風險分布</h2>
+  <div class="stats">
+    <div class="stat r d2"><small>本季事件總數</small><b>5</b><span>依本次提供紀錄統計</span></div>
+    <div class="stat hi r d3"><small>高風險事件</small><b>2</b><span>占本季事件 40%</span></div>
+    <div class="stat r d4"><small>中風險事件</small><b>3</b><span>占本季事件 60%</span></div>
+    <div class="stat zero r d5"><small>低風險事件</small><b>0</b><span>本次紀錄未列低風險事件</span></div>
+  </div>
+  <div class="dist r d6">
+    <div class="dist-row"><span class="dl">依風險等級</span>
+      <div class="dbar"><i class="red" style="--w:40%">高 2 起 · 40%</i><i class="ink" style="--w:60%">中 3 起 · 60%</i></div></div>
+    <div class="dist-row"><span class="dl">依風險類型</span>
+      <div class="dbar"><i class="red" style="--w:40%">帳號憑證 2 起 · 40%</i><i class="ink" style="--w:40%">實體門禁 2 起 · 40%</i><i class="mid" style="--w:20%">郵件社交工程 1 起</i></div></div>
+  </div>
+</section>
+<section class="slide" aria-label="事件時間軸">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="chrome r d1"><span class="sec"><b>02</b>資安事件明細｜時間軸</span><span class="pgno">04 / 08</span></header>
+  <footer class="foot">內部主管參閱｜含帳號資訊，對外提供前請先遮罩<span>2026 Q3 資安風險報告　v1.0</span></footer>
+  <h2 class="tl-h r d2">五起事件集中於 8 月下旬至 9 月下旬</h2>
+  <div class="axis r d2"><div class="axis-line"></div>
+    <span class="mon" style="left:96px">08/01</span>
+    <span class="mon" style="left:989px">09/01</span>
+    <span class="mon end" style="left:1824px">09/30</span>
+    <div class="quiet">07/01–07/31｜本次紀錄無事件</div>
+    <div class="pin hi" style="left:643px;--h:70px"><b>1</b></div><div class="pin " style="left:1162px;--h:70px"><b>2</b></div><div class="pin hi" style="left:1421px;--h:140px"><b>3</b></div><div class="pin " style="left:1450px;--h:70px"><b>4</b></div><div class="pin " style="left:1651px;--h:140px"><b>5</b></div>
+  </div>
+  <div class="tcards"><div class="tc hi r d3"><div class="tc-top"><b>1</b><span class="tag hi">高風險</span></div><time>2026/08/20</time><span class="ty">帳號憑證</span><h3>Google 帳號密碼外洩</h3><p>sammy@digitm.com.tw</p></div><div class="tc  r d4"><div class="tc-top"><b>2</b><span class="tag ">中風險</span></div><time>2026/09/07</time><span class="ty">郵件社交工程</span><h3>偽造寄件人姓名信件</h3><p>公司官網對外信箱 info@</p></div><div class="tc hi r d5"><div class="tc-top"><b>3</b><span class="tag hi">高風險</span></div><time>2026/09/16</time><span class="ty">帳號憑證</span><h3>Google 帳號密碼外洩</h3><p>cute200334@digitm.com.tw</p></div><div class="tc  r d6"><div class="tc-top"><b>4</b><span class="tag ">中風險</span></div><time>2026/09/17</time><span class="ty">實體門禁</span><h3>大門保全未上鎖</h3><p>下班無人時段；已通知遠程上鎖</p></div><div class="tc  r d6"><div class="tc-top"><b>5</b><span class="tag ">中風險</span></div><time>2026/09/24</time><span class="ty">實體門禁</span><h3>大門保全無法上鎖</h3><p>窗戶未關所致；處置待確認</p></div></div>
+</section>
+<section class="slide" aria-label="事件明細與處置紀錄">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="chrome r d1"><span class="sec"><b>02</b>資安事件明細與處置紀錄</span><span class="pgno">05 / 08</span></header>
+  <footer class="foot">內部主管參閱｜含帳號資訊，對外提供前請先遮罩<span>2026 Q3 資安風險報告　v1.0</span></footer>
+  <h2 class="tb-h r d2">事件明細與處置紀錄</h2>
+  <table class="tbl">
+    <colgroup><col style="width:190px"><col style="width:370px"><col style="width:110px"><col style="width:370px"><col style="width:430px"><col style="width:258px"></colgroup>
+    <thead class="r d2"><tr><th>事件日期</th><th>事件／涉及帳號</th><th>風險</th><th>事件說明</th><th>已記錄處置措施</th><th>目前狀態</th></tr></thead>
+    <tbody><tr class="r d3"><td class="date">2026/08/20</td><td><b>Google 帳號密碼外洩</b><span class="acct">sammy@digitm.com.tw</span></td><td><span class="tag hi">高</span></td><td>Google 通知有人取得該帳號密碼，因此已停用帳戶。</td><td>立即聯繫使用者更改高強度密碼。</td><td class="st"><span class="done">已聯繫處置</span><span class="todo ">變更完成及結案待確認</span></td></tr><tr class="r d4"><td class="date">2026/09/07</td><td><b>偽造寄件人姓名信件</b><span class="acct">公司官網對外信箱 info@</span></td><td><span class="tag ">中</span></td><td>公司官網對外信箱收到假冒公司主管姓名寄出的信件。</td><td>啟用 Google Workspace Gmail 防範假冒姓名隔離設定，並發布資安公告提醒所有同仁。</td><td class="st"><span class="done">防護及公告已執行</span><span class="todo watch">持續監控</span></td></tr><tr class="r d5"><td class="date">2026/09/16</td><td><b>Google 帳號密碼外洩</b><span class="acct">cute200334@digitm.com.tw</span></td><td><span class="tag hi">高</span></td><td>Google 通知有人取得該帳號密碼，因此已停用帳戶。</td><td>立即聯繫使用者更改高強度密碼。</td><td class="st"><span class="done">已聯繫處置</span><span class="todo ">變更完成及結案待確認</span></td></tr><tr class="r d6"><td class="date">2026/09/17</td><td><b>大門保全未上鎖</b><span class="acct">公司大門（下班時段）</span></td><td><span class="tag ">中</span></td><td>公司下班無人，大門保全未上鎖。</td><td>事發當下通知行政課行政組副組長遠程上鎖。</td><td class="st"><span class="done">已通知遠程上鎖</span></td></tr><tr class="r d6"><td class="date">2026/09/24</td><td><b>大門保全無法上鎖</b><span class="acct">公司大門・窗戶未關</span></td><td><span class="tag ">中</span></td><td>有窗戶未關，導致公司大門保全無法上鎖。</td><td>紀錄中未記載處置措施。</td><td class="st"><span class="done">未記錄處置</span></td></tr></tbody>
+  </table>
+  <p class="tnote r d6"><b>註</b>事件風險等級沿用原始紀錄。上述資料未提供實際損失、資料外洩結果或異常登入查核結果，不據此判定「無損失」或「已結案」。</p>
+</section>
+<section class="slide" aria-label="帳號憑證風險">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="chrome r d1"><span class="sec"><b>03</b>主要風險分析</span><span class="pgno">06 / 08</span></header>
+  <footer class="foot">內部主管參閱｜含帳號資訊，對外提供前請先遮罩<span>2026 Q3 資安風險報告　v1.0</span></footer>
+  <div class="rk-left r d2">
+    <div class="rk-idx">風險 01</div>
+    <div class="rk-kind">帳號憑證風險</div>
+    <div class="rk-num hi">2<small>起</small></div>
+    <div class="rk-pct">占本季事件 <b>40%</b></div>
+    <div class="rk-bar"><i style="--w:40%"></i></div>
+  </div>
+  <div class="rk-right">
+    <h2 class="r d2">兩個帳號出現<br>密碼外洩通知</h2>
+    <p class="rk-lead r d3">不同帳號於本季先後遭 Google 通知密碼被他人取得，帳號憑證保護應列為優先改善項目。</p>
+    <div class="rk-cards">
+      <div class="rk-card imp r d4"><small>潛在影響</small><p>若帳號遭未授權使用，可能影響郵件、雲端資料及帳號身分安全；實際受影響範圍仍待查核。</p></div>
+      <div class="rk-card open r d5"><small>尚待確認</small><p>目前無法由既有紀錄確認密碼外洩來源，也無法判定是否涉及密碼重複使用或釣魚攻擊。</p></div>
+    </div>
+  </div>
+</section>
+<section class="slide" aria-label="郵件社交工程風險">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="chrome r d1"><span class="sec"><b>03</b>主要風險分析</span><span class="pgno">07 / 08</span></header>
+  <footer class="foot">內部主管參閱｜含帳號資訊，對外提供前請先遮罩<span>2026 Q3 資安風險報告　v1.0</span></footer>
+  <div class="rk-left r d2">
+    <div class="rk-idx">風險 02</div>
+    <div class="rk-kind">郵件社交工程風險</div>
+    <div class="rk-num ">1<small>起</small></div>
+    <div class="rk-pct">占本季事件 <b>20%</b></div>
+    <div class="rk-bar"><i style="--w:20%"></i></div>
+  </div>
+  <div class="rk-right">
+    <h2 class="r d2">以主管姓名<br>提高郵件可信度</h2>
+    <p class="rk-lead r d3">已觀察到假冒公司主管姓名的信件。若收件人僅依顯示名稱判斷真偽，可能誤信郵件指示。</p>
+    <div class="rk-cards">
+      <div class="rk-card imp r d4"><small>潛在影響</small><p>可能誘導提供資訊、點擊連結或執行非正常作業；本次紀錄未提供員工受騙或金錢損失情形。</p></div>
+      <div class="rk-card open r d5"><small>後續追蹤</small><p>已啟用假冒姓名隔離並發布公告，後續仍須追蹤隔離效果與同仁通報情況。</p></div>
+    </div>
+  </div>
+</section>
+<section class="slide" aria-label="實體門禁風險">
+  <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="chrome r d1"><span class="sec"><b>03</b>主要風險分析</span><span class="pgno">08 / 08</span></header>
+  <footer class="foot">內部主管參閱｜含帳號資訊，對外提供前請先遮罩<span>2026 Q3 資安風險報告　v1.0</span></footer>
+  <div class="rk-left r d2">
+    <div class="rk-idx">風險 03</div>
+    <div class="rk-kind">實體門禁風險</div>
+    <div class="rk-num ">2<small>起</small></div>
+    <div class="rk-pct">占本季事件 <b>40%</b></div>
+    <div class="rk-bar"><i style="--w:40%"></i></div>
+  </div>
+  <div class="rk-right">
+    <h2 class="r d2">下班後大門保全<br>未能確實上鎖</h2>
+    <p class="rk-lead r d3">本季兩度發生下班後大門保全未上鎖或無法上鎖的情形，其中 9/24 起因為窗戶未關。</p>
+    <div class="rk-cards">
+      <div class="rk-card imp r d4"><small>潛在影響</small><p>下班無人時段若門禁未設防，辦公場所可能處於未受保全監控的狀態；本次紀錄未提及人員進入或財物損失情形。</p></div>
+      <div class="rk-card open r d5"><small>後續追蹤</small><p>9/17 已於事發當下通知遠程上鎖；9/24 紀錄中未記載處置措施，處置情形與下班離場前門窗、保全檢查情形仍須追蹤。</p></div>
+    </div>
+  </div>
+</section>
 </main>
+</div>
+<!-- === PRESENTATION CHROME (outside the stage) === -->
+<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+<div class="edit-hotzone" title="編輯模式 (E)"></div>
+<button class="edit-toggle" id="editToggle" title="編輯模式 (E)" aria-label="切換編輯模式">✎ 編輯</button>
+<div class="toast" id="toast" role="status"></div>
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Keyboard (← → Space PgUp PgDn Home End), wheel, touch swipe, click.
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = [...document.querySelectorAll('.slide')];
+    this.stage = document.getElementById('deckStage');
+    this.bar = document.getElementById('progressBar');
+    this.current = 0;
+    this.lock = false;
+    this.setupStageScale();
+    this.setupKeyboardNav();
+    this.setupWheelNav();
+    this.setupTouchNav();
+    const start = parseInt((location.hash || '').replace('#', ''), 10);
+    this.showSlide(Number.isFinite(start) ? start - 1 : 0);
+  }
+  /* Scale the fixed 1920×1080 stage to fit the window (letterbox, never reflow) */
+  setupStageScale() {
+    const scale = () => {
+      const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+      this.stage.style.transform = `translate(${(innerWidth - 1920 * k) / 2}px, ${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+    };
+    scale(); addEventListener('resize', scale);
+  }
+  isEditing(e) { return document.body.classList.contains('editing') || (e && e.target && e.target.isContentEditable); }
+  setupKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+      if (this.isEditing(e)) return;
+      if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); this.next(); }
+      else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); this.prev(); }
+      else if (e.key === 'Home') this.showSlide(0);
+      else if (e.key === 'End') this.showSlide(this.slides.length - 1);
+    });
+  }
+  setupWheelNav() {
+    addEventListener('wheel', (e) => {
+      if (this.isEditing() || this.lock || Math.abs(e.deltaY) < 20) return;
+      this.lock = true; setTimeout(() => (this.lock = false), 700);
+      e.deltaY > 0 ? this.next() : this.prev();
+    }, { passive: true });
+  }
+  setupTouchNav() {
+    let x0 = null, y0 = null;
+    addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    addEventListener('touchend', (e) => {
+      if (x0 === null || this.isEditing()) return;
+      const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) dx < 0 ? this.next() : this.prev();
+      x0 = null;
+    });
+  }
+  next() { this.showSlide(this.current + 1); }
+  prev() { this.showSlide(this.current - 1); }
+  showSlide(i) {
+    this.current = Math.max(0, Math.min(i, this.slides.length - 1));
+    this.slides.forEach((s, n) => { s.classList.toggle('active', n === this.current); s.classList.toggle('visible', n === this.current); });
+    this.bar.style.width = ((this.current + 1) / this.slides.length * 100) + '%';
+    try { history.replaceState(null, '', '#' + (this.current + 1)); } catch (_) {}
+  }
+}
+
+/* ===========================================
+   INLINE EDITOR — press E (or hover top-left corner) to edit text.
+   Edits auto-save in this browser (localStorage); Ctrl/⌘+S saves immediately.
+   =========================================== */
+class InlineEditor {
+  constructor() {
+    this.key = 'q3-security-deck-v4';
+    this.isActive = false;
+    this.btn = document.getElementById('editToggle');
+    this.targets = () => document.querySelectorAll('.deck-stage h1, .deck-stage h2, .deck-stage h3, .deck-stage p, .deck-stage li p, .deck-stage td, .deck-stage th, .deck-stage small, .deck-stage time, .ctitle p');
+    this.restore();
+    this.bind();
+  }
+  toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(this._t); this._t = setTimeout(() => t.classList.remove('show'), 1600); }
+  toggleEditMode() {
+    this.isActive = !this.isActive;
+    document.body.classList.toggle('editing', this.isActive);
+    this.btn.classList.toggle('active', this.isActive);
+    this.btn.textContent = this.isActive ? '✓ 完成' : '✎ 編輯';
+    this.targets().forEach((el) => el.setAttribute('contenteditable', this.isActive ? 'true' : 'false'));
+    if (!this.isActive) { this.save(); this.btn.classList.remove('show'); }
+    this.toast(this.isActive ? '編輯模式：點擊文字即可修改' : '已儲存於此瀏覽器');
+  }
+  save() {
+    try {
+      const data = [...this.targets()].map((el) => el.innerHTML);
+      localStorage.setItem(this.key, JSON.stringify(data));
+    } catch (_) {}
+  }
+  restore() {
+    try {
+      const raw = localStorage.getItem(this.key); if (!raw) return;
+      const data = JSON.parse(raw); const els = [...this.targets()];
+      if (data.length === els.length) els.forEach((el, i) => (el.innerHTML = data[i]));
+    } catch (_) {}
+  }
+  bind() {
+    const hot = document.querySelector('.edit-hotzone');
+    let hide = null;
+    const show = () => { clearTimeout(hide); this.btn.classList.add('show'); };
+    const later = () => { hide = setTimeout(() => { if (!this.isActive) this.btn.classList.remove('show'); }, 400); };
+    hot.addEventListener('mouseenter', show); hot.addEventListener('mouseleave', later);
+    this.btn.addEventListener('mouseenter', show); this.btn.addEventListener('mouseleave', later);
+    hot.addEventListener('click', () => this.toggleEditMode());
+    this.btn.addEventListener('click', () => this.toggleEditMode());
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'e' || e.key === 'E') && !e.target.isContentEditable && !e.metaKey && !e.ctrlKey) this.toggleEditMode();
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); this.save(); this.toast('已儲存於此瀏覽器'); }
+      if (e.key === 'Escape' && this.isActive) this.toggleEditMode();
+    });
+    document.addEventListener('input', () => { clearTimeout(this._s); this._s = setTimeout(() => this.save(), 600); });
+  }
+}
+
+const deck = new SlidePresentation();
+const editor = new InlineEditor();
+
+</script>
 </body>
 </html>
